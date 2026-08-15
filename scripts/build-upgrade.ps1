@@ -103,7 +103,10 @@ if (!(Test-Path -LiteralPath $originalImages -PathType Container))
     throw "Required original-mod image directory is missing: $originalImages"
 }
 Copy-Item -LiteralPath $originalImages -Destination $artifactsRoot -Recurse -Force
-Copy-Item -LiteralPath (Join-Path $repositoryRoot "README-upgrade.md") -Destination $artifactsRoot -Force
+foreach ($packageDocument in @("README-upgrade.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CHANGELOG.md"))
+{
+    Copy-Item -LiteralPath (Join-Path $repositoryRoot $packageDocument) -Destination $artifactsRoot -Force
+}
 
 $artifactUiBundle = Join-Path $artifactsRoot "InterchangeBuilder.mjs"
 $artifactUiStyles = Join-Path $artifactsRoot "InterchangeBuilder.css"

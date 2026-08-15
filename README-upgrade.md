@@ -1,6 +1,16 @@
 # InterchangeBuilder 2.2.0 原生端点选择升级说明
 
-这是针对 TheJof 的 InterchangeBuilder 1.4.2（Paradox Mods ID 153013）制作的非官方升级层，不是独立模组。GitHub 仓库不包含原模组文件；本地构建会读取你合法取得的原版文件，并在 `artifacts\InterchangeBuilder-2.2.0` 生成一个单独的测试包。
+这是针对 TheJof 的 InterchangeBuilder 1.4.2（Paradox Mods ID 153013）制作的原生道路端点升级。可直接安装的 GitHub 二进制 Release 经仓库维护者确认已取得 TheJof 的再分发许可，已经包含运行所需的原版文件；游戏文件从不包含在发布包中。
+
+## 直接安装
+
+1. 下载 `InterchangeBuilder-2.2.0-NativeLaneConnections.zip`。
+2. 退出游戏，将 ZIP 解压到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods`。
+3. 确认文件位于 `Mods\InterchangeBuilder-2.2.0-NativeLaneConnections\InterchangeBuilder.dll`，没有多套一层同名目录。
+4. 在 Skyve II 中刷新模组，禁用订阅版 InterchangeBuilder（153013），启用本地 2.2.0 版本；不要同时加载两个副本。
+5. 通过 Skyve II 或 Steam 启动游戏。
+
+普通玩家只需要上述 ZIP，不需要源码、Visual Studio 或 .NET SDK。
 
 ## 道路端点规则
 
@@ -14,7 +24,7 @@
 
 中文文本在构建时由 `ui/InterchangeBuilder.zh-CN.json` 写入原 UI 副本；不会在 COUI 中运行 DOM 监听脚本。
 
-## 构建
+## 从源码构建
 
 将原版 InterchangeBuilder 1.4.2 的完整文件放入 `vendor\InterchangeBuilder-1.4.2`，然后执行：
 
@@ -30,7 +40,7 @@
   -Cities2ManagedPath 'D:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed'
 ```
 
-## 通过 Skyve II 本地测试
+## 开发包通过 Skyve II 本地测试
 
 1. 将 `artifacts\InterchangeBuilder-2.2.0` 复制到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods\InterchangeBuilder-2.2.0-NativeLaneConnections`。
 2. 重启或刷新 Skyve II，让它重新扫描本地 `Mods` 目录。

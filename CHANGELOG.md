@@ -10,3 +10,4 @@
 - Added a Simplified Chinese UI translation and an in-panel endpoint-rule notice.
 - Added 12 core tests and a seven-target runtime metadata smoke harness.
 - Made the build accept user-supplied original-mod and game paths without embedding either dependency in source control.
+- Published an authorized, ready-to-use binary package with direct Skyve II installation instructions.

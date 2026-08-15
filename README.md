@@ -6,7 +6,22 @@
 《城市：天际线 II》InterchangeBuilder 的非官方原生道路端点选择与简体中文升级层。
 
 > [!IMPORTANT]
-> 本项目不是独立模组，也不隶属于原作者、Colossal Order 或 Paradox Interactive。你需要自行从 Paradox Mods 获取 TheJof 的 InterchangeBuilder 1.4.2（ID 153013）。原模组及游戏文件不包含在本仓库中，也不受本仓库 MIT 许可证覆盖。
+> 本项目不隶属于 Colossal Order 或 Paradox Interactive。仓库源码树不包含游戏文件；可直接安装的二进制 Release 经仓库维护者确认已取得原作者 TheJof 的再分发许可，因此包含运行所需的 InterchangeBuilder 1.4.2 文件。原作者文件仍不受本仓库 MIT 许可证覆盖。
+
+## 直接下载安装
+
+1. 从 [v2.2.0 Release](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/releases/tag/v2.2.0) 下载 `InterchangeBuilder-2.2.0-NativeLaneConnections.zip`。
+2. 退出游戏，将 ZIP 解压到：
+
+   ```text
+   %USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods
+   ```
+
+3. 解压后应存在 `Mods\InterchangeBuilder-2.2.0-NativeLaneConnections\InterchangeBuilder.dll`。
+4. 在 Skyve II 中刷新模组，禁用订阅版 InterchangeBuilder（153013），启用本地 2.2.0 版本；不要同时加载两个副本。
+5. 通过 Skyve II 或 Steam 启动游戏。
+
+Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual Studio、.NET SDK，也不需要自己构建。
 
 ## 2.2.0 做了什么
 
@@ -20,7 +35,7 @@
 
 目前的自动验证包括 12 项纯算法测试和 7 个运行时 Harmony 目标的元数据冒烟检查。运行时检查需要本机游戏程序集，因此公开 CI 只运行不依赖游戏文件的核心测试。
 
-## 构建完整本地包
+## 从源码构建
 
 环境要求：Windows PowerShell、.NET 8 SDK、已安装的《城市：天际线 II》，以及你合法取得的 InterchangeBuilder 1.4.2 完整目录。Node.js 是可选项；存在时会额外检查本地化 UI 包的 JavaScript 语法。
 
@@ -48,10 +63,10 @@
 
 ## 许可证与贡献边界
 
-本仓库原创升级层源码采用 [MIT License](LICENSE)。原版 InterchangeBuilder、游戏程序集、图标及其他第三方内容保持各自权利归属，详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。请勿在 Issue 或 PR 中上传原模组或游戏二进制。
+本仓库原创升级层源码采用 [MIT License](LICENSE)。原版 InterchangeBuilder、游戏程序集、图标及其他第三方内容保持各自权利归属，详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。二进制 Release 中的原版文件依据原作者许可提供；该许可不自动扩展到第三方重新发布。
 
 ---
 
 ## English summary
 
-This is an unofficial native endpoint-alignment and Simplified Chinese upgrade layer for TheJof's InterchangeBuilder 1.4.2 (Paradox Mods ID 153013). It preserves centre alignment, adds width-aware left/centre/right candidates, follows native connection compatibility, resolves multi-arm junctions from pointer direction, and carries the selected alignment through placement. The original mod and game files are not redistributed; supply your own local copies to build the test package.
+This is a native endpoint-alignment and Simplified Chinese upgrade layer for TheJof's InterchangeBuilder 1.4.2 (Paradox Mods ID 153013). It preserves centre alignment, adds width-aware left/centre/right candidates, follows native connection compatibility, resolves multi-arm junctions from pointer direction, and carries the selected alignment through placement. The ready-to-use binary release includes the required original-mod payload with redistribution permission confirmed by the repository maintainer; game files are never included.
