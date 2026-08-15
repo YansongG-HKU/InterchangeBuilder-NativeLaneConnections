@@ -6,33 +6,31 @@ using Mono.Cecil.Cil;
 
 if (args.Length != 3)
 {
-    Console.Error.WriteLine("Usage: InterchangeBuilder.Patcher <original.dll> <upgrade.dll> <output-directory>");
+    Console.Error.WriteLine("Usage: InterchangeBuilder.Patcher <base.dll> <upgrade.dll> <output-directory>");
     return 2;
 }
 
-string originalPath = Path.GetFullPath(args[0]);
+string basePath = Path.GetFullPath(args[0]);
 string upgradePath = Path.GetFullPath(args[1]);
 string outputDirectory = Path.GetFullPath(args[2]);
-if (!File.Exists(originalPath) || !File.Exists(upgradePath))
+if (!File.Exists(basePath) || !File.Exists(upgradePath))
 {
-    Console.Error.WriteLine("Both the original mod assembly and upgrade assembly must exist.");
+    Console.Error.WriteLine("Both the base assembly and upgrade assembly must exist.");
     return 3;
 }
 
 Directory.CreateDirectory(outputDirectory);
 var resolver = new DefaultAssemblyResolver();
-resolver.AddSearchDirectory(Path.GetDirectoryName(originalPath)!);
+resolver.AddSearchDirectory(Path.GetDirectoryName(basePath)!);
 resolver.AddSearchDirectory(Path.GetDirectoryName(upgradePath)!);
 
-bool readSymbols = File.Exists(Path.ChangeExtension(originalPath, ".pdb"));
 var readerParameters = new ReaderParameters
 {
     AssemblyResolver = resolver,
-    ReadSymbols = readSymbols,
-    SymbolReaderProvider = readSymbols ? new PortablePdbReaderProvider() : null
+    ReadSymbols = false
 };
 
-using AssemblyDefinition target = AssemblyDefinition.ReadAssembly(originalPath, readerParameters);
+using AssemblyDefinition target = AssemblyDefinition.ReadAssembly(basePath, readerParameters);
 using AssemblyDefinition upgrade = AssemblyDefinition.ReadAssembly(upgradePath);
 TypeDefinition bootstrap = upgrade.MainModule.Types.Single(type =>
     type.FullName == "InterchangeBuilder.LaneConnections.Bootstrap");
@@ -47,11 +45,10 @@ MethodDefinition onDispose = mod.Methods.Single(method => method.Name == "OnDisp
 InjectAtStart(onLoad, install, loadUpdateSystem: true);
 InjectAtStart(onDispose, uninstall, loadUpdateSystem: false);
 
-string outputAssembly = Path.Combine(outputDirectory, Path.GetFileName(originalPath));
+string outputAssembly = Path.Combine(outputDirectory, Path.GetFileName(basePath));
 var writerParameters = new WriterParameters
 {
-    WriteSymbols = readSymbols,
-    SymbolWriterProvider = readSymbols ? new PortablePdbWriterProvider() : null
+    WriteSymbols = false
 };
 target.Write(outputAssembly, writerParameters);
 Console.WriteLine(outputAssembly);

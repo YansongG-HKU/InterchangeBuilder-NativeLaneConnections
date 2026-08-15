@@ -108,7 +108,7 @@
   "Preserved + eased": "保留起伏并平滑",
   "Choose a curve mode and click a start node.": "请选择一种道路模式，然后点击起点节点。",
   "Parallel temporarily disabled - broke other builds in testing.": "平行道路暂时禁用：测试中会影响其他建造模式。",
-  "Also make underground nodes clickable, e.g. for subway/tunnel connections. Page Down turns it on, Page Up turns it back off - just like the vanilla road tool.": "允许点击地下节点，例如地铁或隧道连接。Page Down 开启，Page Up 关闭，与原版道路工具一致。",
+  "Also make underground nodes clickable, e.g. for subway/tunnel connections. Page Down turns it on, Page Up turns it back off - just like the vanilla road tool.": "允许点击地下节点，例如地铁或隧道连接。Page Down 开启，Page Up 关闭，与游戏原生道路工具一致。",
   "Make the road follow the natural terrain instead of using one even height profile.": "让道路跟随自然地形，而不是使用统一的高度曲线。",
   "Follow the natural terrain. Click to restore the previous even height profile.": "当前跟随自然地形。点击恢复之前的均匀高度曲线。",
   "Build on the left side": "在左侧建造",
