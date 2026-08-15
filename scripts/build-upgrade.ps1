@@ -1,12 +1,12 @@
 param(
     [string]$Configuration = "Release",
     [string]$Cities2ManagedPath = "",
-    [string]$OriginalModPath = ""
+    [string]$BasePackagePath = ""
 )
 
 $ErrorActionPreference = "Stop"
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
-$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.2.0"
+$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.2.0-NativeLaneConnections"
 $runtimeProject = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\InterchangeBuilder.LaneConnections.csproj"
 $runtimeOutput = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\bin\$Configuration\net48"
 $patcherProject = Join-Path $repositoryRoot "tools\InterchangeBuilder.Patcher\InterchangeBuilder.Patcher.csproj"
@@ -15,16 +15,16 @@ $testsProject = Join-Path $repositoryRoot "tests\InterchangeBuilder.LaneConnecti
 $uiTranslationsSource = Join-Path $repositoryRoot "ui\InterchangeBuilder.zh-CN.json"
 $uiLocalizationStyles = Join-Path $repositoryRoot "ui\InterchangeBuilder.localization.css"
 
-if ([string]::IsNullOrWhiteSpace($OriginalModPath))
+if ([string]::IsNullOrWhiteSpace($BasePackagePath))
 {
-    $OriginalModPath = Join-Path $repositoryRoot "vendor\InterchangeBuilder-1.4.2"
+    $BasePackagePath = Join-Path $repositoryRoot "vendor\InterchangeBuilder-Base"
 }
-elseif (![System.IO.Path]::IsPathRooted($OriginalModPath))
+elseif (![System.IO.Path]::IsPathRooted($BasePackagePath))
 {
-    $OriginalModPath = Join-Path $repositoryRoot $OriginalModPath
+    $BasePackagePath = Join-Path $repositoryRoot $BasePackagePath
 }
-$OriginalModPath = [System.IO.Path]::GetFullPath($OriginalModPath)
-$originalAssembly = Join-Path $OriginalModPath "InterchangeBuilder.dll"
+$BasePackagePath = [System.IO.Path]::GetFullPath($BasePackagePath)
+$baseAssembly = Join-Path $BasePackagePath "InterchangeBuilder.dll"
 
 if ([string]::IsNullOrWhiteSpace($Cities2ManagedPath))
 {
@@ -47,9 +47,9 @@ if (!(Test-Path -LiteralPath (Join-Path $Cities2ManagedPath "Game.dll") -PathTyp
 {
     throw "Game.dll was not found under '$Cities2ManagedPath'. Pass the game's Cities2_Data\Managed directory."
 }
-if (!(Test-Path -LiteralPath $originalAssembly -PathType Leaf))
+if (!(Test-Path -LiteralPath $baseAssembly -PathType Leaf))
 {
-    throw "The original InterchangeBuilder.dll was not found under '$OriginalModPath'. Obtain InterchangeBuilder 1.4.2 (Paradox Mods ID 153013) and pass -OriginalModPath."
+    throw "InterchangeBuilder.dll was not found under '$BasePackagePath'. Extract a published project package there or pass -BasePackagePath."
 }
 
 dotnet test $testsProject -c $Configuration --nologo
@@ -63,7 +63,7 @@ $runtimeBuildArguments = @(
     "-c", $Configuration,
     "--nologo",
     "-p:Cities2ManagedPath=$Cities2ManagedPath",
-    "-p:OriginalInterchangeBuilderAssembly=$originalAssembly"
+    "-p:InterchangeBuilderAssembly=$baseAssembly"
 )
 dotnet @runtimeBuildArguments
 if ($LASTEXITCODE -ne 0)
@@ -82,27 +82,19 @@ $payload = @(
 )
 foreach ($file in $payload)
 {
-    $source = Join-Path $OriginalModPath $file
+    $source = Join-Path $BasePackagePath $file
     if (!(Test-Path -LiteralPath $source -PathType Leaf))
     {
-        throw "Required original-mod payload is missing: $source"
+        throw "Required base-package payload is missing: $source"
     }
     Copy-Item -LiteralPath $source -Destination $artifactsRoot -Force
 }
-foreach ($optionalFile in @("InterchangeBuilder_win_x86_64.pdb", "InterchangeBuilder.pdb"))
+$baseImages = Join-Path $BasePackagePath "images"
+if (!(Test-Path -LiteralPath $baseImages -PathType Container))
 {
-    $source = Join-Path $OriginalModPath $optionalFile
-    if (Test-Path -LiteralPath $source -PathType Leaf)
-    {
-        Copy-Item -LiteralPath $source -Destination $artifactsRoot -Force
-    }
+    throw "Required base-package image directory is missing: $baseImages"
 }
-$originalImages = Join-Path $OriginalModPath "images"
-if (!(Test-Path -LiteralPath $originalImages -PathType Container))
-{
-    throw "Required original-mod image directory is missing: $originalImages"
-}
-Copy-Item -LiteralPath $originalImages -Destination $artifactsRoot -Recurse -Force
+Copy-Item -LiteralPath $baseImages -Destination $artifactsRoot -Recurse -Force
 foreach ($packageDocument in @("README-upgrade.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CHANGELOG.md"))
 {
     Copy-Item -LiteralPath (Join-Path $repositoryRoot $packageDocument) -Destination $artifactsRoot -Force
@@ -116,8 +108,17 @@ $artifactUiStyles = Join-Path $artifactsRoot "InterchangeBuilder.css"
 # translations are applied to exact JavaScript string literals while building
 # the local package.  No extra script is evaluated when the game loads the UI.
 $localizedBundle = [System.IO.File]::ReadAllText($artifactUiBundle)
+$localizedBundle = [regex]::Replace(
+    $localizedBundle,
+    '(?m)^\s*\* Author:.*\r?\n',
+    '')
+$localizedBundle = [regex]::Replace(
+    $localizedBundle,
+    '(?m)^\s*\* Version:.*$',
+    ' * Version: 2.2.0')
 $translations = Get-Content -LiteralPath $uiTranslationsSource -Raw -Encoding UTF8 | ConvertFrom-Json -AsHashtable
 $translatedLiteralCount = 0
+$existingTranslatedLiteralCount = 0
 foreach ($entry in $translations.GetEnumerator())
 {
     $sourceLiteral = ConvertTo-Json -InputObject ([string]$entry.Key) -Compress
@@ -127,43 +128,66 @@ foreach ($entry in $translations.GetEnumerator())
         $localizedBundle = $localizedBundle.Replace($sourceLiteral, $targetLiteral)
         $translatedLiteralCount++
     }
+    elseif ($localizedBundle.Contains($targetLiteral))
+    {
+        $existingTranslatedLiteralCount++
+    }
 }
 
 # "InterchangeBuilder" is also the UI module identifier, so only replace the
 # two human-visible occurrences and leave JSON.parse('{"id":"InterchangeBuilder"}') untouched.
 $panelTitleSource = 'children:"InterchangeBuilder"'
-if (([regex]::Matches($localizedBundle, [regex]::Escape($panelTitleSource))).Count -ne 1)
+$panelTitleTarget = 'children:"立交道路生成器"'
+$panelTitleSourceCount = ([regex]::Matches($localizedBundle, [regex]::Escape($panelTitleSource))).Count
+if ($panelTitleSourceCount -eq 1)
 {
-    throw "Expected exactly one InterchangeBuilder panel title in the published UI bundle."
+    $localizedBundle = $localizedBundle.Replace($panelTitleSource, $panelTitleTarget)
 }
-$localizedBundle = $localizedBundle.Replace($panelTitleSource, 'children:"立交道路生成器"')
+elseif ($panelTitleSourceCount -ne 0 -or !$localizedBundle.Contains($panelTitleTarget))
+{
+    throw "The InterchangeBuilder panel title could not be localized safely."
+}
 
 $floatingLabelSource = 'tooltipLabel:"InterchangeBuilder"'
-if (([regex]::Matches($localizedBundle, [regex]::Escape($floatingLabelSource))).Count -ne 1)
+$floatingLabelTarget = 'tooltipLabel:"立交道路生成器"'
+$floatingLabelSourceCount = ([regex]::Matches($localizedBundle, [regex]::Escape($floatingLabelSource))).Count
+if ($floatingLabelSourceCount -eq 1)
 {
-    throw "Expected exactly one InterchangeBuilder floating-button label in the published UI bundle."
+    $localizedBundle = $localizedBundle.Replace($floatingLabelSource, $floatingLabelTarget)
 }
-$localizedBundle = $localizedBundle.Replace($floatingLabelSource, 'tooltipLabel:"立交道路生成器"')
+elseif ($floatingLabelSourceCount -ne 0 -or !$localizedBundle.Contains($floatingLabelTarget))
+{
+    throw "The InterchangeBuilder floating-button label could not be localized safely."
+}
 
 # Insert the rule notice into the existing React tree.  This uses only the
 # bundle's existing JSX runtime and ordinary elements; it does not query or
 # mutate the COUI DOM during module initialization.
 $ruleAnchor = 'children:[(0,i.jsx)("div",{className:$e'
-if (([regex]::Matches($localizedBundle, [regex]::Escape($ruleAnchor))).Count -ne 1)
-{
-    throw "Expected exactly one InterchangeBuilder tool-list anchor in the published UI bundle."
-}
+$ruleAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($ruleAnchor))).Count
 $ruleCard = 'children:[(0,i.jsxs)("div",{className:"ib-connection-rules",children:[(0,i.jsx)("strong",{className:"ib-connection-rules-title",children:"道路端点连接规则"}),(0,i.jsx)("p",{children:"端点连接遵循《城市：天际线 II》原生道路工具：只连接游戏判定兼容的道路、步道和轨道，并按道路宽度与 8 米分区格选择离鼠标最近的候选位置。"}),(0,i.jsx)("p",{children:"模组同时提供原生“按 8 米单元吸附”和“自由宽度对齐”两组候选，中心位置始终保留；四车道接两车道等情况可用鼠标选择左、中、右对齐。"}),(0,i.jsx)("p",{children:"三岔及多臂路口请把鼠标移向目标道路分支后再点击；特殊区域吸附网络不会被宽度规则强制偏移。"})]}),(0,i.jsx)("div",{className:$e'
-$localizedBundle = $localizedBundle.Replace($ruleAnchor, $ruleCard)
+if ($ruleAnchorCount -eq 1)
+{
+    $localizedBundle = $localizedBundle.Replace($ruleAnchor, $ruleCard)
+}
+elseif ($ruleAnchorCount -ne 0 -or !$localizedBundle.Contains('className:"ib-connection-rules"'))
+{
+    throw "The endpoint-rule notice could not be inserted or verified safely."
+}
 
 [System.IO.File]::WriteAllText(
     $artifactUiBundle,
     $localizedBundle,
     [System.Text.UTF8Encoding]::new($false))
-[System.IO.File]::AppendAllText(
-    $artifactUiStyles,
-    [Environment]::NewLine + [System.IO.File]::ReadAllText($uiLocalizationStyles),
-    [System.Text.UTF8Encoding]::new($false))
+$localizationStyles = [System.IO.File]::ReadAllText($uiLocalizationStyles)
+$artifactStyles = [System.IO.File]::ReadAllText($artifactUiStyles)
+if (!$artifactStyles.Contains(".ib-connection-rules"))
+{
+    [System.IO.File]::AppendAllText(
+        $artifactUiStyles,
+        [Environment]::NewLine + $localizationStyles,
+        [System.Text.UTF8Encoding]::new($false))
+}
 
 foreach ($requiredText in @(
     'JSON.parse(''{"id":"InterchangeBuilder"}'')',
@@ -182,11 +206,11 @@ if ($localizedBundle.Contains("interchange-builder-localization-2.1") -or
 {
     throw "Runtime DOM localization code was unexpectedly included in the UI bundle."
 }
-if ($translatedLiteralCount -lt 20)
+if (($translatedLiteralCount + $existingTranslatedLiteralCount) -lt 20)
 {
-    throw "Only $translatedLiteralCount UI literals were translated; the source bundle may have changed."
+    throw "Only $translatedLiteralCount UI literals were translated and $existingTranslatedLiteralCount were already localized; the source bundle may have changed."
 }
-Write-Host "Applied $translatedLiteralCount Simplified Chinese UI literal translations."
+Write-Host "Applied $translatedLiteralCount Simplified Chinese UI literal translations; $existingTranslatedLiteralCount were already localized."
 
 $nodeCommand = Get-Command node -ErrorAction SilentlyContinue
 if ($nodeCommand)
@@ -204,7 +228,7 @@ $patcherArguments = @(
     "--project", $patcherProject,
     "-c", $Configuration,
     "--",
-    $originalAssembly,
+    $baseAssembly,
     $upgradeAssembly,
     $artifactsRoot
 )
@@ -224,8 +248,6 @@ Copy-Item -LiteralPath $upgradeAssembly -Destination $artifactsRoot -Force
 Copy-Item -LiteralPath (Join-Path $runtimeOutput "InterchangeBuilder.LaneConnections.Core.dll") -Destination $artifactsRoot -Force
 Copy-Item -LiteralPath (Join-Path $runtimeOutput "0Harmony.dll") -Destination $artifactsRoot -Force
 Copy-Item -LiteralPath (Join-Path $runtimeOutput "System.Numerics.Vectors.dll") -Destination $artifactsRoot -Force
-Copy-Item -LiteralPath (Join-Path $runtimeOutput "InterchangeBuilder.LaneConnections.pdb") -Destination $artifactsRoot -Force
-Copy-Item -LiteralPath (Join-Path $runtimeOutput "InterchangeBuilder.LaneConnections.Core.pdb") -Destination $artifactsRoot -Force
 
 dotnet build $runtimeSmokeProject -c $Configuration --nologo
 if ($LASTEXITCODE -ne 0)

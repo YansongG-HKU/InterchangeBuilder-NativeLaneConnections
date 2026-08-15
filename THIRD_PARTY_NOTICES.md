@@ -1,14 +1,6 @@
-# Third-party notices
+# Dependency notices
 
-The repository source tree contains the independently maintained upgrade-layer source code. Its MIT License does not grant rights to the following third-party works.
-
-## InterchangeBuilder
-
-- Original mod: InterchangeBuilder 1.4.2
-- Author shown by local Paradox Mods metadata: TheJof
-- Paradox Mods ID: 153013
-
-The ready-to-use binary release includes the original mod assembly, UI bundle, native libraries, symbols, and image assets with redistribution permission from TheJof, as confirmed by the repository maintainer. Those files remain the property of their respective rights holder and are not relicensed under this repository's MIT License. The source tree itself does not contain them.
+InterchangeBuilder Native Lane Connections is an independently developed project. Its source code is provided under the repository's MIT License.
 
 ## Cities: Skylines II
 

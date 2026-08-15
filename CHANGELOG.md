@@ -9,5 +9,5 @@
 - Preserved node-split-only behavior and special non-zonable network handling.
 - Added a Simplified Chinese UI translation and an in-panel endpoint-rule notice.
 - Added 12 core tests and a seven-target runtime metadata smoke harness.
-- Made the build accept user-supplied original-mod and game paths without embedding either dependency in source control.
-- Published an authorized, ready-to-use binary package with direct Skyve II installation instructions.
+- Made the build accept explicit base-package and game paths without embedding game assemblies in source control.
+- Published a ready-to-use binary package with direct Skyve II installation instructions.

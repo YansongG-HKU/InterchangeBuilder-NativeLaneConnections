@@ -6,6 +6,9 @@
     <AssemblyName>InterchangeBuilder.LaneConnections</AssemblyName>
     <RootNamespace>InterchangeBuilder.LaneConnections</RootNamespace>
     <Version>2.2.0</Version>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +18,7 @@
 
   <ItemGroup>
     <Reference Include="InterchangeBuilder">
-      <HintPath>$(OriginalInterchangeBuilderAssembly)</HintPath>
+      <HintPath>$(InterchangeBuilderAssembly)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Game">

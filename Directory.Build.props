@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
     <Cities2ManagedPath Condition="'$(Cities2ManagedPath)' == '' and '$(CITIES2_MANAGED_PATH)' != ''">$(CITIES2_MANAGED_PATH)</Cities2ManagedPath>
-    <OriginalInterchangeBuilderAssembly Condition="'$(OriginalInterchangeBuilderAssembly)' == '' and '$(INTERCHANGEBUILDER_ORIGINAL_ASSEMBLY)' != ''">$(INTERCHANGEBUILDER_ORIGINAL_ASSEMBLY)</OriginalInterchangeBuilderAssembly>
-    <OriginalInterchangeBuilderAssembly Condition="'$(OriginalInterchangeBuilderAssembly)' == ''">$(MSBuildThisFileDirectory)vendor\InterchangeBuilder-1.4.2\InterchangeBuilder.dll</OriginalInterchangeBuilderAssembly>
+    <InterchangeBuilderAssembly Condition="'$(InterchangeBuilderAssembly)' == '' and '$(INTERCHANGEBUILDER_ASSEMBLY)' != ''">$(INTERCHANGEBUILDER_ASSEMBLY)</InterchangeBuilderAssembly>
+    <InterchangeBuilderAssembly Condition="'$(InterchangeBuilderAssembly)' == ''">$(MSBuildThisFileDirectory)vendor\InterchangeBuilder-Base\InterchangeBuilder.dll</InterchangeBuilderAssembly>
   </PropertyGroup>
 </Project>

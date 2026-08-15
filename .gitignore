@@ -11,7 +11,7 @@ TestResults/
 .metadata/
 .cpatch/
 
-# User-supplied original InterchangeBuilder payload
+# Local InterchangeBuilder base-package payload
 vendor/
 /InterchangeBuilder.dll
 /InterchangeBuilder.pdb

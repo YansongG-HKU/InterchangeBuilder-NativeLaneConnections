@@ -1,13 +1,13 @@
 # InterchangeBuilder 2.2.0 原生端点选择升级说明
 
-这是针对 TheJof 的 InterchangeBuilder 1.4.2（Paradox Mods ID 153013）制作的原生道路端点升级。可直接安装的 GitHub 二进制 Release 经仓库维护者确认已取得 TheJof 的再分发许可，已经包含运行所需的原版文件；游戏文件从不包含在发布包中。
+InterchangeBuilder Native Lane Connections 是独立开发的《城市：天际线 II》道路端点选择模组。GitHub 二进制 Release 已包含运行所需的全部项目文件；游戏文件从不包含在发布包中。
 
 ## 直接安装
 
 1. 下载 `InterchangeBuilder-2.2.0-NativeLaneConnections.zip`。
 2. 退出游戏，将 ZIP 解压到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods`。
 3. 确认文件位于 `Mods\InterchangeBuilder-2.2.0-NativeLaneConnections\InterchangeBuilder.dll`，没有多套一层同名目录。
-4. 在 Skyve II 中刷新模组，禁用订阅版 InterchangeBuilder（153013），启用本地 2.2.0 版本；不要同时加载两个副本。
+4. 在 Skyve II 中刷新模组，禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.2.0 版本。
 5. 通过 Skyve II 或 Steam 启动游戏。
 
 普通玩家只需要上述 ZIP，不需要源码、Visual Studio 或 .NET SDK。
@@ -26,25 +26,25 @@
 
 ## 从源码构建
 
-将原版 InterchangeBuilder 1.4.2 的完整文件放入 `vendor\InterchangeBuilder-1.4.2`，然后执行：
+将已发布 ZIP 中的顶层模组目录解压到 `vendor\InterchangeBuilder-Base`，然后执行：
 
 ```powershell
 .\scripts\build-upgrade.ps1 -Cities2ManagedPath 'D:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed'
 ```
 
-也可以直接指定原版目录：
+也可以直接指定基础运行包目录：
 
 ```powershell
 .\scripts\build-upgrade.ps1 `
-  -OriginalModPath 'D:\Mods\InterchangeBuilder-1.4.2' `
+  -BasePackagePath 'D:\Mods\InterchangeBuilder-Base' `
   -Cities2ManagedPath 'D:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed'
 ```
 
 ## 开发包通过 Skyve II 本地测试
 
-1. 将 `artifacts\InterchangeBuilder-2.2.0` 复制到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods\InterchangeBuilder-2.2.0-NativeLaneConnections`。
+1. 将 `artifacts\InterchangeBuilder-2.2.0-NativeLaneConnections` 复制到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods\InterchangeBuilder-2.2.0-NativeLaneConnections`。
 2. 重启或刷新 Skyve II，让它重新扫描本地 `Mods` 目录。
-3. 禁用订阅版 InterchangeBuilder（153013），启用本地升级版；不要同时加载两个副本。
+3. 禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.2.0 版本。
 4. 通过 Skyve II 或 Steam 启动游戏，以便平台服务和当前 Playset 正确初始化。
 
 准备测试时可在本地包目录名前加一个点来暂时禁用：`.InterchangeBuilder-2.2.0-NativeLaneConnections`。Skyve II 会通过添加或移除这个点来切换本地模组状态。
