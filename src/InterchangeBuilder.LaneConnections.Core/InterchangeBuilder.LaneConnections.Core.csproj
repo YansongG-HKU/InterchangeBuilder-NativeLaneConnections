@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>InterchangeBuilder.LaneConnections.Core</AssemblyName>
+    <RootNamespace>InterchangeBuilder.LaneConnections</RootNamespace>
+    <Version>2.2.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+  </ItemGroup>
+</Project>

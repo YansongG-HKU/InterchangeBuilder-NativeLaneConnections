@@ -1,0 +1,28 @@
+# .NET build and test output
+**/[Bb]in/
+**/[Oo]bj/
+artifacts/
+TestResults/
+*.user
+*.suo
+.vs/
+
+# Local tooling and downloaded metadata
+.metadata/
+.cpatch/
+
+# User-supplied original InterchangeBuilder payload
+vendor/
+/InterchangeBuilder.dll
+/InterchangeBuilder.pdb
+/InterchangeBuilder.css
+/InterchangeBuilder.mjs
+/InterchangeBuilder.mjs.LICENSE.txt
+/InterchangeBuilder_linux_x86_64.so
+/InterchangeBuilder_mac_x86_64.bundle
+/InterchangeBuilder_win_x86_64.dll
+/InterchangeBuilder_win_x86_64.pdb
+/images/
+
+# Retired local experiment; the build uses exact literal localization instead
+/ui/InterchangeBuilder.localization.js

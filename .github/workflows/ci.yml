@@ -1,0 +1,21 @@
+name: Core CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Run game-independent core tests
+        run: dotnet test tests/InterchangeBuilder.LaneConnections.Core.Tests/InterchangeBuilder.LaneConnections.Core.Tests.csproj --configuration Release --nologo

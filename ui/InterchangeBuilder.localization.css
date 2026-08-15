@@ -1,0 +1,21 @@
+.ib-connection-rules {
+  margin: 0 0 10rem;
+  padding: 8rem 10rem;
+  border: 1rem solid rgba(78, 174, 255, 0.38);
+  border-radius: 5rem;
+  background: rgba(30, 78, 112, 0.28);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12rem;
+  line-height: 1.45;
+}
+
+.ib-connection-rules-title {
+  display: block;
+  color: rgb(148, 211, 255);
+  font-size: 13rem;
+  font-weight: 700;
+}
+
+.ib-connection-rules p {
+  margin: 7rem 0 0;
+}
