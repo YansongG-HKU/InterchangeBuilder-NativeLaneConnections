@@ -3,7 +3,7 @@
 [![Core CI](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/actions/workflows/ci.yml/badge.svg)](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/YansongG-HKU/InterchangeBuilder-NativeLaneConnections)](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/releases)
 
-InterchangeBuilder Native Lane Connections 是独立开发的《城市：天际线 II》道路端点选择与简体中文模组。
+InterchangeBuilder Native Lane Connections 是《城市：天际线 II》的道路端点选择与简体中文模组。
 
 > [!IMPORTANT]
 > 完整二进制 Release 已包含运行所需的全部项目文件，不包含任何《城市：天际线 II》游戏程序集。普通玩家只需下载并解压，无需准备其他模组或开发环境。
@@ -78,4 +78,4 @@ Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual S
 
 ## English summary
 
-InterchangeBuilder Native Lane Connections is an independently developed Cities: Skylines II mod. It keeps the chosen output network locked separately from the start-road source, preserves centre alignment, adds width-aware left/centre/right candidates, follows native connection compatibility, resolves multi-arm junctions from pointer direction, and carries the selected alignment through placement. The ready-to-use release contains every required project file; game files are never included.
+InterchangeBuilder Native Lane Connections is a Cities: Skylines II mod. It keeps the chosen output network locked separately from the start-road source, preserves centre alignment, adds width-aware left/centre/right candidates, follows native connection compatibility, resolves multi-arm junctions from pointer direction, and carries the selected alignment through placement. The ready-to-use release contains every required project file; game files are never included.
