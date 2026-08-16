@@ -19,3 +19,73 @@
 .ib-connection-rules p {
   margin: 7rem 0 0;
 }
+
+.ib-road-selection-card {
+  margin: 8rem 0 10rem;
+  padding: 9rem 10rem;
+  border: 1rem solid rgba(137, 176, 205, 0.45);
+  border-radius: 5rem;
+  background: rgba(19, 39, 55, 0.82);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12rem;
+}
+
+.ib-road-selection-pending {
+  border-color: rgba(255, 190, 80, 0.75);
+  background: rgba(90, 58, 17, 0.58);
+}
+
+.ib-road-selection-locked {
+  border-color: rgba(78, 211, 143, 0.72);
+  background: rgba(20, 78, 52, 0.58);
+}
+
+.ib-road-selection-heading,
+.ib-road-selection-detail,
+.ib-road-selection-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8rem;
+}
+
+.ib-road-selection-heading {
+  margin-bottom: 7rem;
+  color: rgb(225, 240, 250);
+  font-size: 13rem;
+}
+
+.ib-road-selection-badge {
+  padding: 2rem 7rem;
+  border-radius: 9rem;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 11rem;
+  font-weight: 700;
+}
+
+.ib-road-selection-detail {
+  margin-top: 4rem;
+}
+
+.ib-road-selection-detail span {
+  color: rgba(198, 218, 232, 0.82);
+}
+
+.ib-road-selection-detail strong {
+  overflow: hidden;
+  max-width: 72%;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ib-road-selection-actions {
+  justify-content: flex-start;
+  margin-top: 8rem;
+}
+
+.ib-road-selection-status {
+  margin: 7rem 0 0;
+  color: rgba(220, 235, 245, 0.84);
+  line-height: 1.4;
+}

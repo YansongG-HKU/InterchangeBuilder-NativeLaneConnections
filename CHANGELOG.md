@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.0 - 2026-08-16
+
+- Separated the start-road source from the output-road prefab.
+- Added explicit pending, locked, and follow-start road-selection states.
+- Prevented start-node and Free Draw inheritance from overwriting a confirmed manual road.
+- Added a persistent Simplified Chinese confirmation card showing output road and start source separately.
+- Blocked placement while a newly selected road is still awaiting confirmation.
+- Invalidated stale previews when the output road changes and logged the resolved build-road snapshot.
+- Added five road-selection state-machine tests, bringing the core suite to 17 tests.
+
 ## 2.2.0 - 2026-08-16
 
 - Added width-aware endpoint candidates that mirror the game's cell-snap and free-width alignment branches.

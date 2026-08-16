@@ -53,6 +53,14 @@ internal static class ConnectionSelectionStore
     internal static bool TryGetSnapshot(object snapshot, out SnapshotConnections connections) =>
         BySnapshot.TryGetValue(snapshot, out connections!);
 
+    internal static void ClearPending()
+    {
+        lock (Sync)
+        {
+            LatestByNode.Clear();
+        }
+    }
+
     private static ConnectionSelection? TryResolve(Entity node, Entity selectedPrefab, Vector3 position)
     {
         if (node == Entity.Null)

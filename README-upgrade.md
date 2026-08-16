@@ -1,16 +1,25 @@
-# InterchangeBuilder 2.2.0 原生端点选择升级说明
+# InterchangeBuilder 2.3.0 道路锁定与原生端点选择升级说明
 
 InterchangeBuilder Native Lane Connections 是独立开发的《城市：天际线 II》道路端点选择模组。GitHub 二进制 Release 已包含运行所需的全部项目文件；游戏文件从不包含在发布包中。
 
 ## 直接安装
 
-1. 下载 `InterchangeBuilder-2.2.0-NativeLaneConnections.zip`。
+1. 下载 `InterchangeBuilder-2.3.0-NativeLaneConnections.zip`。
 2. 退出游戏，将 ZIP 解压到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods`。
-3. 确认文件位于 `Mods\InterchangeBuilder-2.2.0-NativeLaneConnections\InterchangeBuilder.dll`，没有多套一层同名目录。
-4. 在 Skyve II 中刷新模组，禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.2.0 版本。
+3. 确认文件位于 `Mods\InterchangeBuilder-2.3.0-NativeLaneConnections\InterchangeBuilder.dll`，没有多套一层同名目录。
+4. 在 Skyve II 中刷新模组，禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.3.0 版本。
 5. 通过 Skyve II 或 Steam 启动游戏。
 
 普通玩家只需要上述 ZIP，不需要源码、Visual Studio 或 .NET SDK。
+
+## 输出道路选择规则
+
+- 在道路列表中点击道路后，它先进入“待确认”状态；点击“确认并锁定”后才允许最终建造。
+- 已锁定的输出道路不会再被起点节点所属道路覆盖。
+- 面板分别显示“输出道路”和“起点来源”，方便核对四车道、两车道等不同道路。
+- 需要沿用既有道路时，明确点击“跟随起点”；此时程序才会把起点道路作为输出道路。
+- 更换输出道路会清除旧预览，必须重新选择起点和终点，防止预览与最终落地使用不同道路。
+- 平整道路和节点编辑不创建新道路，因此不受道路确认状态阻挡。
 
 ## 道路端点规则
 
@@ -42,9 +51,9 @@ InterchangeBuilder Native Lane Connections 是独立开发的《城市：天际�
 
 ## 开发包通过 Skyve II 本地测试
 
-1. 将 `artifacts\InterchangeBuilder-2.2.0-NativeLaneConnections` 复制到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods\InterchangeBuilder-2.2.0-NativeLaneConnections`。
+1. 将 `artifacts\InterchangeBuilder-2.3.0-NativeLaneConnections` 复制到 `%USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods\InterchangeBuilder-2.3.0-NativeLaneConnections`。
 2. 重启或刷新 Skyve II，让它重新扫描本地 `Mods` 目录。
-3. 禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.2.0 版本。
+3. 禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.3.0 版本。
 4. 通过 Skyve II 或 Steam 启动游戏，以便平台服务和当前 Playset 正确初始化。
 
-准备测试时可在本地包目录名前加一个点来暂时禁用：`.InterchangeBuilder-2.2.0-NativeLaneConnections`。Skyve II 会通过添加或移除这个点来切换本地模组状态。
+准备测试时可在本地包目录名前加一个点来暂时禁用：`.InterchangeBuilder-2.3.0-NativeLaneConnections`。Skyve II 会通过添加或移除这个点来切换本地模组状态。
