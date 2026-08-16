@@ -17,10 +17,50 @@ public static class Bootstrap
         Type toolType = RequireType("InterchangeBuilder.Systems.InterchangeBuilderToolSystem");
         _ = toolType.GetField("_selectedRoadPrefab", BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new MissingFieldException(toolType.FullName, "_selectedRoadPrefab");
+        _ = toolType.GetField("_activeMode", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(toolType.FullName, "_activeMode");
+        _ = toolType.GetField("_roadChoices", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(toolType.FullName, "_roadChoices");
         _ = toolType.GetMethod(
             "OnUpdate",
             BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new MissingMethodException(toolType.FullName, "OnUpdate");
+        foreach (string methodName in new[]
+        {
+            "SelectRoad",
+            "CycleRoad",
+            "SetSelectedRoadPrefab",
+            "CompleteEndpointSelection",
+            "HandleFreeDrawInteraction",
+            "PrepareEndpointSelectionMode",
+            "RestartActiveMode",
+            "ConfirmCurrentPreview",
+            "EnsureRoundaboutRoadPrefab",
+            "OnGamePreload"
+        })
+        {
+            _ = toolType.GetMethod(
+                methodName,
+                BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                ?? throw new MissingMethodException(toolType.FullName, methodName);
+        }
+        _ = toolType.GetMethod(
+            "TrySetPrefab",
+            BindingFlags.Instance | BindingFlags.Public)
+            ?? throw new MissingMethodException(toolType.FullName, "TrySetPrefab");
+        RequireParameters(toolType, "SelectRoad", typeof(int));
+        RequireParameters(toolType, "CycleRoad", typeof(int));
+        RequireParameters(toolType, "SetSelectedRoadPrefab", typeof(Unity.Entities.Entity));
+        RequireParameterCount(toolType, "CompleteEndpointSelection", 2);
+        RequireParameterCount(toolType, "HandleFreeDrawInteraction", 3);
+
+        Type uiType = RequireType("InterchangeBuilder.Systems.InterchangeBuilderUISystem");
+        _ = uiType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+            ?? throw new MissingMemberException(uiType.FullName, "Instance");
+        _ = uiType.GetMethod(
+            "SetValidationMessage",
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(uiType.FullName, "SetValidationMessage");
 
         Type selectionType = RequireType("InterchangeBuilder.Selection.GameNetworkNodeSelectionService");
         MethodInfo selectionMethod = selectionType
@@ -84,7 +124,7 @@ public static class Bootstrap
             throw new InvalidOperationException("CreateCoursePosition return type changed.");
         }
 
-        return "7 patch targets and their required fields/signatures resolved";
+        return "road-selection locking and endpoint-alignment patch targets resolved";
     }
 
     public static void Install(UpdateSystem updateSystem)
@@ -100,14 +140,17 @@ public static class Bootstrap
             {
                 var harmony = new Harmony(HarmonyId);
                 PatchToolContext(harmony);
+                PatchRoadSelection(harmony);
                 PatchNodeSelection(harmony);
                 PatchConnectedEdgeSelection(harmony);
                 PatchEndpointSelectionRadius(harmony);
                 PatchSnapshotConstructor(harmony);
                 PatchDefinitionContext(harmony);
                 PatchCoursePosition(harmony);
+                updateSystem.World.GetOrCreateSystemManaged<RoadSelectionUISystem>();
+                updateSystem.UpdateAt<RoadSelectionUISystem>((SystemUpdatePhase)22);
                 _harmony = harmony;
-                UpgradeLog.Info("Native CS2 endpoint alignment and Simplified Chinese upgrade 2.2.0 installed.");
+                UpgradeLog.Info("Native CS2 endpoint alignment, road locking, and Simplified Chinese upgrade 2.3.0 installed.");
             }
             catch (Exception exception)
             {
@@ -127,6 +170,7 @@ public static class Bootstrap
 
             _harmony.UnpatchAll(HarmonyId);
             _harmony = null;
+            RoadSelectionController.Dispose();
             UpgradeLog.Info("Native CS2 endpoint and lane-alignment upgrade removed.");
         }
     }
@@ -139,6 +183,86 @@ public static class Bootstrap
             BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
             ?? throw new MissingMethodException(type.FullName, "OnUpdate");
         harmony.Patch(original, prefix: HarmonyMethod(typeof(ToolContextPatch), nameof(ToolContextPatch.Prefix)));
+    }
+
+    private static void PatchRoadSelection(Harmony harmony)
+    {
+        Type type = RequireType("InterchangeBuilder.Systems.InterchangeBuilderToolSystem");
+
+        PatchWithState(
+            harmony,
+            type.GetMethod("SelectRoad", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new MissingMethodException(type.FullName, "SelectRoad"),
+            typeof(PanelRoadSelectionPatch));
+        PatchWithState(
+            harmony,
+            type.GetMethod("CycleRoad", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new MissingMethodException(type.FullName, "CycleRoad"),
+            typeof(CycleRoadSelectionPatch));
+        PatchWithState(
+            harmony,
+            type.GetMethod("TrySetPrefab", BindingFlags.Instance | BindingFlags.Public)
+                ?? throw new MissingMethodException(type.FullName, "TrySetPrefab"),
+            typeof(ExternalRoadSelectionPatch));
+
+        MethodInfo setSelected = type.GetMethod(
+            "SetSelectedRoadPrefab",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "SetSelectedRoadPrefab");
+        harmony.Patch(
+            setSelected,
+            prefix: HarmonyMethod(typeof(SelectedRoadPrefabPatch), nameof(SelectedRoadPrefabPatch.Prefix)));
+
+        PatchWithState(
+            harmony,
+            type.GetMethod("CompleteEndpointSelection", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new MissingMethodException(type.FullName, "CompleteEndpointSelection"),
+            typeof(EndpointRoadSourcePatch));
+        PatchWithState(
+            harmony,
+            type.GetMethod("HandleFreeDrawInteraction", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new MissingMethodException(type.FullName, "HandleFreeDrawInteraction"),
+            typeof(FreeDrawRoadSourcePatch));
+
+        MethodInfo prepare = type.GetMethod(
+            "PrepareEndpointSelectionMode",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "PrepareEndpointSelectionMode");
+        harmony.Patch(
+            prepare,
+            postfix: HarmonyMethod(typeof(NewRoutePatch), nameof(NewRoutePatch.Postfix)));
+        MethodInfo restart = type.GetMethod(
+            "RestartActiveMode",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "RestartActiveMode");
+        harmony.Patch(
+            restart,
+            postfix: HarmonyMethod(typeof(NewRoutePatch), nameof(NewRoutePatch.Postfix)));
+
+        MethodInfo confirm = type.GetMethod(
+            "ConfirmCurrentPreview",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "ConfirmCurrentPreview");
+        harmony.Patch(
+            confirm,
+            prefix: HarmonyMethod(typeof(RoadBuildConfirmationPatch), nameof(RoadBuildConfirmationPatch.Prefix)));
+
+        MethodInfo preload = type.GetMethod(
+            "OnGamePreload",
+            BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+            ?? throw new MissingMethodException(type.FullName, "OnGamePreload");
+        harmony.Patch(
+            preload,
+            postfix: HarmonyMethod(typeof(RoadSelectionWorldPatch), nameof(RoadSelectionWorldPatch.Postfix)));
+    }
+
+    private static void PatchWithState(Harmony harmony, MethodInfo original, Type patchType)
+    {
+        harmony.Patch(
+            original,
+            prefix: HarmonyMethod(patchType, "Prefix"),
+            postfix: HarmonyMethod(patchType, "Postfix"),
+            finalizer: HarmonyMethod(patchType, "Finalizer"));
     }
 
     private static void PatchNodeSelection(Harmony harmony)
@@ -211,6 +335,32 @@ public static class Bootstrap
 
     private static Type RequireType(string name) =>
         AccessTools.TypeByName(name) ?? throw new TypeLoadException(name);
+
+    private static void RequireParameters(Type type, string methodName, params Type[] parameterTypes)
+    {
+        MethodInfo method = type.GetMethod(
+            methodName,
+            BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, methodName);
+        ParameterInfo[] parameters = method.GetParameters();
+        if (parameters.Length != parameterTypes.Length ||
+            parameters.Where((parameter, index) => parameter.ParameterType != parameterTypes[index]).Any())
+        {
+            throw new InvalidOperationException(methodName + " signature changed.");
+        }
+    }
+
+    private static void RequireParameterCount(Type type, string methodName, int count)
+    {
+        MethodInfo method = type.GetMethod(
+            methodName,
+            BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, methodName);
+        if (method.GetParameters().Length != count)
+        {
+            throw new InvalidOperationException(methodName + " signature changed.");
+        }
+    }
 
     private static HarmonyMethod HarmonyMethod(Type type, string methodName) =>
         new HarmonyMethod(type.GetMethod(

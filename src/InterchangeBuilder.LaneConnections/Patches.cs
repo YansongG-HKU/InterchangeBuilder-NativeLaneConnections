@@ -20,11 +20,15 @@ internal static class ToolContextPatch
 
     internal static Entity SelectedRoadPrefab { get; private set; }
 
+    internal static Entity AlignmentRoadPrefab { get; private set; }
+
     public static void Prefix(object __instance)
     {
+        RoadSelectionController.AttachAndEnforce(__instance);
         if (SelectedRoadPrefabField?.GetValue(__instance) is Entity prefab)
         {
             SelectedRoadPrefab = prefab;
+            AlignmentRoadPrefab = RoadSelectionController.GetAlignmentPrefab(prefab);
         }
     }
 }
@@ -47,9 +51,13 @@ internal static class NodeSelectionPatch
         AccessTools.TypeByName("InterchangeBuilder.Selection.GameNetworkNodeSelectionService"),
         "LastEdge");
 
+    private static readonly PropertyInfo? LastPrefabProperty = AccessTools.Property(
+        AccessTools.TypeByName("InterchangeBuilder.Selection.GameNetworkNodeSelectionService"),
+        "LastPrefab");
+
     public static void Postfix(object __instance, ref bool __result, ref SelectedNode node)
     {
-        if (!__result || node == null || node.IsFree || ToolContextPatch.SelectedRoadPrefab == Entity.Null)
+        if (!__result || node == null || node.IsFree)
         {
             return;
         }
@@ -63,10 +71,21 @@ internal static class NodeSelectionPatch
                 return;
             }
 
+            Entity nodePrefab = LastPrefabProperty?.GetValue(__instance) is Entity value
+                ? value
+                : Entity.Null;
+            Entity selectionPrefab = RoadSelectionController.ResolveNodeAlignmentPrefab(
+                ToolContextPatch.SelectedRoadPrefab,
+                nodePrefab);
+            if (selectionPrefab == Entity.Null)
+            {
+                return;
+            }
+
             if (!EndpointAlignmentService.IsSelectableCompatibleEdge(
                     entityManager,
                     edgeEntity,
-                    ToolContextPatch.SelectedRoadPrefab))
+                    selectionPrefab))
             {
                 node = null!;
                 __result = false;
@@ -78,7 +97,7 @@ internal static class NodeSelectionPatch
                     entityManager,
                     nodeEntity,
                     edgeEntity,
-                    ToolContextPatch.SelectedRoadPrefab,
+                    selectionPrefab,
                     hitPosition,
                     out ConnectionSelection? selection) ||
                 selection == null)
@@ -166,7 +185,7 @@ internal static class ConnectedEdgeSelectionPatch
                 if (!EndpointAlignmentService.IsSelectableCompatibleEdge(
                         entityManager,
                         edge,
-                        ToolContextPatch.SelectedRoadPrefab) ||
+                        ToolContextPatch.AlignmentRoadPrefab) ||
                     !EndpointAlignmentService.TryGetOutwardDirection(entityManager, __0, edge, out Vector2 direction))
                 {
                     continue;

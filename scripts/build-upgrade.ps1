@@ -6,7 +6,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
-$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.2.0-NativeLaneConnections"
+$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.3.0-NativeLaneConnections"
 $runtimeProject = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\InterchangeBuilder.LaneConnections.csproj"
 $runtimeOutput = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\bin\$Configuration\net48"
 $patcherProject = Join-Path $repositoryRoot "tools\InterchangeBuilder.Patcher\InterchangeBuilder.Patcher.csproj"
@@ -115,7 +115,7 @@ $localizedBundle = [regex]::Replace(
 $localizedBundle = [regex]::Replace(
     $localizedBundle,
     '(?m)^\s*\* Version:.*$',
-    ' * Version: 2.2.0')
+    ' * Version: 2.3.0')
 $translations = Get-Content -LiteralPath $uiTranslationsSource -Raw -Encoding UTF8 | ConvertFrom-Json -AsHashtable
 $translatedLiteralCount = 0
 $existingTranslatedLiteralCount = 0
@@ -160,6 +160,45 @@ elseif ($floatingLabelSourceCount -ne 0 -or !$localizedBundle.Contains($floating
     throw "The InterchangeBuilder floating-button label could not be localized safely."
 }
 
+# Extend the existing road selector with explicit output-road state.  The new
+# bindings are owned by the upgrade UISystem, while the existing roadName and
+# roadOptions bindings remain the single source for prefab identity/details.
+$roadBindingAnchor = '(0,r.bindValue)(o,"roadCategoryFilter","all");const _='
+$roadBindingAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($roadBindingAnchor))).Count
+$roadBindingReplacement = '(0,r.bindValue)(o,"roadCategoryFilter","all");const ibRoadSelectionMode=(0,r.bindValue)(o,"roadSelectionMode","auto"),ibRoadSelectionSourceName=(0,r.bindValue)(o,"roadSelectionSourceName","尚未选择起点"),ibRoadSelectionStatus=(0,r.bindValue)(o,"roadSelectionStatus","等待起点道路。"),ibRoadSelectionCanConfirm=(0,r.bindValue)(o,"roadSelectionCanConfirm",!1);const _='
+if ($roadBindingAnchorCount -eq 1)
+{
+    $localizedBundle = $localizedBundle.Replace($roadBindingAnchor, $roadBindingReplacement)
+}
+elseif ($roadBindingAnchorCount -ne 0 -or !$localizedBundle.Contains('"roadSelectionMode"'))
+{
+    throw "Road-selection state bindings could not be inserted safely."
+}
+
+$roadHookAnchor = 'function Qa({toolState:e,hint:a,showRoadSelector:t,roadName:l,roadIndex:s,roadCount:d,metrics:u,validationStatus:c,validationMessage:m,extraRow:h}){const g='
+$roadHookAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($roadHookAnchor))).Count
+$roadHookReplacement = 'function Qa({toolState:e,hint:a,showRoadSelector:t,roadName:l,roadIndex:s,roadCount:d,metrics:u,validationStatus:c,validationMessage:m,extraRow:h}){const ibSelectionMode=(0,r.useValue)(ibRoadSelectionMode),ibSourceName=(0,r.useValue)(ibRoadSelectionSourceName),ibSelectionStatus=(0,r.useValue)(ibRoadSelectionStatus),ibCanConfirm=(0,r.useValue)(ibRoadSelectionCanConfirm);const g='
+if ($roadHookAnchorCount -eq 1)
+{
+    $localizedBundle = $localizedBundle.Replace($roadHookAnchor, $roadHookReplacement)
+}
+elseif ($roadHookAnchorCount -ne 0 -or !$localizedBundle.Contains('ibSelectionStatus=(0,r.useValue)'))
+{
+    throw "Road-selection React bindings could not be inserted safely."
+}
+
+$roadCardAnchor = ']})]}),h,(0,i.jsx)("div",{className:da'
+$roadCardAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($roadCardAnchor))).Count
+$roadCard = ']})]}),t&&(0,i.jsxs)("div",{className:`ib-road-selection-card ib-road-selection-${ibSelectionMode}`,children:[(0,i.jsxs)("div",{className:"ib-road-selection-heading",children:[(0,i.jsx)("strong",{children:"输出道路状态"}),(0,i.jsx)("span",{className:"ib-road-selection-badge",children:"locked"===ibSelectionMode?"已锁定":"pending"===ibSelectionMode?"待确认":"跟随起点"})]}),(0,i.jsxs)("div",{className:"ib-road-selection-detail",children:[(0,i.jsx)("span",{children:"输出道路"}),(0,i.jsx)("strong",{children:l})]}),(0,i.jsxs)("div",{className:"ib-road-selection-detail",children:[(0,i.jsx)("span",{children:"起点来源"}),(0,i.jsx)("strong",{children:ibSourceName})]}),(0,i.jsxs)("div",{className:"ib-road-selection-actions",children:[(0,i.jsx)(n.Button,{variant:"flat",disabled:!ibCanConfirm,selected:"locked"===ibSelectionMode,tooltipLabel:ibCanConfirm?"确认并锁定当前输出道路":"请先从上方选择候选道路","aria-label":"确认并锁定当前输出道路",onSelect:()=>{ibCanConfirm&&(0,r.trigger)(o,"confirmRoadSelection")},children:"确认并锁定"}),(0,i.jsx)(n.Button,{variant:"flat",selected:"auto"===ibSelectionMode,tooltipLabel:"让输出道路自动继承起点所属道路","aria-label":"跟随起点道路",onSelect:()=>(0,r.trigger)(o,"followStartRoad"),children:"跟随起点"})]}),(0,i.jsx)("p",{className:"ib-road-selection-status",children:ibSelectionStatus})]}),h,(0,i.jsx)("div",{className:da'
+if ($roadCardAnchorCount -eq 1)
+{
+    $localizedBundle = $localizedBundle.Replace($roadCardAnchor, $roadCard)
+}
+elseif ($roadCardAnchorCount -ne 0 -or !$localizedBundle.Contains('className:`ib-road-selection-card'))
+{
+    throw "Road-selection confirmation card could not be inserted safely."
+}
+
 # Insert the rule notice into the existing React tree.  This uses only the
 # bundle's existing JSX runtime and ordinary elements; it does not query or
 # mutate the COUI DOM during module initialization.
@@ -181,7 +220,7 @@ elseif ($ruleAnchorCount -ne 0 -or !$localizedBundle.Contains('className:"ib-con
     [System.Text.UTF8Encoding]::new($false))
 $localizationStyles = [System.IO.File]::ReadAllText($uiLocalizationStyles)
 $artifactStyles = [System.IO.File]::ReadAllText($artifactUiStyles)
-if (!$artifactStyles.Contains(".ib-connection-rules"))
+if (!$artifactStyles.Contains(".ib-road-selection-card"))
 {
     [System.IO.File]::AppendAllText(
         $artifactUiStyles,
@@ -193,6 +232,8 @@ foreach ($requiredText in @(
     'JSON.parse(''{"id":"InterchangeBuilder"}'')',
     "立交道路生成器",
     "道路端点连接规则",
+    "输出道路状态",
+    "confirmRoadSelection",
     "打开立交道路生成器",
     "直线"))
 {
