@@ -2,13 +2,6 @@ using System;
 
 namespace InterchangeBuilder.LaneConnections;
 
-public enum RoadSelectionMode
-{
-    FollowStart,
-    PendingConfirmation,
-    Locked
-}
-
 public readonly struct RoadKey : IEquatable<RoadKey>
 {
     public static RoadKey None { get; } = new RoadKey(-1, -1);
@@ -38,70 +31,22 @@ public readonly struct RoadKey : IEquatable<RoadKey>
     public override string ToString() => IsValid ? $"{Index}:{Version}" : "none";
 }
 
-public sealed class RoadSelectionStateMachine
+public sealed class RoadSelectionMemory
 {
-    public RoadSelectionMode Mode { get; private set; } = RoadSelectionMode.FollowStart;
-
-    public RoadKey Candidate { get; private set; } = RoadKey.None;
-
-    public RoadKey Locked { get; private set; } = RoadKey.None;
+    public RoadKey Selected { get; private set; } = RoadKey.None;
 
     public RoadKey StartSource { get; private set; } = RoadKey.None;
 
     public int Revision { get; private set; }
 
-    public bool CanConfirm => Mode == RoadSelectionMode.PendingConfirmation && Candidate.IsValid;
-
-    public bool SelectCandidate(RoadKey road)
+    public bool RememberPanelSelection(RoadKey road)
     {
-        if (!road.IsValid)
+        if (!road.IsValid || Selected == road)
         {
             return false;
         }
 
-        if (Mode == RoadSelectionMode.Locked && Locked == road)
-        {
-            return false;
-        }
-
-        if (Mode == RoadSelectionMode.PendingConfirmation && Candidate == road)
-        {
-            return false;
-        }
-
-        Mode = RoadSelectionMode.PendingConfirmation;
-        Candidate = road;
-        Locked = RoadKey.None;
-        Revision++;
-        return true;
-    }
-
-    public bool Confirm()
-    {
-        if (!CanConfirm)
-        {
-            return false;
-        }
-
-        Locked = Candidate;
-        Candidate = RoadKey.None;
-        Mode = RoadSelectionMode.Locked;
-        Revision++;
-        return true;
-    }
-
-    public bool FollowStart()
-    {
-        if (Mode == RoadSelectionMode.FollowStart &&
-            !Candidate.IsValid &&
-            !Locked.IsValid)
-        {
-            return false;
-        }
-
-        Mode = RoadSelectionMode.FollowStart;
-        Candidate = RoadKey.None;
-        Locked = RoadKey.None;
+        Selected = road;
         Revision++;
         return true;
     }
@@ -118,7 +63,7 @@ public sealed class RoadSelectionStateMachine
         return true;
     }
 
-    public bool RecordStart(RoadKey road)
+    public bool RecordStartSource(RoadKey road)
     {
         if (!road.IsValid || StartSource == road)
         {
@@ -130,24 +75,11 @@ public sealed class RoadSelectionStateMachine
         return true;
     }
 
-    public RoadKey ResolveOutput(RoadKey fallback)
-    {
-        switch (Mode)
-        {
-            case RoadSelectionMode.PendingConfirmation:
-                return Candidate;
-            case RoadSelectionMode.Locked:
-                return Locked;
-            default:
-                return StartSource.IsValid ? StartSource : fallback;
-        }
-    }
+    public RoadKey ResolveOutput(RoadKey fallback) => Selected.IsValid ? Selected : fallback;
 
     public void Reset()
     {
-        Mode = RoadSelectionMode.FollowStart;
-        Candidate = RoadKey.None;
-        Locked = RoadKey.None;
+        Selected = RoadKey.None;
         StartSource = RoadKey.None;
         Revision++;
     }

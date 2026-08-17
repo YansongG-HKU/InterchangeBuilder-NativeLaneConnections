@@ -1,44 +1,17 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Game.Prefabs;
+using Game.Tools;
 using HarmonyLib;
 using Unity.Entities;
 
 namespace InterchangeBuilder.LaneConnections;
 
-internal readonly struct RoadSelectionUiSnapshot
-{
-    internal RoadSelectionUiSnapshot(
-        int revision,
-        string mode,
-        string sourceName,
-        string status,
-        bool canConfirm)
-    {
-        Revision = revision;
-        Mode = mode;
-        SourceName = sourceName;
-        Status = status;
-        CanConfirm = canConfirm;
-    }
-
-    internal int Revision { get; }
-
-    internal string Mode { get; }
-
-    internal string SourceName { get; }
-
-    internal string Status { get; }
-
-    internal bool CanConfirm { get; }
-}
-
 internal static class RoadSelectionController
 {
-    private const string WaitingForStart = "尚未选择起点";
-
     private static readonly object Sync = new object();
-    private static readonly RoadSelectionStateMachine State = new RoadSelectionStateMachine();
+    private static readonly RoadSelectionMemory State = new RoadSelectionMemory();
     private static readonly Type? ToolType = AccessTools.TypeByName(
         "InterchangeBuilder.Systems.InterchangeBuilderToolSystem");
     private static readonly FieldInfo? SelectedRoadPrefabField = AccessTools.Field(
@@ -53,9 +26,12 @@ internal static class RoadSelectionController
     private static readonly MethodInfo? RestartActiveModeMethod = AccessTools.Method(
         ToolType,
         "RestartActiveMode");
-    private static readonly MethodInfo? EnsureDefaultRoadMethod = AccessTools.Method(
-        ToolType,
-        "EnsureRoundaboutRoadPrefab");
+    private static readonly FieldInfo? NativeSelectedPrefabField = AccessTools.Field(
+        typeof(NetToolSystem),
+        "m_SelectedPrefab");
+    private static readonly FieldInfo? NativeActivePrefabField = AccessTools.Field(
+        typeof(NetToolSystem),
+        "m_Prefab");
     private static readonly Type? UiType = AccessTools.TypeByName(
         "InterchangeBuilder.Systems.InterchangeBuilderUISystem");
     private static readonly PropertyInfo? UiInstanceProperty = AccessTools.Property(UiType, "Instance");
@@ -63,18 +39,17 @@ internal static class RoadSelectionController
         UiType,
         "SetValidationMessage");
 
-    private static object? _tool;
-    private static string _sourceName = WaitingForStart;
-    private static int _uiRevision;
-
     [ThreadStatic]
-    private static int _userSelectionDepth;
+    private static int _explicitSelectionDepth;
 
     [ThreadStatic]
     private static int _requestedPrefabIndex;
 
     [ThreadStatic]
     private static Entity _selectionBefore;
+
+    [ThreadStatic]
+    private static string? _selectionOrigin;
 
     [ThreadStatic]
     private static int _sourceSelectionDepth;
@@ -85,47 +60,15 @@ internal static class RoadSelectionController
     [ThreadStatic]
     private static int _restoreDepth;
 
-    internal static RoadSelectionMode Mode
-    {
-        get
-        {
-            lock (Sync)
-            {
-                return State.Mode;
-            }
-        }
-    }
-
     internal static void AttachAndEnforce(object tool)
     {
-        bool attached;
-        lock (Sync)
-        {
-            attached = !ReferenceEquals(_tool, tool);
-            if (attached)
-            {
-                _tool = tool;
-                State.Reset();
-                _sourceName = WaitingForStart;
-                _uiRevision++;
-            }
-        }
-
-        if (!attached)
-        {
-            RestoreManualSelection(tool);
-        }
+        ApplyRememberedSelection(tool);
     }
 
     internal static Entity GetAlignmentPrefab(Entity currentPrefab)
     {
         lock (Sync)
         {
-            if (State.Mode == RoadSelectionMode.FollowStart && !State.StartSource.IsValid)
-            {
-                return Entity.Null;
-            }
-
             return FromKey(State.ResolveOutput(ToKey(currentPrefab)));
         }
     }
@@ -134,36 +77,38 @@ internal static class RoadSelectionController
     {
         lock (Sync)
         {
-            if (State.Mode == RoadSelectionMode.FollowStart &&
-                !State.StartSource.IsValid &&
-                nodePrefab != Entity.Null)
+            Entity selected = FromKey(State.Selected);
+            if (selected != Entity.Null)
             {
-                return nodePrefab;
+                return selected;
             }
 
-            return FromKey(State.ResolveOutput(ToKey(currentPrefab)));
+            return currentPrefab != Entity.Null ? currentPrefab : nodePrefab;
         }
     }
 
-    internal static bool BeginUserSelection(object tool, int requestedPrefabIndex)
+    internal static bool BeginExplicitSelection(
+        object tool,
+        int requestedPrefabIndex,
+        string origin)
     {
-        AttachAndEnforce(tool);
-        _userSelectionDepth++;
-        if (_userSelectionDepth != 1)
+        _explicitSelectionDepth++;
+        if (_explicitSelectionDepth != 1)
         {
             return false;
         }
 
         _requestedPrefabIndex = requestedPrefabIndex;
         _selectionBefore = ReadSelectedPrefab(tool);
+        _selectionOrigin = origin;
         return true;
     }
 
-    internal static void EndUserSelection(object tool, bool outermost)
+    internal static void EndExplicitSelection(object tool, bool outermost)
     {
-        if (_userSelectionDepth > 0)
+        if (_explicitSelectionDepth > 0)
         {
-            _userSelectionDepth--;
+            _explicitSelectionDepth--;
         }
 
         if (!outermost)
@@ -172,13 +117,13 @@ internal static class RoadSelectionController
         }
 
         Entity selected = ReadSelectedPrefab(tool);
-        bool requestApplied = selected != Entity.Null &&
-            (_requestedPrefabIndex < 0
-                ? selected != _selectionBefore
-                : selected.Index == _requestedPrefabIndex);
+        int requestedPrefabIndex = _requestedPrefabIndex;
+        string origin = _selectionOrigin ?? "explicit selection";
         _requestedPrefabIndex = -1;
+        _selectionOrigin = null;
 
-        if (!requestApplied)
+        if (selected == Entity.Null ||
+            (requestedPrefabIndex >= 0 && selected.Index != requestedPrefabIndex))
         {
             return;
         }
@@ -186,11 +131,7 @@ internal static class RoadSelectionController
         bool changed;
         lock (Sync)
         {
-            changed = State.SelectCandidate(ToKey(selected));
-            if (changed)
-            {
-                _uiRevision++;
-            }
+            changed = State.RememberPanelSelection(ToKey(selected));
         }
 
         if (!changed)
@@ -199,13 +140,15 @@ internal static class RoadSelectionController
         }
 
         string name = DescribePrefab(tool, selected);
-        UpgradeLog.Info($"Road selected as pending output: {name} ({DescribeEntity(selected)}). Confirmation required.");
+        UpgradeLog.Info(
+            $"Road remembered from {origin}: {name} ({DescribeEntity(selected)}). " +
+            "Start-node inheritance is disabled.");
         if (selected != _selectionBefore)
         {
             InvalidatePreview(tool);
         }
 
-        ShowMessage("已选择候选输出道路，请点击“确认并锁定”；如已开始预览，请重新选择起点和终点。");
+        ShowMessage($"当前道路已切换为“{name}”。起点只决定连接位置，不会改变道路类型。");
     }
 
     internal static int BeginSourceSelection(bool inheritRoadFromNode)
@@ -249,26 +192,20 @@ internal static class RoadSelectionController
             return;
         }
 
-        string name = DescribePrefab(tool, source);
-        RoadSelectionMode mode;
         bool changed;
+        Entity output;
         lock (Sync)
         {
-            changed = State.RecordStart(ToKey(source));
-            mode = State.Mode;
-            _sourceName = name;
-            if (changed)
-            {
-                _uiRevision++;
-            }
+            changed = State.RecordStartSource(ToKey(source));
+            output = FromKey(State.Selected);
         }
 
         if (changed)
         {
             UpgradeLog.Info(
-                mode == RoadSelectionMode.FollowStart
-                    ? $"Start road resolved as output: {name} ({DescribeEntity(source)})."
-                    : $"Start source recorded without replacing the manual output: {name} ({DescribeEntity(source)}).");
+                $"Start source observed without changing output: " +
+                $"start={DescribePrefab(tool, source)} ({DescribeEntity(source)}), " +
+                $"output={DescribePrefab(tool, output)} ({DescribeEntity(output)}).");
         }
     }
 
@@ -279,7 +216,7 @@ internal static class RoadSelectionController
             _sourceRequested = requested;
         }
 
-        if (_userSelectionDepth > 0 || _restoreDepth > 0)
+        if (_explicitSelectionDepth > 0 || _restoreDepth > 0)
         {
             return;
         }
@@ -287,102 +224,94 @@ internal static class RoadSelectionController
         Entity desired;
         lock (Sync)
         {
-            if (State.Mode == RoadSelectionMode.FollowStart)
-            {
-                return;
-            }
-
-            desired = FromKey(State.ResolveOutput(ToKey(requested)));
+            desired = FromKey(State.Selected);
         }
 
         if (desired != Entity.Null)
         {
             requested = desired;
         }
+        else if (_sourceSelectionDepth > 0)
+        {
+            requested = Entity.Null;
+        }
+    }
+
+    internal static void BeginModeFromVanilla(object tool)
+    {
+        BeginNewRoute(tool);
+
+        if (!TryGetVanillaSelection(out Entity selected))
+        {
+            bool hasRemembered;
+            lock (Sync)
+            {
+                hasRemembered = State.Selected.IsValid;
+            }
+
+            if (!hasRemembered)
+            {
+                ClearCurrentSelection(tool);
+                ShowMessage("请先在游戏原生道路面板选择道路，再使用立交道路生成器。");
+                UpgradeLog.Warn("No road is selected in the vanilla road panel.");
+            }
+
+            return;
+        }
+
+        bool changed;
+        lock (Sync)
+        {
+            changed = State.RememberPanelSelection(ToKey(selected));
+        }
+
+        RestoreSelectedPrefab(tool, selected);
+        string name = DescribePrefab(tool, selected);
+        UpgradeLog.Info(
+            $"Vanilla panel road synchronized for mode start: {name} ({DescribeEntity(selected)})." +
+            (changed ? string.Empty : " Selection unchanged."));
     }
 
     internal static void BeginNewRoute(object tool)
     {
-        bool changed;
         lock (Sync)
         {
-            changed = State.BeginRoute();
-            _sourceName = WaitingForStart;
-            if (changed)
-            {
-                _uiRevision++;
-            }
+            State.BeginRoute();
         }
 
         ConnectionSelectionStore.ClearPending();
-        RestoreManualSelection(tool);
+        ApplyRememberedSelection(tool);
     }
 
-    internal static void ResetForWorld(object? tool)
+    internal static void ResetForWorld()
     {
         lock (Sync)
         {
-            _tool = tool;
             State.Reset();
-            _sourceName = WaitingForStart;
-            _uiRevision++;
         }
 
         ConnectionSelectionStore.ClearPending();
     }
 
-    internal static bool ConfirmSelection()
+    internal static bool TryKeepInterchangeBuilderActive(
+        ToolSystem toolSystem,
+        PrefabBase prefab)
     {
-        object? tool;
-        Entity locked;
-        lock (Sync)
-        {
-            tool = _tool;
-            if (tool == null || !State.Confirm())
-            {
-                return false;
-            }
-
-            locked = FromKey(State.Locked);
-            _uiRevision++;
-        }
-
-        RestoreSelectedPrefab(tool, locked);
-        string name = DescribePrefab(tool, locked);
-        UpgradeLog.Info($"Road output locked: {name} ({DescribeEntity(locked)}).");
-        ShowMessage($"输出道路已锁定为“{name}”；选择起点只会确定连接分支，不会再替换道路。");
-        return true;
-    }
-
-    internal static bool FollowStart()
-    {
-        object? tool;
-        Entity source;
-        bool changed;
-        lock (Sync)
-        {
-            tool = _tool;
-            source = FromKey(State.StartSource);
-            changed = State.FollowStart();
-            if (changed)
-            {
-                _uiRevision++;
-            }
-        }
-
-        if (!changed || tool == null)
+        ToolBaseSystem? activeTool = toolSystem.activeTool;
+        if (activeTool == null || activeTool.GetType() != ToolType || !(prefab is NetPrefab))
         {
             return false;
         }
 
-        if (source != Entity.Null)
+        NetToolSystem? nativeTool = activeTool.World.GetExistingSystemManaged<NetToolSystem>();
+        nativeTool?.TrySetPrefab(prefab);
+
+        if (!activeTool.TrySetPrefab(prefab))
         {
-            RestoreSelectedPrefab(tool, source);
+            return false;
         }
 
-        UpgradeLog.Info("Road output changed to follow-start mode.");
-        InvalidatePreview(tool);
-        ShowMessage("已改为跟随起点道路。请重新选择起点；自由起点将使用当前显示的默认道路。");
+        UpgradeLog.Info("Vanilla toolbar road selection was handed to the active InterchangeBuilder tool.");
         return true;
     }
 
@@ -395,109 +324,93 @@ internal static class RoadSelectionController
             return true;
         }
 
-        RoadSelectionMode mode;
         Entity output;
         Entity source;
         lock (Sync)
         {
-            mode = State.Mode;
-            output = FromKey(State.ResolveOutput(ToKey(ReadSelectedPrefab(tool))));
+            output = FromKey(State.Selected);
             source = FromKey(State.StartSource);
         }
 
-        if (mode == RoadSelectionMode.FollowStart && output == Entity.Null)
+        if (output == Entity.Null || !EntityExists(output))
         {
-            try
-            {
-                EnsureDefaultRoadMethod?.Invoke(tool, null);
-                output = ReadSelectedPrefab(tool);
-            }
-            catch (Exception exception)
-            {
-                UpgradeLog.Warn(
-                    $"Default road resolution failed: {exception.GetType().Name}: {exception.Message}");
-            }
-        }
-
-        if (mode == RoadSelectionMode.PendingConfirmation)
-        {
-            ShowMessage("当前道路仍处于待确认状态。请先点击“确认并锁定”，再执行建造。");
-            UpgradeLog.Warn("Road placement blocked because the selected output road was not confirmed.");
+            ShowMessage("没有可用的道路。请先在游戏原生道路面板选择道路。");
+            UpgradeLog.Warn("Road placement blocked because the vanilla road panel has no valid selection.");
             return false;
         }
 
-        if (mode == RoadSelectionMode.Locked)
-        {
-            if (output == Entity.Null || !EntityExists(output))
-            {
-                ShowMessage("锁定的输出道路已经失效，请重新选择并确认道路。");
-                UpgradeLog.Warn("Road placement blocked because the locked output prefab is no longer valid.");
-                return false;
-            }
-
-            RestoreSelectedPrefab(tool, output);
-        }
-
+        RestoreSelectedPrefab(tool, output);
         UpgradeLog.Info(
             "Road selection build snapshot: " +
-            $"mode={ModeKey(mode)}, output={DescribePrefab(tool, output)} ({DescribeEntity(output)}), " +
+            $"mode=vanilla-panel, output={DescribePrefab(tool, output)} ({DescribeEntity(output)}), " +
             $"start={DescribePrefab(tool, source)} ({DescribeEntity(source)}).");
         return true;
     }
 
-    internal static RoadSelectionUiSnapshot GetUiSnapshot()
-    {
-        lock (Sync)
-        {
-            string status;
-            switch (State.Mode)
-            {
-                case RoadSelectionMode.PendingConfirmation:
-                    status = "候选道路尚未确认。确认前不会允许最终建造。";
-                    break;
-                case RoadSelectionMode.Locked:
-                    status = "输出道路已锁定；起点只决定连接道路分支和方向。";
-                    break;
-                default:
-                    status = State.StartSource.IsValid
-                        ? "正在跟随起点道路；最终输出与起点来源一致。"
-                        : "等待起点道路；自由起点将使用上方当前显示的默认道路。";
-                    break;
-            }
-
-            return new RoadSelectionUiSnapshot(
-                _uiRevision,
-                ModeKey(State.Mode),
-                State.StartSource.IsValid ? _sourceName : WaitingForStart,
-                status,
-                State.CanConfirm);
-        }
-    }
-
     internal static void Dispose()
     {
-        ResetForWorld(null);
-        _userSelectionDepth = 0;
+        ResetForWorld();
+        _explicitSelectionDepth = 0;
         _sourceSelectionDepth = 0;
         _restoreDepth = 0;
+        _selectionOrigin = null;
     }
 
-    private static void RestoreManualSelection(object tool)
+    private static void ApplyRememberedSelection(object tool)
     {
         Entity desired;
         lock (Sync)
         {
-            if (State.Mode == RoadSelectionMode.FollowStart)
-            {
-                return;
-            }
-
-            desired = FromKey(State.ResolveOutput(ToKey(ReadSelectedPrefab(tool))));
+            desired = FromKey(State.Selected);
         }
 
         if (desired != Entity.Null && ReadSelectedPrefab(tool) != desired)
         {
             RestoreSelectedPrefab(tool, desired);
+        }
+    }
+
+    private static bool TryGetVanillaSelection(out Entity selected)
+    {
+        selected = Entity.Null;
+        try
+        {
+            World? world = World.DefaultGameObjectInjectionWorld;
+            if (world == null)
+            {
+                return false;
+            }
+
+            NetToolSystem? nativeTool = world.GetExistingSystemManaged<NetToolSystem>();
+            PrefabSystem? prefabSystem = world.GetExistingSystemManaged<PrefabSystem>();
+            if (nativeTool == null || prefabSystem == null)
+            {
+                return false;
+            }
+
+            NetPrefab? prefab = NativeSelectedPrefabField?.GetValue(nativeTool) as NetPrefab;
+            if (prefab == null)
+            {
+                prefab = NativeActivePrefabField?.GetValue(nativeTool) as NetPrefab;
+            }
+
+            if (prefab == null)
+            {
+                prefab = nativeTool.GetPrefab() as NetPrefab;
+            }
+
+            return prefab != null &&
+                prefabSystem.TryGetEntity(prefab, out selected) &&
+                selected != Entity.Null &&
+                world.EntityManager.Exists(selected);
+        }
+        catch (Exception exception)
+        {
+            UpgradeLog.Warn(
+                $"Vanilla road selection could not be read: " +
+                $"{exception.GetType().Name}: {exception.Message}");
+            selected = Entity.Null;
+            return false;
         }
     }
 
@@ -524,6 +437,20 @@ internal static class RoadSelectionController
         }
     }
 
+    private static void ClearCurrentSelection(object tool)
+    {
+        try
+        {
+            SelectedRoadPrefabField?.SetValue(tool, Entity.Null);
+        }
+        catch (Exception exception)
+        {
+            UpgradeLog.Warn(
+                $"Empty road selection could not be applied: " +
+                $"{exception.GetType().Name}: {exception.Message}");
+        }
+    }
+
     private static void InvalidatePreview(object tool)
     {
         try
@@ -546,7 +473,7 @@ internal static class RoadSelectionController
     {
         if (prefab == Entity.Null)
         {
-            return "未解析";
+            return "未选择";
         }
 
         try
@@ -579,8 +506,8 @@ internal static class RoadSelectionController
         }
         catch
         {
-            // Entity identity is still sufficient for diagnostics if the
-            // private catalog layout changes between game versions.
+            // Entity identity remains sufficient for diagnostics if the
+            // private road catalog changes between game versions.
         }
 
         return $"网络 #{prefab.Index}";
@@ -622,19 +549,6 @@ internal static class RoadSelectionController
     private static Entity FromKey(RoadKey key) => key.IsValid
         ? new Entity { Index = key.Index, Version = key.Version }
         : Entity.Null;
-
-    private static string ModeKey(RoadSelectionMode mode)
-    {
-        switch (mode)
-        {
-            case RoadSelectionMode.PendingConfirmation:
-                return "pending";
-            case RoadSelectionMode.Locked:
-                return "locked";
-            default:
-                return "auto";
-        }
-    }
 
     private static string DescribeEntity(Entity entity) =>
         entity == Entity.Null ? "none" : $"{entity.Index}:{entity.Version}";

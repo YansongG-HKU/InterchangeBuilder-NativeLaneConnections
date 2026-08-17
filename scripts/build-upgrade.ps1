@@ -6,7 +6,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
-$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.3.0-NativeLaneConnections"
+$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.4.0-NativeLaneConnections"
 $runtimeProject = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\InterchangeBuilder.LaneConnections.csproj"
 $runtimeOutput = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\bin\$Configuration\net48"
 $patcherProject = Join-Path $repositoryRoot "tools\InterchangeBuilder.Patcher\InterchangeBuilder.Patcher.csproj"
@@ -115,7 +115,7 @@ $localizedBundle = [regex]::Replace(
 $localizedBundle = [regex]::Replace(
     $localizedBundle,
     '(?m)^\s*\* Version:.*$',
-    ' * Version: 2.3.0')
+    ' * Version: 2.4.0')
 $translations = Get-Content -LiteralPath $uiTranslationsSource -Raw -Encoding UTF8 | ConvertFrom-Json -AsHashtable
 $translatedLiteralCount = 0
 $existingTranslatedLiteralCount = 0
@@ -160,43 +160,24 @@ elseif ($floatingLabelSourceCount -ne 0 -or !$localizedBundle.Contains($floating
     throw "The InterchangeBuilder floating-button label could not be localized safely."
 }
 
-# Extend the existing road selector with explicit output-road state.  The new
-# bindings are owned by the upgrade UISystem, while the existing roadName and
-# roadOptions bindings remain the single source for prefab identity/details.
-$roadBindingAnchor = '(0,r.bindValue)(o,"roadCategoryFilter","all");const _='
-$roadBindingAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($roadBindingAnchor))).Count
-$roadBindingReplacement = '(0,r.bindValue)(o,"roadCategoryFilter","all");const ibRoadSelectionMode=(0,r.bindValue)(o,"roadSelectionMode","auto"),ibRoadSelectionSourceName=(0,r.bindValue)(o,"roadSelectionSourceName","尚未选择起点"),ibRoadSelectionStatus=(0,r.bindValue)(o,"roadSelectionStatus","等待起点道路。"),ibRoadSelectionCanConfirm=(0,r.bindValue)(o,"roadSelectionCanConfirm",!1);const _='
-if ($roadBindingAnchorCount -eq 1)
+# The game toolbar is the only road picker.  Replace the mod's duplicate
+# interactive catalog with a read-only summary of the vanilla selection.
+$roadSelectorPattern = ',t&&\(0,i\.jsxs\)\("div",\{className:Pe,children:\[.*?\]\}\),h,\(0,i\.jsx\)\("div",\{className:da'
+$roadSelectorRegex = [regex]::new(
+    $roadSelectorPattern,
+    [System.Text.RegularExpressions.RegexOptions]::Singleline)
+$roadSelectorCount = $roadSelectorRegex.Matches($localizedBundle).Count
+$roadSelectorReplacement = ',t&&(0,i.jsxs)("div",{className:"ib-native-road-selection",children:[(0,i.jsx)("span",{children:"当前道路（游戏原生面板）"}),(0,i.jsx)("strong",{children:l}),(0,i.jsx)("p",{children:"要更换道路，请直接在游戏原生道路面板点击另一条道路；起点不会改变道路类型。"})]}),h,(0,i.jsx)("div",{className:da'
+if ($roadSelectorCount -eq 1)
 {
-    $localizedBundle = $localizedBundle.Replace($roadBindingAnchor, $roadBindingReplacement)
+    $localizedBundle = $roadSelectorRegex.Replace(
+        $localizedBundle,
+        $roadSelectorReplacement,
+        1)
 }
-elseif ($roadBindingAnchorCount -ne 0 -or !$localizedBundle.Contains('"roadSelectionMode"'))
+elseif ($roadSelectorCount -ne 0 -or !$localizedBundle.Contains('className:"ib-native-road-selection"'))
 {
-    throw "Road-selection state bindings could not be inserted safely."
-}
-
-$roadHookAnchor = 'function Qa({toolState:e,hint:a,showRoadSelector:t,roadName:l,roadIndex:s,roadCount:d,metrics:u,validationStatus:c,validationMessage:m,extraRow:h}){const g='
-$roadHookAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($roadHookAnchor))).Count
-$roadHookReplacement = 'function Qa({toolState:e,hint:a,showRoadSelector:t,roadName:l,roadIndex:s,roadCount:d,metrics:u,validationStatus:c,validationMessage:m,extraRow:h}){const ibSelectionMode=(0,r.useValue)(ibRoadSelectionMode),ibSourceName=(0,r.useValue)(ibRoadSelectionSourceName),ibSelectionStatus=(0,r.useValue)(ibRoadSelectionStatus),ibCanConfirm=(0,r.useValue)(ibRoadSelectionCanConfirm);const g='
-if ($roadHookAnchorCount -eq 1)
-{
-    $localizedBundle = $localizedBundle.Replace($roadHookAnchor, $roadHookReplacement)
-}
-elseif ($roadHookAnchorCount -ne 0 -or !$localizedBundle.Contains('ibSelectionStatus=(0,r.useValue)'))
-{
-    throw "Road-selection React bindings could not be inserted safely."
-}
-
-$roadCardAnchor = ']})]}),h,(0,i.jsx)("div",{className:da'
-$roadCardAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($roadCardAnchor))).Count
-$roadCard = ']})]}),t&&(0,i.jsxs)("div",{className:`ib-road-selection-card ib-road-selection-${ibSelectionMode}`,children:[(0,i.jsxs)("div",{className:"ib-road-selection-heading",children:[(0,i.jsx)("strong",{children:"输出道路状态"}),(0,i.jsx)("span",{className:"ib-road-selection-badge",children:"locked"===ibSelectionMode?"已锁定":"pending"===ibSelectionMode?"待确认":"跟随起点"})]}),(0,i.jsxs)("div",{className:"ib-road-selection-detail",children:[(0,i.jsx)("span",{children:"输出道路"}),(0,i.jsx)("strong",{children:l})]}),(0,i.jsxs)("div",{className:"ib-road-selection-detail",children:[(0,i.jsx)("span",{children:"起点来源"}),(0,i.jsx)("strong",{children:ibSourceName})]}),(0,i.jsxs)("div",{className:"ib-road-selection-actions",children:[(0,i.jsx)(n.Button,{variant:"flat",disabled:!ibCanConfirm,selected:"locked"===ibSelectionMode,tooltipLabel:ibCanConfirm?"确认并锁定当前输出道路":"请先从上方选择候选道路","aria-label":"确认并锁定当前输出道路",onSelect:()=>{ibCanConfirm&&(0,r.trigger)(o,"confirmRoadSelection")},children:"确认并锁定"}),(0,i.jsx)(n.Button,{variant:"flat",selected:"auto"===ibSelectionMode,tooltipLabel:"让输出道路自动继承起点所属道路","aria-label":"跟随起点道路",onSelect:()=>(0,r.trigger)(o,"followStartRoad"),children:"跟随起点"})]}),(0,i.jsx)("p",{className:"ib-road-selection-status",children:ibSelectionStatus})]}),h,(0,i.jsx)("div",{className:da'
-if ($roadCardAnchorCount -eq 1)
-{
-    $localizedBundle = $localizedBundle.Replace($roadCardAnchor, $roadCard)
-}
-elseif ($roadCardAnchorCount -ne 0 -or !$localizedBundle.Contains('className:`ib-road-selection-card'))
-{
-    throw "Road-selection confirmation card could not be inserted safely."
+    throw "The duplicate InterchangeBuilder road selector could not be replaced safely."
 }
 
 # Insert the rule notice into the existing React tree.  This uses only the
@@ -204,7 +185,7 @@ elseif ($roadCardAnchorCount -ne 0 -or !$localizedBundle.Contains('className:`ib
 # mutate the COUI DOM during module initialization.
 $ruleAnchor = 'children:[(0,i.jsx)("div",{className:$e'
 $ruleAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($ruleAnchor))).Count
-$ruleCard = 'children:[(0,i.jsxs)("div",{className:"ib-connection-rules",children:[(0,i.jsx)("strong",{className:"ib-connection-rules-title",children:"道路端点连接规则"}),(0,i.jsx)("p",{children:"端点连接遵循《城市：天际线 II》原生道路工具：只连接游戏判定兼容的道路、步道和轨道，并按道路宽度与 8 米分区格选择离鼠标最近的候选位置。"}),(0,i.jsx)("p",{children:"模组同时提供原生“按 8 米单元吸附”和“自由宽度对齐”两组候选，中心位置始终保留；四车道接两车道等情况可用鼠标选择左、中、右对齐。"}),(0,i.jsx)("p",{children:"三岔及多臂路口请把鼠标移向目标道路分支后再点击；特殊区域吸附网络不会被宽度规则强制偏移。"})]}),(0,i.jsx)("div",{className:$e'
+$ruleCard = 'children:[(0,i.jsxs)("div",{className:"ib-connection-rules",children:[(0,i.jsx)("strong",{className:"ib-connection-rules-title",children:"道路端点连接规则"}),(0,i.jsx)("p",{children:"道路类型以游戏原生道路面板最后一次选择为准；直接在原生面板点击另一条道路即可更换，起点道路不会覆盖它。"}),(0,i.jsx)("p",{children:"端点连接遵循《城市：天际线 II》原生道路工具：只连接游戏判定兼容的道路、步道和轨道，并按道路宽度与 8 米分区格选择离鼠标最近的候选位置。"}),(0,i.jsx)("p",{children:"模组同时提供原生“按 8 米单元吸附”和“自由宽度对齐”两组候选，中心位置始终保留；四车道接两车道等情况可用鼠标选择左、中、右对齐。"}),(0,i.jsx)("p",{children:"三岔及多臂路口请把鼠标移向目标道路分支后再点击；特殊区域吸附网络不会被宽度规则强制偏移。"})]}),(0,i.jsx)("div",{className:$e'
 if ($ruleAnchorCount -eq 1)
 {
     $localizedBundle = $localizedBundle.Replace($ruleAnchor, $ruleCard)
@@ -220,7 +201,7 @@ elseif ($ruleAnchorCount -ne 0 -or !$localizedBundle.Contains('className:"ib-con
     [System.Text.UTF8Encoding]::new($false))
 $localizationStyles = [System.IO.File]::ReadAllText($uiLocalizationStyles)
 $artifactStyles = [System.IO.File]::ReadAllText($artifactUiStyles)
-if (!$artifactStyles.Contains(".ib-road-selection-card"))
+if (!$artifactStyles.Contains(".ib-native-road-selection"))
 {
     [System.IO.File]::AppendAllText(
         $artifactUiStyles,
@@ -232,8 +213,8 @@ foreach ($requiredText in @(
     'JSON.parse(''{"id":"InterchangeBuilder"}'')',
     "立交道路生成器",
     "道路端点连接规则",
-    "输出道路状态",
-    "confirmRoadSelection",
+    "当前道路（游戏原生面板）",
+    "起点道路不会覆盖它",
     "打开立交道路生成器",
     "直线"))
 {

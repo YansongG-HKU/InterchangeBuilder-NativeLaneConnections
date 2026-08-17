@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Game;
+using Game.Prefabs;
+using Game.Tools;
 using HarmonyLib;
 
 namespace InterchangeBuilder.LaneConnections;
@@ -53,6 +55,37 @@ public static class Bootstrap
         RequireParameters(toolType, "SetSelectedRoadPrefab", typeof(Unity.Entities.Entity));
         RequireParameterCount(toolType, "CompleteEndpointSelection", 2);
         RequireParameterCount(toolType, "HandleFreeDrawInteraction", 3);
+
+        Type nativeNetToolType = typeof(NetToolSystem);
+        FieldInfo nativeSelectedPrefab = nativeNetToolType.GetField(
+            "m_SelectedPrefab",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(nativeNetToolType.FullName, "m_SelectedPrefab");
+        FieldInfo nativeActivePrefab = nativeNetToolType.GetField(
+            "m_Prefab",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(nativeNetToolType.FullName, "m_Prefab");
+        if (nativeSelectedPrefab.FieldType != typeof(NetPrefab) ||
+            nativeActivePrefab.FieldType != typeof(NetPrefab))
+        {
+            throw new InvalidOperationException("NetToolSystem road-prefab field types changed.");
+        }
+
+        _ = nativeNetToolType.GetProperty(
+            "prefab",
+            BindingFlags.Instance | BindingFlags.Public)
+            ?? throw new MissingMemberException(nativeNetToolType.FullName, "prefab");
+        MethodInfo activatePrefabTool = typeof(ToolSystem).GetMethod(
+            "ActivatePrefabTool",
+            BindingFlags.Instance | BindingFlags.Public,
+            null,
+            new[] { typeof(PrefabBase) },
+            null)
+            ?? throw new MissingMethodException(typeof(ToolSystem).FullName, "ActivatePrefabTool");
+        if (activatePrefabTool.ReturnType != typeof(bool))
+        {
+            throw new InvalidOperationException("ActivatePrefabTool return type changed.");
+        }
 
         Type uiType = RequireType("InterchangeBuilder.Systems.InterchangeBuilderUISystem");
         _ = uiType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
@@ -124,7 +157,7 @@ public static class Bootstrap
             throw new InvalidOperationException("CreateCoursePosition return type changed.");
         }
 
-        return "road-selection locking and endpoint-alignment patch targets resolved";
+        return "vanilla-panel road memory and endpoint-alignment patch targets resolved";
     }
 
     public static void Install(UpdateSystem updateSystem)
@@ -147,10 +180,8 @@ public static class Bootstrap
                 PatchSnapshotConstructor(harmony);
                 PatchDefinitionContext(harmony);
                 PatchCoursePosition(harmony);
-                updateSystem.World.GetOrCreateSystemManaged<RoadSelectionUISystem>();
-                updateSystem.UpdateAt<RoadSelectionUISystem>((SystemUpdatePhase)22);
                 _harmony = harmony;
-                UpgradeLog.Info("Native CS2 endpoint alignment, road locking, and Simplified Chinese upgrade 2.3.0 installed.");
+                UpgradeLog.Info("Native CS2 endpoint alignment, vanilla-panel road memory, and Simplified Chinese upgrade 2.4.0 installed.");
             }
             catch (Exception exception)
             {
@@ -230,14 +261,14 @@ public static class Bootstrap
             ?? throw new MissingMethodException(type.FullName, "PrepareEndpointSelectionMode");
         harmony.Patch(
             prepare,
-            postfix: HarmonyMethod(typeof(NewRoutePatch), nameof(NewRoutePatch.Postfix)));
+            postfix: HarmonyMethod(typeof(ModePreparationPatch), nameof(ModePreparationPatch.Postfix)));
         MethodInfo restart = type.GetMethod(
             "RestartActiveMode",
             BindingFlags.Instance | BindingFlags.NonPublic)
             ?? throw new MissingMethodException(type.FullName, "RestartActiveMode");
         harmony.Patch(
             restart,
-            postfix: HarmonyMethod(typeof(NewRoutePatch), nameof(NewRoutePatch.Postfix)));
+            postfix: HarmonyMethod(typeof(RouteRestartPatch), nameof(RouteRestartPatch.Postfix)));
 
         MethodInfo confirm = type.GetMethod(
             "ConfirmCurrentPreview",
@@ -245,7 +276,7 @@ public static class Bootstrap
             ?? throw new MissingMethodException(type.FullName, "ConfirmCurrentPreview");
         harmony.Patch(
             confirm,
-            prefix: HarmonyMethod(typeof(RoadBuildConfirmationPatch), nameof(RoadBuildConfirmationPatch.Prefix)));
+            prefix: HarmonyMethod(typeof(RoadBuildSelectionPatch), nameof(RoadBuildSelectionPatch.Prefix)));
 
         MethodInfo preload = type.GetMethod(
             "OnGamePreload",
@@ -254,6 +285,17 @@ public static class Bootstrap
         harmony.Patch(
             preload,
             postfix: HarmonyMethod(typeof(RoadSelectionWorldPatch), nameof(RoadSelectionWorldPatch.Postfix)));
+
+        MethodInfo activatePrefabTool = typeof(ToolSystem).GetMethod(
+            "ActivatePrefabTool",
+            BindingFlags.Instance | BindingFlags.Public,
+            null,
+            new[] { typeof(PrefabBase) },
+            null)
+            ?? throw new MissingMethodException(typeof(ToolSystem).FullName, "ActivatePrefabTool");
+        harmony.Patch(
+            activatePrefabTool,
+            prefix: HarmonyMethod(typeof(VanillaPrefabActivationPatch), nameof(VanillaPrefabActivationPatch.Prefix)));
     }
 
     private static void PatchWithState(Harmony harmony, MethodInfo original, Type patchType)

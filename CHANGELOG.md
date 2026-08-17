@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.4.0 - 2026-08-17
+
+- Replaced pending/locked/follow-start states with automatic vanilla-toolbar road memory.
+- Read the selected network from the game's `NetToolSystem` whenever an InterchangeBuilder mode starts.
+- Kept InterchangeBuilder active when another supported network is chosen from the vanilla toolbar.
+- Prevented start-node and Free Draw inheritance from changing the remembered panel selection.
+- Replaced the duplicate interactive road catalog with a read-only current-road summary and Chinese rule hint.
+- Blocked placement only when the vanilla toolbar has no valid network selection.
+- Added regression tests for immediate selection, reselection, route restart, source isolation, and world reset.
+
 ## 2.3.0 - 2026-08-16
 
 - Separated the start-road source from the output-road prefab.
