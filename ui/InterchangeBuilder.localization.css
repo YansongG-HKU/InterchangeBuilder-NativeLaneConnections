@@ -51,3 +51,17 @@
   color: rgba(220, 235, 245, 0.84);
   line-height: 1.4;
 }
+
+.ib-native-road-selection .ib-endpoint-status {
+  padding: 6rem 7rem;
+  border-left: 3rem solid rgb(98, 193, 255);
+  background: rgba(29, 74, 110, 0.55);
+  color: rgb(221, 241, 255);
+}
+
+.ib-native-road-selection .ib-anarchy-status {
+  padding: 5rem 7rem;
+  border-left: 3rem solid rgb(245, 181, 72);
+  background: rgba(108, 70, 18, 0.4);
+  color: rgb(255, 231, 187);
+}

@@ -94,6 +94,14 @@ public static class Bootstrap
             "SetValidationMessage",
             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
             ?? throw new MissingMethodException(uiType.FullName, "SetValidationMessage");
+        _ = uiType.GetMethod(
+            "OnCreate",
+            BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(uiType.FullName, "OnCreate");
+        _ = uiType.GetMethod(
+            "OnDestroy",
+            BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(uiType.FullName, "OnDestroy");
 
         Type selectionType = RequireType("InterchangeBuilder.Selection.GameNetworkNodeSelectionService");
         MethodInfo selectionMethod = selectionType
@@ -130,11 +138,12 @@ public static class Bootstrap
             .GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
             .Single();
         ParameterInfo[] snapshotParameters = snapshotConstructor.GetParameters();
-        if (snapshotParameters.Length < 6 ||
+        if (snapshotParameters.Length < 14 ||
             snapshotParameters[1].ParameterType != typeof(Unity.Entities.Entity) ||
             snapshotParameters[2].ParameterType != typeof(Unity.Entities.Entity) ||
             snapshotParameters[4].ParameterType != typeof(System.Numerics.Vector3) ||
-            snapshotParameters[5].ParameterType != typeof(System.Numerics.Vector3))
+            snapshotParameters[5].ParameterType != typeof(System.Numerics.Vector3) ||
+            snapshotParameters[13].ParameterType != typeof(Colossal.Mathematics.Bezier4x3[]))
         {
             throw new InvalidOperationException("RoadPlacementSnapshot constructor layout changed.");
         }
@@ -157,7 +166,37 @@ public static class Bootstrap
             throw new InvalidOperationException("CreateCoursePosition return type changed.");
         }
 
-        return "vanilla-panel road memory and endpoint-alignment patch targets resolved";
+        MethodInfo chainMethod = applyType.GetMethod(
+            "TryResolveSubdividedChain",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(applyType.FullName, "TryResolveSubdividedChain");
+        ParameterInfo[] chainParameters = chainMethod.GetParameters();
+        if (chainMethod.ReturnType != typeof(bool) ||
+            chainParameters.Length != 4 ||
+            chainParameters[0].ParameterType != snapshotType ||
+            chainParameters[1].ParameterType != typeof(System.Collections.Generic.IReadOnlyList<Unity.Entities.Entity>) ||
+            !chainParameters[2].IsOut ||
+            chainParameters[2].ParameterType.GetElementType() != typeof(System.Collections.Generic.List<Unity.Entities.Entity>) ||
+            !chainParameters[3].IsOut ||
+            chainParameters[3].ParameterType.GetElementType() != typeof(string))
+        {
+            throw new InvalidOperationException("TryResolveSubdividedChain signature changed.");
+        }
+
+        MethodInfo failureMethod = applyType.GetMethod(
+            "BeginFailure",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(applyType.FullName, "BeginFailure");
+        ParameterInfo[] failureParameters = failureMethod.GetParameters();
+        if (failureParameters.Length != 3 ||
+            failureParameters[0].ParameterType != typeof(string) ||
+            failureParameters[1].ParameterType != typeof(int) ||
+            failureParameters[2].ParameterType != typeof(System.Collections.Generic.IReadOnlyList<Unity.Entities.Entity>))
+        {
+            throw new InvalidOperationException("BeginFailure signature changed.");
+        }
+
+        return "vanilla-panel road memory, all-lane endpoint ports, and placement-recovery patch targets resolved";
     }
 
     public static void Install(UpdateSystem updateSystem)
@@ -169,10 +208,13 @@ public static class Bootstrap
                 return;
             }
 
+            Harmony? installingHarmony = null;
             try
             {
                 var harmony = new Harmony(HarmonyId);
+                installingHarmony = harmony;
                 PatchToolContext(harmony);
+                PatchUpgradeUiBindings(harmony);
                 PatchRoadSelection(harmony);
                 PatchNodeSelection(harmony);
                 PatchConnectedEdgeSelection(harmony);
@@ -180,11 +222,13 @@ public static class Bootstrap
                 PatchSnapshotConstructor(harmony);
                 PatchDefinitionContext(harmony);
                 PatchCoursePosition(harmony);
+                PatchPlacementRecovery(harmony);
                 _harmony = harmony;
-                UpgradeLog.Info("Native CS2 endpoint alignment, vanilla-panel road memory, and Simplified Chinese upgrade 2.4.0 installed.");
+                UpgradeLog.Info("Native CS2 all-lane endpoint ports, placement recovery, vanilla-panel road memory, and Simplified Chinese upgrade installed.");
             }
             catch (Exception exception)
             {
+                installingHarmony?.UnpatchAll(HarmonyId);
                 UpgradeLog.Error($"Upgrade installation failed; base mod remains available. {exception}");
             }
         }
@@ -298,6 +342,25 @@ public static class Bootstrap
             prefix: HarmonyMethod(typeof(VanillaPrefabActivationPatch), nameof(VanillaPrefabActivationPatch.Prefix)));
     }
 
+    private static void PatchUpgradeUiBindings(Harmony harmony)
+    {
+        Type type = RequireType("InterchangeBuilder.Systems.InterchangeBuilderUISystem");
+        MethodInfo onCreate = type.GetMethod(
+            "OnCreate",
+            BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "OnCreate");
+        MethodInfo onDestroy = type.GetMethod(
+            "OnDestroy",
+            BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "OnDestroy");
+        harmony.Patch(
+            onCreate,
+            postfix: HarmonyMethod(typeof(UpgradeUiCreatePatch), nameof(UpgradeUiCreatePatch.Postfix)));
+        harmony.Patch(
+            onDestroy,
+            prefix: HarmonyMethod(typeof(UpgradeUiDestroyPatch), nameof(UpgradeUiDestroyPatch.Prefix)));
+    }
+
     private static void PatchWithState(Harmony harmony, MethodInfo original, Type patchType)
     {
         harmony.Patch(
@@ -373,6 +436,26 @@ public static class Bootstrap
             .GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
             .Single(method => method.Name == "CreateCoursePosition" && method.GetParameters().Length == 7);
         harmony.Patch(original, postfix: HarmonyMethod(typeof(CoursePositionPatch), nameof(CoursePositionPatch.Postfix)));
+    }
+
+    private static void PatchPlacementRecovery(Harmony harmony)
+    {
+        Type type = RequireType("InterchangeBuilder.Tools.CurveRoadApplyService");
+        MethodInfo chainResolver = type.GetMethod(
+            "TryResolveSubdividedChain",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "TryResolveSubdividedChain");
+        harmony.Patch(
+            chainResolver,
+            postfix: HarmonyMethod(typeof(SubdividedChainRecoveryPatch), nameof(SubdividedChainRecoveryPatch.Postfix)));
+
+        MethodInfo beginFailure = type.GetMethod(
+            "BeginFailure",
+            BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingMethodException(type.FullName, "BeginFailure");
+        harmony.Patch(
+            beginFailure,
+            prefix: HarmonyMethod(typeof(PlacementFailureSafetyPatch), nameof(PlacementFailureSafetyPatch.Prefix)));
     }
 
     private static Type RequireType(string name) =>

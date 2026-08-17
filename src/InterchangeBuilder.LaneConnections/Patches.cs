@@ -18,12 +18,25 @@ internal static class ToolContextPatch
         AccessTools.TypeByName("InterchangeBuilder.Systems.InterchangeBuilderToolSystem"),
         "_selectedRoadPrefab");
 
+    private static readonly PropertyInfo? ActiveStateProperty = AccessTools.Property(
+        AccessTools.TypeByName("InterchangeBuilder.Systems.InterchangeBuilderToolSystem"),
+        "ActiveState");
+
     internal static Entity SelectedRoadPrefab { get; private set; }
 
     internal static Entity AlignmentRoadPrefab { get; private set; }
 
+    internal static EndpointRole CurrentEndpointRole { get; private set; }
+
     public static void Prefix(object __instance)
     {
+        UpgradeUiBindings.RefreshRuntimeStatus();
+        string state = ActiveStateProperty?.GetValue(__instance)?.ToString() ?? string.Empty;
+        CurrentEndpointRole = state == "SelectStartNode"
+            ? EndpointRole.Start
+            : state == "SelectEndNode"
+                ? EndpointRole.End
+                : EndpointRole.Unknown;
         RoadSelectionController.AttachAndEnforce(__instance);
         if (SelectedRoadPrefabField?.GetValue(__instance) is Entity prefab)
         {
@@ -99,6 +112,7 @@ internal static class NodeSelectionPatch
                     edgeEntity,
                     selectionPrefab,
                     hitPosition,
+                    ToolContextPatch.CurrentEndpointRole,
                     out ConnectionSelection? selection) ||
                 selection == null)
             {
@@ -312,10 +326,12 @@ internal static class SnapshotConstructorPatch
             endNode,
             selectedPrefab,
             startPosition,
-            endPosition);
+            endPosition,
+            BuildRoutePolyline(__args));
 
         if (connections.Start != null || connections.End != null)
         {
+            UpgradeUiBindings.SetSnapshot(connections);
             UpgradeLog.Info(
                 "Native endpoint snapshot: " +
                 $"start={Describe(connections.Start)}, end={Describe(connections.End)}");
@@ -327,7 +343,37 @@ internal static class SnapshotConstructorPatch
         : $"{selection.SlotName}@{selection.Offset:0.##}m " +
           $"({selection.SelectedWidth:0.##}->{selection.ExistingWidth:0.##}m, " +
           $"rule={(selection.UsesZoningGrid ? "cell+width" : "width")}, " +
-          $"targetHalfAligned={selection.TargetHalfAligned})";
+           $"targetHalfAligned={selection.TargetHalfAligned})";
+
+    private static IReadOnlyList<Vector2> BuildRoutePolyline(object[] arguments)
+    {
+        var result = new List<Vector2>();
+        if (arguments.Length <= 13 ||
+            !(arguments[13] is Colossal.Mathematics.Bezier4x3[] courses))
+        {
+            return result;
+        }
+
+        const int samplesPerCourse = 8;
+        for (int courseIndex = 0; courseIndex < courses.Length; courseIndex++)
+        {
+            Colossal.Mathematics.Bezier4x3 course = courses[courseIndex];
+            int firstSample = courseIndex == 0 ? 0 : 1;
+            for (int sampleIndex = firstSample; sampleIndex <= samplesPerCourse; sampleIndex++)
+            {
+                float t = sampleIndex / (float)samplesPerCourse;
+                float inverse = 1f - t;
+                float3 point =
+                    course.a * (inverse * inverse * inverse) +
+                    course.b * (3f * inverse * inverse * t) +
+                    course.c * (3f * inverse * t * t) +
+                    course.d * (t * t * t);
+                result.Add(new Vector2(point.x, point.z));
+            }
+        }
+
+        return result;
+    }
 }
 
 internal static class CourseCreationContextPatch

@@ -10,27 +10,30 @@ InterchangeBuilder Native Lane Connections 是《城市：天际线 II》的道�
 
 ## 直接下载安装
 
-1. 从 [v2.2.0 Release](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/releases/tag/v2.2.0) 下载 `InterchangeBuilder-2.2.0-NativeLaneConnections.zip`。
+1. 从 [v2.5.0 Release](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/releases/tag/v2.5.0) 下载 `InterchangeBuilder-2.5.0-NativeLaneConnections.zip`。
 2. 退出游戏，将 ZIP 解压到：
 
    ```text
    %USERPROFILE%\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods
    ```
 
-3. 解压后应存在 `Mods\InterchangeBuilder-2.2.0-NativeLaneConnections\InterchangeBuilder.dll`。
-4. 在 Skyve II 中刷新模组，禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.2.0 版本。
+3. 解压后应存在 `Mods\InterchangeBuilder-2.5.0-NativeLaneConnections\InterchangeBuilder.dll`。
+4. 在 Skyve II 中刷新模组，禁用或移除其他 InterchangeBuilder 版本，只启用本地 2.5.0 版本。
 5. 通过 Skyve II 或 Steam 启动游戏。
 
 Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual Studio、.NET SDK，也不需要自己构建。
 
-## 2.4.0 本地开发版
+## 2.5.0 全车道端点与安全生成
 
 - 游戏原生道路面板成为唯一的道路选择入口，无需确认、锁定或“跟随起点”。
 - 进入任一建造模式时自动读取原生 `NetToolSystem` 最后选择的道路。
 - 在立交道路生成器运行期间直接点击原生面板中的另一条道路即可切换；旧预览会自动清除。
 - 起点节点和自由绘制起点只提供连接位置、方向与分支，不再替换道路类型。
 - 模组内原有的重复道路目录改为只读的“当前道路”提示，避免两套选择状态互相冲突。
-- 最终建造日志同时记录原生面板道路与起点来源，便于确认实际使用的 prefab。
+- 从实际车道 composition 生成任意单/双向、奇偶、非对称和自定义道路端口，中心与原生宽度候选始终保留。
+- 中文只读卡片实时显示起点/终点所选端口及新旧道路车道对应关系。
+- 通过几何与连通性恢复偏移端点的生成链，并在匹配超时时保留已生成道路，解决道路被误回滚后消失。
+- 可选登记 Anarchy 自定义工具并显示真实开关状态；不捆绑，也不自动切换 Anarchy。
 
 ## 2.2.0 做了什么
 
@@ -42,7 +45,7 @@ Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual S
 - 将预览选择持久化到放置快照、`CoursePos` 以及左右对齐标志。
 - 加入简体中文 UI 和可见的道路端点规则提示。
 
-目前的自动验证包括 17 项纯算法/状态测试，以及原生面板道路记忆和端点补丁目标的运行时元数据冒烟检查。运行时检查需要本机游戏程序集，因此公开 CI 只运行不依赖游戏文件的核心测试。
+目前的自动验证包括 29 项纯算法/状态测试（其中矩阵覆盖 1–10 车道的全部单向组合），以及原生面板道路记忆、全车道端点、偏移生成链与补丁目标的运行时元数据冒烟检查。运行时检查需要本机游戏程序集，因此公开 CI 只运行不依赖游戏文件的核心测试。
 
 ## 从源码构建
 
@@ -56,13 +59,13 @@ Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual S
   -Cities2ManagedPath 'D:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed'
 ```
 
-基础运行包位于其他目录时，可加上 `-BasePackagePath 'D:\Mods\InterchangeBuilder-Base'`。构建结果位于 `artifacts\InterchangeBuilder-2.4.0-NativeLaneConnections`。
+基础运行包位于其他目录时，可加上 `-BasePackagePath 'D:\Mods\InterchangeBuilder-Base'`。构建结果位于 `artifacts\InterchangeBuilder-2.5.0-NativeLaneConnections`。
 
 详细的端点规则与 Skyve II 本地安装步骤见 [README-upgrade.md](README-upgrade.md)。CS2 官方模组说明可参阅 [Cities: Skylines II Modding](https://www.paradoxinteractive.com/games/cities-skylines-ii/modding)。
 
 ## 仓库结构
 
-- `src/InterchangeBuilder.LaneConnections.Core`：与游戏无关的宽度、对齐和多臂节点算法。
+- `src/InterchangeBuilder.LaneConnections.Core`：与游戏无关的宽度、全车道端口、生成链和多臂节点算法。
 - `src/InterchangeBuilder.LaneConnections`：游戏运行时集成与 Harmony 补丁。
 - `tests/`：核心算法测试。
 - `tools/InterchangeBuilder.Patcher`：在本地基础运行包副本中注入项目启动入口。
@@ -78,4 +81,4 @@ Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual S
 
 ## English summary
 
-InterchangeBuilder Native Lane Connections is a Cities: Skylines II mod. It remembers the last network selected in the vanilla toolbar, prevents start nodes from replacing that choice, preserves centre alignment, adds width-aware left/centre/right candidates, follows native connection compatibility, resolves multi-arm junctions from pointer direction, and carries the selected alignment through placement. The ready-to-use release contains every required project file; game files are never included.
+InterchangeBuilder Native Lane Connections is a Cities: Skylines II mod. It remembers the last network selected in the vanilla toolbar, maps arbitrary one-way/two-way/asymmetric/custom lane layouts into selectable endpoint ports, preserves native width and centre alignment, recovers offset generated chains, prevents destructive timeout rollback, and optionally registers with Anarchy without requiring or toggling it. The ready-to-use release contains every required project file; game files are never included.

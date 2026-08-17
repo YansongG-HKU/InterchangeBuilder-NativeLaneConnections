@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Game.Common;
 using Game.Net;
@@ -16,6 +17,7 @@ internal static class EndpointAlignmentService
         Entity edgeEntity,
         Entity selectedPrefab,
         float3 hitPosition,
+        EndpointRole role,
         out ConnectionSelection? selection)
     {
         selection = null;
@@ -53,9 +55,12 @@ internal static class EndpointAlignmentService
             return false;
         }
 
+        // Lateral signs are defined while looking from the selected node into
+        // the attached road arm. This makes left/right stable at both ends of
+        // an edge and independent of the edge entity's internal orientation.
         float3 nearForward = isStart
             ? curve.m_Bezier.b - curve.m_Bezier.a
-            : curve.m_Bezier.d - curve.m_Bezier.c;
+            : curve.m_Bezier.c - curve.m_Bezier.d;
         Vector2 nearLeft = NormalizeLeft(nearForward);
         if (nearLeft.LengthSquared() < 0.000001f)
         {
@@ -76,24 +81,39 @@ internal static class EndpointAlignmentService
             return false;
         }
 
-        var choice = AlignmentMath.Choose(
-            new Vector2(node.m_Position.x, node.m_Position.z),
-            nearLeft,
-            new Vector2(hitPosition.x, hitPosition.z),
+        IReadOnlyList<float> nativeOffsets = AlignmentMath.BuildOffsets(
             selectedWidth,
             existingWidth,
             useZoningGrid);
+        List<LaneDescriptor> selectedLanes = ReadSelectedLanes(
+            entityManager,
+            selectedPrefab,
+            role);
+        List<LaneDescriptor> targetLanes = ReadTargetLanes(
+            entityManager,
+            edgeEntity,
+            existingPrefab,
+            isStart);
+        IReadOnlyList<LanePortCandidate> ports = LanePortMath.BuildCandidates(
+            selectedLanes,
+            targetLanes,
+            nativeOffsets);
+        LanePortChoice choice = LanePortMath.Choose(
+            new Vector2(node.m_Position.x, node.m_Position.z),
+            nearLeft,
+            new Vector2(hitPosition.x, hitPosition.z),
+            ports);
 
         float3 farPosition = isStart ? curve.m_Bezier.d : curve.m_Bezier.a;
         float3 farForward = isStart
             ? curve.m_Bezier.d - curve.m_Bezier.c
-            : curve.m_Bezier.b - curve.m_Bezier.a;
+            : curve.m_Bezier.a - curve.m_Bezier.b;
         Vector2 farLeft = NormalizeLeft(farForward);
         Vector3 alignedPosition = new Vector3(choice.Position.X, node.m_Position.y, choice.Position.Y);
         Vector3 alignedFarPoint = new Vector3(
-            farPosition.x + farLeft.X * choice.Offset,
+            farPosition.x + farLeft.X * choice.Candidate.Offset,
             farPosition.y,
-            farPosition.z + farLeft.Y * choice.Offset);
+            farPosition.z + farLeft.Y * choice.Candidate.Offset);
         bool targetHalfAligned = IsTargetHalfAligned(entityManager, edgeEntity, isStart);
 
         selection = new ConnectionSelection(
@@ -102,13 +122,14 @@ internal static class EndpointAlignmentService
             selectedPrefab,
             alignedPosition,
             alignedFarPoint,
-            choice.Offset,
+            choice.Candidate,
             choice.Index,
             choice.Count,
             selectedWidth,
             existingWidth,
             useZoningGrid,
-            targetHalfAligned);
+            targetHalfAligned,
+            role);
         return true;
     }
 
@@ -246,6 +267,200 @@ internal static class EndpointAlignmentService
             ? Game.Net.RoadFlags.StartHalfAligned
             : Game.Net.RoadFlags.EndHalfAligned;
         return (road.m_Flags & flag) != 0;
+    }
+
+    private static List<LaneDescriptor> ReadSelectedLanes(
+        EntityManager entityManager,
+        Entity selectedPrefab,
+        EndpointRole role)
+    {
+        var result = new List<LaneDescriptor>();
+        if (role == EndpointRole.Unknown ||
+            selectedPrefab == Entity.Null ||
+            !entityManager.Exists(selectedPrefab))
+        {
+            return result;
+        }
+
+        bool atStart = role == EndpointRole.Start;
+        AppendDefaultLanes(
+            entityManager,
+            selectedPrefab,
+            atStart,
+            expressInOpposingArmAxis: true,
+            result);
+        if (result.Count == 0)
+        {
+            AppendCompositionLanes(
+                entityManager,
+                selectedPrefab,
+                atStart,
+                expressInOpposingArmAxis: true,
+                result);
+        }
+
+        return result;
+    }
+
+    private static List<LaneDescriptor> ReadTargetLanes(
+        EntityManager entityManager,
+        Entity edgeEntity,
+        Entity targetPrefab,
+        bool isStart)
+    {
+        var result = new List<LaneDescriptor>();
+        if (entityManager.HasComponent<Composition>(edgeEntity))
+        {
+            Entity composition = entityManager.GetComponentData<Composition>(edgeEntity).m_Edge;
+            if (composition != Entity.Null && entityManager.Exists(composition))
+            {
+                AppendCompositionLanes(
+                    entityManager,
+                    composition,
+                    isStart,
+                    expressInOpposingArmAxis: false,
+                    result);
+            }
+        }
+
+        // Old saves and some runtime-built custom roads may not yet expose an
+        // actual edge composition. Their generated/default prefab lanes still
+        // provide the same positions and flow flags.
+        if (result.Count == 0)
+        {
+            AppendDefaultLanes(
+                entityManager,
+                targetPrefab,
+                isStart,
+                expressInOpposingArmAxis: false,
+                result);
+        }
+
+        return result;
+    }
+
+    private static void AppendDefaultLanes(
+        EntityManager entityManager,
+        Entity prefab,
+        bool atStart,
+        bool expressInOpposingArmAxis,
+        ICollection<LaneDescriptor> result)
+    {
+        if (!entityManager.HasBuffer<DefaultNetLane>(prefab))
+        {
+            return;
+        }
+
+        DynamicBuffer<DefaultNetLane> lanes = entityManager.GetBuffer<DefaultNetLane>(prefab, true);
+        for (int i = 0; i < lanes.Length; i++)
+        {
+            DefaultNetLane lane = lanes[i];
+            AppendLane(
+                entityManager,
+                lane.m_Lane,
+                lane.m_Position.x,
+                lane.m_Flags,
+                lane.m_Carriageway,
+                lane.m_Group,
+                lane.m_Index,
+                atStart,
+                expressInOpposingArmAxis,
+                result);
+        }
+    }
+
+    private static void AppendCompositionLanes(
+        EntityManager entityManager,
+        Entity composition,
+        bool atStart,
+        bool expressInOpposingArmAxis,
+        ICollection<LaneDescriptor> result)
+    {
+        if (!entityManager.HasBuffer<NetCompositionLane>(composition))
+        {
+            return;
+        }
+
+        DynamicBuffer<NetCompositionLane> lanes = entityManager.GetBuffer<NetCompositionLane>(composition, true);
+        for (int i = 0; i < lanes.Length; i++)
+        {
+            NetCompositionLane lane = lanes[i];
+            AppendLane(
+                entityManager,
+                lane.m_Lane,
+                lane.m_Position.x,
+                lane.m_Flags,
+                lane.m_Carriageway,
+                lane.m_Group,
+                lane.m_Index,
+                atStart,
+                expressInOpposingArmAxis,
+                result);
+        }
+    }
+
+    private static void AppendLane(
+        EntityManager entityManager,
+        Entity lanePrefab,
+        float localPosition,
+        LaneFlags flags,
+        byte carriageway,
+        byte group,
+        byte index,
+        bool atStart,
+        bool expressInOpposingArmAxis,
+        ICollection<LaneDescriptor> result)
+    {
+        if (!IsDrivableLane(entityManager, lanePrefab, flags))
+        {
+            return;
+        }
+
+        float width = 3.5f;
+        if (lanePrefab != Entity.Null &&
+            entityManager.Exists(lanePrefab) &&
+            entityManager.HasComponent<NetLaneData>(lanePrefab))
+        {
+            width = entityManager.GetComponentData<NetLaneData>(lanePrefab).m_Width;
+        }
+
+        int flow = LaneEndpointMath.ToArmFlow(
+            inverted: (flags & LaneFlags.Invert) != 0,
+            twoWay: (flags & LaneFlags.Twoway) != 0,
+            atStart: atStart);
+
+        // Local composition X is positive to the road's right. Target lanes
+        // are expressed in the target arm's left axis. The new road leaves or
+        // enters along the opposing arm, so its lateral axis is mirrored into
+        // that same physical coordinate system before matching.
+        float position = LaneEndpointMath.ToConnectionAxis(
+            localPosition,
+            atStart,
+            expressInOpposingArmAxis);
+        result.Add(new LaneDescriptor(position, flow, carriageway, group, index, width));
+    }
+
+    private static bool IsDrivableLane(
+        EntityManager entityManager,
+        Entity lanePrefab,
+        LaneFlags flags)
+    {
+        if ((flags & (LaneFlags.Pedestrian |
+                      LaneFlags.Parking |
+                      LaneFlags.Utility |
+                      LaneFlags.BicyclesOnly)) != 0)
+        {
+            return false;
+        }
+
+        if (lanePrefab != Entity.Null &&
+            entityManager.Exists(lanePrefab) &&
+            entityManager.HasComponent<CarLaneData>(lanePrefab))
+        {
+            return true;
+        }
+
+        return (flags & LaneFlags.Road) != 0;
     }
 
     private static bool TryGetExistingWidth(EntityManager entityManager, Entity edgeEntity, out float width)
