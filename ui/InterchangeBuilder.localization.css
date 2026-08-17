@@ -19,3 +19,49 @@
 .ib-connection-rules p {
   margin: 7rem 0 0;
 }
+
+.ib-native-road-selection {
+  margin: 8rem 0 10rem;
+  padding: 9rem 10rem;
+  border: 1rem solid rgba(78, 211, 143, 0.58);
+  border-radius: 5rem;
+  background: rgba(20, 78, 52, 0.46);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12rem;
+}
+
+.ib-native-road-selection span {
+  display: block;
+  color: rgba(198, 218, 232, 0.82);
+  font-size: 11rem;
+}
+
+.ib-native-road-selection strong {
+  display: block;
+  overflow: hidden;
+  margin-top: 4rem;
+  color: rgb(225, 240, 250);
+  font-size: 14rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ib-native-road-selection p {
+  margin: 7rem 0 0;
+  color: rgba(220, 235, 245, 0.84);
+  line-height: 1.4;
+}
+
+.ib-native-road-selection .ib-endpoint-status {
+  padding: 6rem 7rem;
+  border-left: 3rem solid rgb(98, 193, 255);
+  background: rgba(29, 74, 110, 0.55);
+  color: rgb(221, 241, 255);
+}
+
+.ib-native-road-selection .ib-anarchy-status {
+  padding: 5rem 7rem;
+  border-left: 3rem solid rgb(245, 181, 72);
+  background: rgba(108, 70, 18, 0.4);
+  color: rgb(255, 231, 187);
+}

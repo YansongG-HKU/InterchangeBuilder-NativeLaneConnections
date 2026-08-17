@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>InterchangeBuilder.LaneConnections.Core</AssemblyName>
     <RootNamespace>InterchangeBuilder.LaneConnections</RootNamespace>
-    <Version>2.2.0</Version>
+    <Version>2.5.0</Version>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>

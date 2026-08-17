@@ -6,7 +6,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
-$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.2.0-NativeLaneConnections"
+$artifactsRoot = Join-Path $repositoryRoot "artifacts\InterchangeBuilder-2.5.0-NativeLaneConnections"
 $runtimeProject = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\InterchangeBuilder.LaneConnections.csproj"
 $runtimeOutput = Join-Path $repositoryRoot "src\InterchangeBuilder.LaneConnections\bin\$Configuration\net48"
 $patcherProject = Join-Path $repositoryRoot "tools\InterchangeBuilder.Patcher\InterchangeBuilder.Patcher.csproj"
@@ -115,7 +115,22 @@ $localizedBundle = [regex]::Replace(
 $localizedBundle = [regex]::Replace(
     $localizedBundle,
     '(?m)^\s*\* Version:.*$',
-    ' * Version: 2.2.0')
+    ' * Version: 2.5.0')
+
+# Add two live values supplied by the runtime upgrade. They are deliberately
+# read-only: the game map remains the place where an endpoint port is chosen,
+# and Anarchy remains controlled by Anarchy's own UI/hotkey.
+$runtimeBindingAnchor = 'S=(0,r.bindValue)(o,"roadName","Taken from the start road"),j='
+$runtimeBindingReplacement = 'S=(0,r.bindValue)(o,"roadName","Taken from the start road"),ibEndpointStatus=(0,r.bindValue)(o,"endpointStatus","端点端口：将鼠标移到道路端点选择车道窗口。"),ibAnarchyStatus=(0,r.bindValue)(o,"anarchyStatus","碰撞规则：正在检测 Anarchy…"),j='
+$runtimeBindingCount = ([regex]::Matches($localizedBundle, [regex]::Escape($runtimeBindingAnchor))).Count
+if ($runtimeBindingCount -eq 1)
+{
+    $localizedBundle = $localizedBundle.Replace($runtimeBindingAnchor, $runtimeBindingReplacement)
+}
+elseif ($runtimeBindingCount -ne 0 -or !$localizedBundle.Contains('"endpointStatus"'))
+{
+    throw "The endpoint and Anarchy runtime bindings could not be inserted safely."
+}
 $translations = Get-Content -LiteralPath $uiTranslationsSource -Raw -Encoding UTF8 | ConvertFrom-Json -AsHashtable
 $translatedLiteralCount = 0
 $existingTranslatedLiteralCount = 0
@@ -160,12 +175,44 @@ elseif ($floatingLabelSourceCount -ne 0 -or !$localizedBundle.Contains($floating
     throw "The InterchangeBuilder floating-button label could not be localized safely."
 }
 
+# The game toolbar is the only road picker.  Replace the mod's duplicate
+# interactive catalog with a read-only summary of the vanilla selection.
+$roadSummaryHookAnchor = 'function Qa({toolState:e,hint:a,showRoadSelector:t,roadName:l,roadIndex:s,roadCount:d,metrics:u,validationStatus:c,validationMessage:m,extraRow:h}){const g='
+$roadSummaryHookReplacement = 'function Qa({toolState:e,hint:a,showRoadSelector:t,roadName:l,roadIndex:s,roadCount:d,metrics:u,validationStatus:c,validationMessage:m,extraRow:h}){const ibEndpointText=(0,r.useValue)(ibEndpointStatus),ibAnarchyText=(0,r.useValue)(ibAnarchyStatus),g='
+$roadSummaryHookCount = ([regex]::Matches($localizedBundle, [regex]::Escape($roadSummaryHookAnchor))).Count
+if ($roadSummaryHookCount -eq 1)
+{
+    $localizedBundle = $localizedBundle.Replace($roadSummaryHookAnchor, $roadSummaryHookReplacement)
+}
+elseif ($roadSummaryHookCount -ne 0 -or !$localizedBundle.Contains('ibEndpointText=(0,r.useValue)(ibEndpointStatus)'))
+{
+    throw "The road-summary runtime value hook could not be inserted safely."
+}
+
+$roadSelectorPattern = ',t&&\(0,i\.jsxs\)\("div",\{className:Pe,children:\[.*?\]\}\),h,\(0,i\.jsx\)\("div",\{className:da'
+$roadSelectorRegex = [regex]::new(
+    $roadSelectorPattern,
+    [System.Text.RegularExpressions.RegexOptions]::Singleline)
+$roadSelectorCount = $roadSelectorRegex.Matches($localizedBundle).Count
+$roadSelectorReplacement = ',t&&(0,i.jsxs)("div",{className:"ib-native-road-selection",children:[(0,i.jsx)("span",{children:"当前道路（游戏原生面板）"}),(0,i.jsx)("strong",{children:l}),ibEndpointText&&(0,i.jsx)("p",{className:"ib-endpoint-status",children:ibEndpointText}),ibAnarchyText&&(0,i.jsx)("p",{className:"ib-anarchy-status",children:ibAnarchyText}),(0,i.jsx)("p",{children:"要更换道路，请直接在游戏原生道路面板点击另一条道路；起点不会改变道路类型。"})]}),h,(0,i.jsx)("div",{className:da'
+if ($roadSelectorCount -eq 1)
+{
+    $localizedBundle = $roadSelectorRegex.Replace(
+        $localizedBundle,
+        $roadSelectorReplacement,
+        1)
+}
+elseif ($roadSelectorCount -ne 0 -or !$localizedBundle.Contains('className:"ib-native-road-selection"'))
+{
+    throw "The duplicate InterchangeBuilder road selector could not be replaced safely."
+}
+
 # Insert the rule notice into the existing React tree.  This uses only the
 # bundle's existing JSX runtime and ordinary elements; it does not query or
 # mutate the COUI DOM during module initialization.
 $ruleAnchor = 'children:[(0,i.jsx)("div",{className:$e'
 $ruleAnchorCount = ([regex]::Matches($localizedBundle, [regex]::Escape($ruleAnchor))).Count
-$ruleCard = 'children:[(0,i.jsxs)("div",{className:"ib-connection-rules",children:[(0,i.jsx)("strong",{className:"ib-connection-rules-title",children:"道路端点连接规则"}),(0,i.jsx)("p",{children:"端点连接遵循《城市：天际线 II》原生道路工具：只连接游戏判定兼容的道路、步道和轨道，并按道路宽度与 8 米分区格选择离鼠标最近的候选位置。"}),(0,i.jsx)("p",{children:"模组同时提供原生“按 8 米单元吸附”和“自由宽度对齐”两组候选，中心位置始终保留；四车道接两车道等情况可用鼠标选择左、中、右对齐。"}),(0,i.jsx)("p",{children:"三岔及多臂路口请把鼠标移向目标道路分支后再点击；特殊区域吸附网络不会被宽度规则强制偏移。"})]}),(0,i.jsx)("div",{className:$e'
+$ruleCard = 'children:[(0,i.jsxs)("div",{className:"ib-connection-rules",children:[(0,i.jsx)("strong",{className:"ib-connection-rules-title",children:"道路端点连接规则"}),(0,i.jsx)("p",{children:"道路类型以游戏原生道路面板最后一次选择为准；起点道路不会覆盖它。"}),(0,i.jsx)("p",{children:"端点候选同时使用游戏原生宽度/8 米分区格规则和实际行车道位置；中心始终保留，任意单向、双向、奇偶车道及非对称道路会按方向匹配可用车道窗口。"}),(0,i.jsx)("p",{children:"把鼠标移到端点的左、中、右或具体车道窗口上再点击；起点和终点分别记忆，面板会实时显示新路与既有路的车道对应关系。"}),(0,i.jsx)("p",{children:"若安装 Anarchy，本工具会自动登记兼容并显示当前开关。Anarchy 只放宽碰撞/净空错误，不保证原版不会替换相交道路；匹配超时时模组会优先保留已生成道路，避免误删。"}),(0,i.jsx)("p",{children:"三岔及多臂路口请把鼠标移向目标道路分支后再点击；缺少车道元数据或特殊区域吸附网络会安全回退到原生规则。"})]}),(0,i.jsx)("div",{className:$e'
 if ($ruleAnchorCount -eq 1)
 {
     $localizedBundle = $localizedBundle.Replace($ruleAnchor, $ruleCard)
@@ -181,7 +228,7 @@ elseif ($ruleAnchorCount -ne 0 -or !$localizedBundle.Contains('className:"ib-con
     [System.Text.UTF8Encoding]::new($false))
 $localizationStyles = [System.IO.File]::ReadAllText($uiLocalizationStyles)
 $artifactStyles = [System.IO.File]::ReadAllText($artifactUiStyles)
-if (!$artifactStyles.Contains(".ib-connection-rules"))
+if (!$artifactStyles.Contains(".ib-native-road-selection"))
 {
     [System.IO.File]::AppendAllText(
         $artifactUiStyles,
@@ -193,6 +240,11 @@ foreach ($requiredText in @(
     'JSON.parse(''{"id":"InterchangeBuilder"}'')',
     "立交道路生成器",
     "道路端点连接规则",
+    "当前道路（游戏原生面板）",
+    '"endpointStatus"',
+    '"anarchyStatus"',
+    "实际行车道位置",
+    "起点道路不会覆盖它",
     "打开立交道路生成器",
     "直线"))
 {
@@ -261,4 +313,16 @@ if ($LASTEXITCODE -ne 0)
     throw "Runtime metadata smoke test failed with exit code $LASTEXITCODE."
 }
 
+$archivePath = $artifactsRoot + ".zip"
+Compress-Archive -LiteralPath $artifactsRoot -DestinationPath $archivePath -CompressionLevel Optimal -Force
+$archiveHash = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA256).Hash
+$checksumPath = $archivePath + ".sha256"
+$checksumLine = $archiveHash + " *" + [System.IO.Path]::GetFileName($archivePath) + [Environment]::NewLine
+[System.IO.File]::WriteAllText(
+    $checksumPath,
+    $checksumLine,
+    [System.Text.UTF8Encoding]::new($false))
+
 Write-Host "Upgrade package built at $artifactsRoot"
+Write-Host "Ready-to-install archive: $archivePath"
+Write-Host "SHA-256: $archiveHash"
