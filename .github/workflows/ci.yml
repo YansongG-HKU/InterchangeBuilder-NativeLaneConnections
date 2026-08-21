@@ -1,21 +1,79 @@
-name: Core CI
-
+name: Retry two Enviro GB/T previews
 on:
-  push:
-    branches: [main]
   pull_request:
-  workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
-  test:
-    runs-on: windows-latest
+  retrieve:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {key: '10592-retry', std: 'GB/T 10592-2023', hc: '43A98123A5B075565D9C17FCF64095E6', fn: 'GBT_10592-2023_高低温试验箱技术条件_官方预览重建.pdf'}
+          - {key: '5170-5-retry', std: 'GB/T 5170.5-2016', hc: '104B804FFD4EC534A28DAC37102DD7B9', fn: 'GBT_5170.5-2016_湿热试验设备检验方法_官方预览重建.pdf'}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v6
+      - name: Reconstruct ${{ matrix.std }}
+        shell: bash
+        env:
+          STD: ${{ matrix.std }}
+          HC: ${{ matrix.hc }}
+          FN: ${{ matrix.fn }}
+          KEY: ${{ matrix.key }}
+        run: |
+          set -euo pipefail
+          python -m pip install -q 'openstd_spider==0.1.1'
+          python - <<'PY'
+          import os, asyncio, pathlib, importlib.util, tempfile, json, hashlib
+          spec=importlib.util.find_spec('openstd_spider'); root=pathlib.Path(spec.origin).resolve().parent
+          p=root/'request.py'; p.write_text(p.read_text(encoding='utf-8').replace('follow_redirects=False','follow_redirects=True'),encoding='utf-8')
+          p=root/'captcha.py'; p.write_text(p.read_text(encoding='utf-8').replace('img_data.tostring()','img_data.tobytes()'),encoding='utf-8')
+          from openstd_spider import Gb688Dto, fuck_captcha_impl, download_preview_img_impl, reorganize_page_impl
+          from openstd_spider.parse.gb688 import gb688_uniq_imgid
+          from openstd_spider.pdf import async_render_pdf_impl
+          out=pathlib.Path('out'); out.mkdir()
+          std,hc,fn=os.environ['STD'],os.environ['HC'],os.environ['FN']
+          result={'standard':std,'hcno':hc,'status':'failed','pages':0,'bytes':0,'filename':fn,'error':''}
+          async def main():
+              dto=Gb688Dto()
+              try:
+                  await asyncio.wait_for(fuck_captcha_impl(dto),75)
+                  pages=await asyncio.wait_for(dto.get_pages(hc),75); result['pages']=len(pages)
+                  with tempfile.TemporaryDirectory(prefix='openstd-') as td_s:
+                      td=pathlib.Path(td_s); ids=gb688_uniq_imgid(pages)
+                      await asyncio.wait_for(download_preview_img_impl(dto,td,ids),420)
+                      await asyncio.wait_for(reorganize_page_impl(pages,td),300)
+                      dest=out/fn; await asyncio.wait_for(async_render_pdf_impl(pages,td,dest),300)
+                  if dest.exists() and dest.stat().st_size>5000 and dest.read_bytes()[:4]==b'%PDF':
+                      result['status']='official-preview-reconstructed'; result['bytes']=dest.stat().st_size
+                      (out/'SHA256.txt').write_text(hashlib.sha256(dest.read_bytes()).hexdigest()+'  '+fn+'\n',encoding='utf-8')
+                  else:
+                      dest.unlink(missing_ok=True); result['error']='PDF validation failed'
+              except Exception as e: result['error']=f'{type(e).__name__}: {e}'
+          asyncio.run(main())
+          (out/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(result)
+          PY
+      - uses: actions/upload-artifact@v7
         with:
-          dotnet-version: 8.0.x
-      - name: Run game-independent core tests
-        run: dotnet test tests/InterchangeBuilder.LaneConnections.Core.Tests/InterchangeBuilder.LaneConnections.Core.Tests.csproj --configuration Release --nologo
+          name: ${{ matrix.key }}
+          path: out/
+          retention-days: 1
+          compression-level: 0
+  aggregate:
+    needs: retrieve
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: '*-retry'
+          path: combined
+          merge-multiple: false
+      - uses: actions/upload-artifact@v7
+        with:
+          name: EnviroEquipment-GBT-Retry-Combined
+          path: combined/
+          retention-days: 1
+          compression-level: 0
