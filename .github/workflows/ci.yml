@@ -1,42 +1,24 @@
 name: Enviro standards official OpenSTD retrieval
-
 on:
   pull_request:
-
 permissions:
   contents: read
-
 jobs:
   retrieve:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Install and patch OpenSTD downloader
+      - name: Install and patch
         shell: bash
         run: |
           set -euo pipefail
           python -m pip install 'openstd_spider==0.1.1'
           python - <<'PY'
           import openstd_spider, pathlib
-          root = pathlib.Path(openstd_spider.__file__).resolve().parent
-          p = root / 'request.py'
-          s = p.read_text(encoding='utf-8')
-          n_redirect = s.count('follow_redirects=False')
-          s = s.replace('follow_redirects=False', 'follow_redirects=True')
-          p.write_text(s, encoding='utf-8')
-
-          p2 = root / 'parse' / 'openstd.py'
-          s2 = p2.read_text(encoding='utf-8')
-          old1 = 'pub_date = row.select_one("td:nth-of-type(7)").string.strip()'
-          old2 = 'impl_date = row.select_one("td:nth-of-type(8)").string.strip()'
-          s2 = s2.replace(old1, 'pub_date = (row.select_one("td:nth-of-type(7)").string or "").strip()')
-          s2 = s2.replace(old2, 'impl_date = (row.select_one("td:nth-of-type(8)").string or "").strip()')
-          p2.write_text(s2, encoding='utf-8')
-          print(f'patched redirects={n_redirect}; parser={p2}')
+          root=pathlib.Path(openstd_spider.__file__).resolve().parent
+          p=root/'request.py'; s=p.read_text(); s=s.replace('follow_redirects=False','follow_redirects=True'); p.write_text(s)
           PY
-          openstd_spider info 'GB 18030-2022' >/dev/null
-
-      - name: Download and verify official GB/T PDFs
+      - name: Resolve IDs and download
         shell: bash
         run: |
           set +e
@@ -65,47 +47,44 @@ jobs:
           GB/T 2423.4-2008|GBT_2423.4-2008_交变湿热.pdf
           GB/T 2423.21-2025|GBT_2423.21-2025_低气压.pdf
           GB/T 2423.22-2012|GBT_2423.22-2012_温度变化.pdf
-          GB/T 2423.27-2020|GBT_2423.27-2020_温度低气压或温湿度低气压综合试验.pdf
+          GB/T 2423.27-2020|GBT_2423.27-2020_温度湿度低气压综合试验.pdf
           EOF
-
-          printf 'standard,status,bytes,filename\n' > out/OPENSTD_RESULTS.csv
-          while IFS='|' read -r std filename; do
-            [ -n "$std" ] || continue
-            dest="out/fulltext/$filename"
-            log="out/logs/${filename%.pdf}.log"
-            rm -f "$dest"
-            echo "=== $std ==="
-            status=failed
-            timeout 180 openstd_spider download "$std" -o "$dest" >"$log" 2>&1
-            rc=$?
-            if [ $rc -eq 0 ]; then
-              status=download
-            else
-              rm -f "$dest"
-              timeout 180 openstd_spider download --preview "$std" -o "$dest" >>"$log" 2>&1
-              rc=$?
-              if [ $rc -eq 0 ]; then status=preview; fi
-            fi
-            if [ -f "$dest" ] && [ "$(head -c 4 "$dest")" = '%PDF' ] && [ "$(stat -c%s "$dest")" -gt 5000 ]; then
-              bytes=$(stat -c%s "$dest")
-              printf '"%s",%s,%s,"%s"\n' "$std" "$status" "$bytes" "$filename" >> out/OPENSTD_RESULTS.csv
-              echo "OK $status $bytes $filename"
-            else
-              rm -f "$dest"
-              printf '"%s",failed,0,"%s"\n' "$std" "$filename" >> out/OPENSTD_RESULTS.csv
-              echo "FAIL $std"
-              tail -n 8 "$log"
-            fi
-          done < standards.txt
-          find out/fulltext -maxdepth 1 -type f -name '*.pdf' -print0 | sort -z | xargs -0 -r sha256sum > out/SHA256SUMS.txt
-          cat out/OPENSTD_RESULTS.csv
-          echo "PDF count: $(find out/fulltext -type f -name '*.pdf' | wc -l)"
-
-      - name: Upload official files and diagnostics
+          python - <<'PY' > resolved.txt
+          import httpx,re
+          from bs4 import BeautifulSoup
+          for line in open('standards.txt',encoding='utf-8'):
+              std,fn=line.rstrip().split('|',1)
+              r=httpx.get('https://openstd.samr.gov.cn/bzgk/gb/std_list',params={'p.p1':'0','p.p2':std.replace(' ','')},follow_redirects=True,timeout=30)
+              soup=BeautifulSoup(r.text,'lxml'); hc=None
+              target=std.replace(' ','').upper()
+              for a in soup.select('a[onclick]'):
+                  if a.get_text(strip=True).replace(' ','').upper()==target:
+                      m=re.search(r'[0-9A-F]{32}',a.get('onclick',''))
+                      if m: hc=m.group(0); break
+              if not hc:
+                  for row in soup.select('tr'):
+                      if target in row.get_text(' ',strip=True).replace(' ','').upper():
+                          m=re.search(r'[0-9A-F]{32}',str(row))
+                          if m: hc=m.group(0); break
+              print(f'{std}|{fn}|{hc or ""}')
+          PY
+          printf 'standard,hcno,status,bytes,filename\n' > out/OPENSTD_RESULTS.csv
+          while IFS='|' read -r std fn hc; do
+            dest="out/fulltext/$fn"; log="out/logs/${fn%.pdf}.log"; rm -f "$dest"; status=failed
+            if [ -n "$hc" ]; then
+              timeout 180 openstd_spider download "$hc" -o "$dest" >"$log" 2>&1; rc=$?
+              if [ $rc -eq 0 ]; then status=download; else rm -f "$dest"; timeout 180 openstd_spider download --preview "$hc" -o "$dest" >>"$log" 2>&1; [ $? -eq 0 ] && status=preview; fi
+            else echo 'HCNO resolution failed' >"$log"; fi
+            if [ -f "$dest" ] && [ "$(head -c 4 "$dest")" = '%PDF' ] && [ "$(stat -c%s "$dest")" -gt 5000 ]; then bytes=$(stat -c%s "$dest"); else rm -f "$dest"; bytes=0; status=failed; fi
+            printf '"%s","%s",%s,%s,"%s"\n' "$std" "$hc" "$status" "$bytes" "$fn" >> out/OPENSTD_RESULTS.csv
+            echo "$std $hc $status $bytes"
+          done < resolved.txt
+          find out/fulltext -type f -name '*.pdf' -print0 | sort -z | xargs -0 -r sha256sum > out/SHA256SUMS.txt
+          cp resolved.txt out/
+      - name: Upload
         uses: actions/upload-artifact@v7
         with:
           name: EnviroEquipment-OpenSTD-Retrieved
           path: out/
-          if-no-files-found: error
           retention-days: 1
           compression-level: 0
