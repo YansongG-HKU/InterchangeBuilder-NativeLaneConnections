@@ -14,14 +14,23 @@ jobs:
           set -euo pipefail
           python -m pip install 'openstd_spider==0.1.1'
           python - <<'PY'
-          import asyncio, pathlib, csv, hashlib
+          import asyncio, pathlib, csv, hashlib, site
           import openstd_spider
           from openstd_spider import Gb688Dto, fuck_captcha_impl
 
           root = pathlib.Path(openstd_spider.__file__).resolve().parent
           p = root / 'request.py'
-          s = p.read_text(encoding='utf-8').replace('follow_redirects=False','follow_redirects=True')
-          p.write_text(s, encoding='utf-8')
+          p.write_text(p.read_text(encoding='utf-8').replace('follow_redirects=False','follow_redirects=True'), encoding='utf-8')
+          # ddddocr 1.5.6 still calls ndarray.tostring(), removed by current NumPy.
+          patched = 0
+          for sp in site.getsitepackages() + [site.getusersitepackages()]:
+              d = pathlib.Path(sp) / 'ddddocr'
+              if d.exists():
+                  for f in d.rglob('*.py'):
+                      s=f.read_text(encoding='utf-8')
+                      if '.tostring()' in s:
+                          n=s.count('.tostring()'); f.write_text(s.replace('.tostring()','.tobytes()'),encoding='utf-8'); patched += n
+          print('patched ddddocr tostring calls:', patched)
 
           items = [
             ('GB/T 10589-2008','940D5CBB0996AEB0A62B10521DCC8A56','GBT_10589-2008_低温试验箱技术条件.pdf'),
@@ -49,26 +58,23 @@ jobs:
                   captcha='ok'
               except Exception as e:
                   captcha=f'fail:{type(e).__name__}:{e}'
+              print('captcha:',captcha)
               for std,hc,fn in items:
-                  dest=out/fn
-                  status='failed'; err=''
+                  dest=out/fn; status='failed'; err=''
                   if captcha=='ok':
                       try:
                           await asyncio.wait_for(dto.download_pdf(hc,dest), timeout=60)
-                          if dest.exists() and dest.stat().st_size>5000 and dest.read_bytes()[:4]==b'%PDF':
-                              status='official-fulltext'
-                          else:
-                              status='invalid'; dest.unlink(missing_ok=True)
-                      except Exception as e:
-                          err=f'{type(e).__name__}:{e}'; dest.unlink(missing_ok=True)
+                          if dest.exists() and dest.stat().st_size>5000 and dest.read_bytes()[:4]==b'%PDF': status='official-fulltext'
+                          else: status='invalid'; dest.unlink(missing_ok=True)
+                      except Exception as e: err=f'{type(e).__name__}:{e}'; dest.unlink(missing_ok=True)
                   else: err=captcha
                   results.append((std,hc,status,dest.stat().st_size if dest.exists() else 0,fn,err))
           asyncio.run(main())
+          pathlib.Path('out').mkdir(exist_ok=True)
           with open('out/RESULTS.csv','w',encoding='utf-8-sig',newline='') as f:
               w=csv.writer(f); w.writerow(['standard','hcno','status','bytes','filename','error']); w.writerows(results)
           with open('out/SHA256SUMS.txt','w',encoding='utf-8') as f:
-              for p in sorted(out.glob('*.pdf')):
-                  f.write(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n')
+              for q in sorted(out.glob('*.pdf')): f.write(hashlib.sha256(q.read_bytes()).hexdigest()+'  '+q.name+'\n')
           print(*results,sep='\n')
           PY
       - name: Upload result
