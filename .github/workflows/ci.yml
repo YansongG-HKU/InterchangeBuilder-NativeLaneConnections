@@ -14,23 +14,15 @@ jobs:
           set -euo pipefail
           python -m pip install 'openstd_spider==0.1.1'
           python - <<'PY'
-          import asyncio, pathlib, csv, hashlib, site
+          import asyncio, pathlib, csv, hashlib
           import openstd_spider
           from openstd_spider import Gb688Dto, fuck_captcha_impl
 
           root = pathlib.Path(openstd_spider.__file__).resolve().parent
           p = root / 'request.py'
           p.write_text(p.read_text(encoding='utf-8').replace('follow_redirects=False','follow_redirects=True'), encoding='utf-8')
-          # ddddocr 1.5.6 still calls ndarray.tostring(), removed by current NumPy.
-          patched = 0
-          for sp in site.getsitepackages() + [site.getusersitepackages()]:
-              d = pathlib.Path(sp) / 'ddddocr'
-              if d.exists():
-                  for f in d.rglob('*.py'):
-                      s=f.read_text(encoding='utf-8')
-                      if '.tostring()' in s:
-                          n=s.count('.tostring()'); f.write_text(s.replace('.tostring()','.tobytes()'),encoding='utf-8'); patched += n
-          print('patched ddddocr tostring calls:', patched)
+          cap = root / 'captcha.py'
+          cap.write_text(cap.read_text(encoding='utf-8').replace('img_data.tostring()','img_data.tobytes()'), encoding='utf-8')
 
           items = [
             ('GB/T 10589-2008','940D5CBB0996AEB0A62B10521DCC8A56','GBT_10589-2008_低温试验箱技术条件.pdf'),
