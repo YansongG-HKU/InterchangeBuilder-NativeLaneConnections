@@ -1,4 +1,4 @@
-name: Enviro official GB/T parallel retrieval
+name: Retry two Enviro GB/T previews
 on:
   pull_request:
 permissions:
@@ -9,23 +9,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {key: '10589', std: 'GB/T 10589-2008', hc: '940D5CBB0996AEB0A62B10521DCC8A56', fn: 'GBT_10589-2008_低温试验箱技术条件_官方预览重建.pdf'}
-          - {key: '11158', std: 'GB/T 11158-2008', hc: 'B4F8CB4F59270D773E969789A3E82A00', fn: 'GBT_11158-2008_高温试验箱技术条件_官方预览重建.pdf'}
-          - {key: '10592', std: 'GB/T 10592-2023', hc: '43A98123A5B075565D9C17FCF64095E6', fn: 'GBT_10592-2023_高低温试验箱技术条件_官方预览重建.pdf'}
-          - {key: '10586', std: 'GB/T 10586-2025', hc: 'F1EF03245EB82A4733DD97BFFB731E7B', fn: 'GBT_10586-2025_湿热试验箱技术规范_官方预览重建.pdf'}
-          - {key: '11159', std: 'GB/T 11159-2010', hc: '9CF307E2C435CF7E3F85DD66CA731800', fn: 'GBT_11159-2010_低气压试验箱技术条件_官方预览重建.pdf'}
-          - {key: '10590', std: 'GB/T 10590-2006', hc: 'C90C5A4A728E7642E5185A37208E80D0', fn: 'GBT_10590-2006_高低温低气压试验箱技术条件_官方预览重建.pdf'}
-          - {key: '10591', std: 'GB/T 10591-2006', hc: '57F8A5B61C8CE9F61C8AEC97595B8B73', fn: 'GBT_10591-2006_高温低气压试验箱技术条件_官方预览重建.pdf'}
-          - {key: '5170-1', std: 'GB/T 5170.1-2016', hc: 'D860E4F76F7F0019B12B6F0EBD592E84', fn: 'GBT_5170.1-2016_环境试验设备检验方法总则_官方预览重建.pdf'}
-          - {key: '5170-2', std: 'GB/T 5170.2-2017', hc: 'F55FAB1073F34CEBDCBE0BC6EF035C39', fn: 'GBT_5170.2-2017_温度试验设备检验方法_官方预览重建.pdf'}
-          - {key: '5170-5', std: 'GB/T 5170.5-2016', hc: '104B804FFD4EC534A28DAC37102DD7B9', fn: 'GBT_5170.5-2016_湿热试验设备检验方法_官方预览重建.pdf'}
-          - {key: '5170-10', std: 'GB/T 5170.10-2017', hc: '369CB2C323C121F003BD0C4A8FE0E9C5', fn: 'GBT_5170.10-2017_高低温低气压试验设备检验方法_官方预览重建.pdf'}
-          - {key: '32710-1', std: 'GB/T 32710.1-2016', hc: '86C6C3E38FD5422F9324CFF232673B68', fn: 'GBT_32710.1-2016_环境试验仪器设备安全总则_官方预览重建.pdf'}
-          - {key: '32710-2', std: 'GB/T 32710.2-2016', hc: '62AB7A85DBD13D757F835E82060D0B14', fn: 'GBT_32710.2-2016_低温恒温循环装置安全规范_官方预览重建.pdf'}
-          - {key: '32710-4', std: 'GB/T 32710.4-2016', hc: '8E3C9C79CA506C7777498A4847B04C92', fn: 'GBT_32710.4-2016_高温恒温循环装置安全规范_官方预览重建.pdf'}
-          - {key: '33861', std: 'GB/T 33861-2017', hc: '4A41CC45B9883A4A54C99E7EDBB6AAF0', fn: 'GBT_33861-2017_高低温试验箱能效测试方法_官方预览重建.pdf'}
+          - {key: '10592-retry', std: 'GB/T 10592-2023', hc: '43A98123A5B075565D9C17FCF64095E6', fn: 'GBT_10592-2023_高低温试验箱技术条件_官方预览重建.pdf'}
+          - {key: '5170-5-retry', std: 'GB/T 5170.5-2016', hc: '104B804FFD4EC534A28DAC37102DD7B9', fn: 'GBT_5170.5-2016_湿热试验设备检验方法_官方预览重建.pdf'}
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - name: Reconstruct ${{ matrix.std }}
         shell: bash
@@ -51,30 +38,26 @@ jobs:
           async def main():
               dto=Gb688Dto()
               try:
-                  await asyncio.wait_for(fuck_captcha_impl(dto),60)
-                  pages=await asyncio.wait_for(dto.get_pages(hc),45)
-                  result['pages']=len(pages)
+                  await asyncio.wait_for(fuck_captcha_impl(dto),75)
+                  pages=await asyncio.wait_for(dto.get_pages(hc),75); result['pages']=len(pages)
                   with tempfile.TemporaryDirectory(prefix='openstd-') as td_s:
                       td=pathlib.Path(td_s); ids=gb688_uniq_imgid(pages)
-                      await asyncio.wait_for(download_preview_img_impl(dto,td,ids),240)
-                      await asyncio.wait_for(reorganize_page_impl(pages,td),240)
-                      dest=out/fn
-                      await asyncio.wait_for(async_render_pdf_impl(pages,td,dest),240)
+                      await asyncio.wait_for(download_preview_img_impl(dto,td,ids),420)
+                      await asyncio.wait_for(reorganize_page_impl(pages,td),300)
+                      dest=out/fn; await asyncio.wait_for(async_render_pdf_impl(pages,td,dest),300)
                   if dest.exists() and dest.stat().st_size>5000 and dest.read_bytes()[:4]==b'%PDF':
                       result['status']='official-preview-reconstructed'; result['bytes']=dest.stat().st_size
                       (out/'SHA256.txt').write_text(hashlib.sha256(dest.read_bytes()).hexdigest()+'  '+fn+'\n',encoding='utf-8')
                   else:
                       dest.unlink(missing_ok=True); result['error']='PDF validation failed'
-              except Exception as e:
-                  result['error']=f'{type(e).__name__}: {e}'
+              except Exception as e: result['error']=f'{type(e).__name__}: {e}'
           asyncio.run(main())
           (out/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
           print(result)
           PY
-      - name: Upload per-standard result
-        uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v7
         with:
-          name: gbt-${{ matrix.key }}
+          name: ${{ matrix.key }}
           path: out/
           retention-days: 1
           compression-level: 0
@@ -85,18 +68,12 @@ jobs:
     steps:
       - uses: actions/download-artifact@v7
         with:
-          pattern: gbt-*
+          pattern: '*-retry'
           path: combined
           merge-multiple: false
-      - name: Make combined status
-        shell: bash
-        run: |
-          find combined -type f -name '*.pdf' -print > combined/PDF_FILES.txt
-          find combined -type f -name 'result.json' -print > combined/RESULT_FILES.txt
-          echo "PDF count: $(find combined -type f -name '*.pdf' | wc -l)"
       - uses: actions/upload-artifact@v7
         with:
-          name: EnviroEquipment-Official-GBT-Parallel-Combined
+          name: EnviroEquipment-GBT-Retry-Combined
           path: combined/
           retention-days: 1
           compression-level: 0
