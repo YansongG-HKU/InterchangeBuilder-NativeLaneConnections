@@ -1,21 +1,49 @@
-name: Core CI
+name: Temporary standards retrieval
 
 on:
-  push:
-    branches: [main]
   pull_request:
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  test:
-    runs-on: windows-latest
+  download-public-standard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v6
+      - name: Download MIL-STD-810H Change 1
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          dest='out/MIL-STD-810H_Change1_2022.pdf'
+          urls=(
+            'https://cvgstrategy.com/wp-content/uploads/2023/04/MIL-STD-810H-change-1.pdf'
+            'https://stest.com.tr/wp-content/uploads/2026/01/MIL-STD-810H_CHG-1.pdf'
+          )
+          ok=0
+          for url in "${urls[@]}"; do
+            echo "Trying $url"
+            if curl -fL --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 300 -A 'Mozilla/5.0' "$url" -o "$dest"; then
+              if [ "$(head -c 4 "$dest")" = '%PDF' ] && [ "$(stat -c%s "$dest")" -gt 30000000 ]; then
+                ok=1
+                break
+              fi
+            fi
+            rm -f "$dest"
+          done
+          if [ "$ok" -ne 1 ]; then
+            echo 'MIL-STD-810H download failed from all validated public sources' >&2
+            exit 1
+          fi
+          sha256sum "$dest" | tee out/SHA256SUMS.txt
+          ls -lh "$dest"
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v7
         with:
-          dotnet-version: 8.0.x
-      - name: Run game-independent core tests
-        run: dotnet test tests/InterchangeBuilder.LaneConnections.Core.Tests/InterchangeBuilder.LaneConnections.Core.Tests.csproj --configuration Release --nologo
+          name: MIL-STD-810H-Change1-2022
+          path: out/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
