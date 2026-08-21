@@ -18,12 +18,21 @@ jobs:
           python -m pip install 'openstd_spider==0.1.1'
           python - <<'PY'
           import openstd_spider, pathlib
-          p = pathlib.Path(openstd_spider.__file__).resolve().parent / 'request.py'
+          root = pathlib.Path(openstd_spider.__file__).resolve().parent
+          p = root / 'request.py'
           s = p.read_text(encoding='utf-8')
-          n = s.count('follow_redirects=False')
+          n_redirect = s.count('follow_redirects=False')
           s = s.replace('follow_redirects=False', 'follow_redirects=True')
           p.write_text(s, encoding='utf-8')
-          print(f'patched {p}: {n} redirect settings')
+
+          p2 = root / 'parse' / 'openstd.py'
+          s2 = p2.read_text(encoding='utf-8')
+          old1 = 'pub_date = row.select_one("td:nth-of-type(7)").string.strip()'
+          old2 = 'impl_date = row.select_one("td:nth-of-type(8)").string.strip()'
+          s2 = s2.replace(old1, 'pub_date = (row.select_one("td:nth-of-type(7)").string or "").strip()')
+          s2 = s2.replace(old2, 'impl_date = (row.select_one("td:nth-of-type(8)").string or "").strip()')
+          p2.write_text(s2, encoding='utf-8')
+          print(f'patched redirects={n_redirect}; parser={p2}')
           PY
           openstd_spider info 'GB 18030-2022' >/dev/null
 
@@ -67,13 +76,13 @@ jobs:
             rm -f "$dest"
             echo "=== $std ==="
             status=failed
-            openstd_spider download "$std" -o "$dest" >"$log" 2>&1
+            timeout 180 openstd_spider download "$std" -o "$dest" >"$log" 2>&1
             rc=$?
             if [ $rc -eq 0 ]; then
               status=download
             else
               rm -f "$dest"
-              openstd_spider download --preview "$std" -o "$dest" >>"$log" 2>&1
+              timeout 180 openstd_spider download --preview "$std" -o "$dest" >>"$log" 2>&1
               rc=$?
               if [ $rc -eq 0 ]; then status=preview; fi
             fi
@@ -85,7 +94,7 @@ jobs:
               rm -f "$dest"
               printf '"%s",failed,0,"%s"\n' "$std" "$filename" >> out/OPENSTD_RESULTS.csv
               echo "FAIL $std"
-              tail -n 12 "$log"
+              tail -n 8 "$log"
             fi
           done < standards.txt
           find out/fulltext -maxdepth 1 -type f -name '*.pdf' -print0 | sort -z | xargs -0 -r sha256sum > out/SHA256SUMS.txt
