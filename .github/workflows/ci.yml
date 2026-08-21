@@ -7,42 +7,59 @@ permissions:
   contents: read
 
 jobs:
-  download-public-standard:
+  download-public-standards:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
-      - name: Download MIL-STD-810H Change 1
+      - name: Download and verify public standards
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p out
-          dest='out/MIL-STD-810H_Change1_2022.pdf'
-          urls=(
-            'https://cvgstrategy.com/wp-content/uploads/2023/04/MIL-STD-810H-change-1.pdf'
-            'https://stest.com.tr/wp-content/uploads/2026/01/MIL-STD-810H_CHG-1.pdf'
-          )
+
+          download_pdf() {
+            local name="$1"
+            local url="$2"
+            local dest="out/$name"
+            echo "Downloading $name"
+            curl -fL --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 300 \
+              -A 'Mozilla/5.0' -e 'https://aero.nuaa.edu.cn/' "$url" -o "$dest"
+            test "$(head -c 4 "$dest")" = '%PDF'
+            test "$(stat -c%s "$dest")" -gt 5000
+            ls -lh "$dest"
+          }
+
+          # MIL-STD-810H w/Change 1 - Distribution Statement A.
+          mil='out/MIL-STD-810H_Change1_2022.pdf'
           ok=0
-          for url in "${urls[@]}"; do
-            echo "Trying $url"
-            if curl -fL --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 300 -A 'Mozilla/5.0' "$url" -o "$dest"; then
-              if [ "$(head -c 4 "$dest")" = '%PDF' ] && [ "$(stat -c%s "$dest")" -gt 30000000 ]; then
+          for url in \
+            'https://cvgstrategy.com/wp-content/uploads/2023/04/MIL-STD-810H-change-1.pdf' \
+            'https://stest.com.tr/wp-content/uploads/2026/01/MIL-STD-810H_CHG-1.pdf'; do
+            if curl -fL --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 300 -A 'Mozilla/5.0' "$url" -o "$mil"; then
+              if [ "$(head -c 4 "$mil")" = '%PDF' ] && [ "$(stat -c%s "$mil")" -gt 30000000 ]; then
                 ok=1
                 break
               fi
             fi
-            rm -f "$dest"
+            rm -f "$mil"
           done
-          if [ "$ok" -ne 1 ]; then
-            echo 'MIL-STD-810H download failed from all validated public sources' >&2
-            exit 1
-          fi
-          sha256sum "$dest" | tee out/SHA256SUMS.txt
-          ls -lh "$dest"
+          test "$ok" -eq 1
 
-      - name: Upload PDF artifact
+          download_pdf 'GJB_150.1A-2009_通用要求.pdf' 'https://aero.nuaa.edu.cn/_upload/article/files/12/57/46a8d9c342bc8c97719f1d5725b4/e7d72e1e-9688-452b-84fc-0ee0def466e1.pdf'
+          download_pdf 'GJB_150.2A-2009_低气压高度试验.pdf' 'https://aero.nuaa.edu.cn/_upload/article/files/12/57/46a8d9c342bc8c97719f1d5725b4/6fb2c38f-f529-43d9-ad1e-a49595957dbc.pdf'
+          download_pdf 'GJB_150.3A-2009_高温试验.pdf' 'https://aero.nuaa.edu.cn/_upload/article/files/12/57/46a8d9c342bc8c97719f1d5725b4/88f99e4b-990b-4f9e-b6b3-5ff68e4ec415.pdf'
+          download_pdf 'GJB_150.4A-2009_低温试验.pdf' 'https://aero.nuaa.edu.cn/_upload/article/files/12/57/46a8d9c342bc8c97719f1d5725b4/de2504bf-6f31-4a09-b3e7-68137a10392d.pdf'
+          download_pdf 'GJB_150.5A-2009_温度冲击试验.pdf' 'https://aero.nuaa.edu.cn/_upload/article/files/12/57/46a8d9c342bc8c97719f1d5725b4/3a246e98-4388-4071-905d-4d2747ca66db.pdf'
+          download_pdf 'GJB_150.9A-2009_湿热试验.pdf' 'https://aero.nuaa.edu.cn/_upload/article/files/12/57/46a8d9c342bc8c97719f1d5725b4/9411617c-8149-460f-a1ba-810760bac364.pdf'
+
+          sha256sum out/*.pdf | tee out/SHA256SUMS.txt
+          printf 'MIL-STD-810H Change 1 plus six GJB 150A environmental-test standards.\n' > out/README.txt
+          ls -lh out
+
+      - name: Upload standards artifact
         uses: actions/upload-artifact@v7
         with:
-          name: MIL-STD-810H-Change1-2022
+          name: EnviroEquipment-Public-Standards
           path: out/
           if-no-files-found: error
           retention-days: 1
