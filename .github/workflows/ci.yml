@@ -1,4 +1,4 @@
-name: Enviro standards gap retrieval
+name: Enviro standards OpenSTD diagnostic
 
 on:
   pull_request:
@@ -7,80 +7,48 @@ permissions:
   contents: read
 
 jobs:
-  retrieve:
+  diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
-      - name: Install OpenSTD downloader
+      - name: Diagnose OpenSTD downloader
         shell: bash
         run: |
-          set -euo pipefail
-          python -m pip install --upgrade pip
-          python -m pip install openstd_spider
-          openstd_spider --help >/dev/null
+          set +e
+          mkdir -p out
+          {
+            echo '=== ENV ==='
+            python --version
+            uname -a
+            echo '=== INSTALL ==='
+            python -m pip install 'openstd_spider==0.1.1'
+            echo '=== VERSION/HELP ==='
+            python -m pip show openstd_spider
+            openstd_spider --help
+            openstd_spider download --help
+            echo '=== KNOWN PUBLIC CONTROL INFO ==='
+            openstd_spider info 'GB 18030-2022'
+            echo "control-info-exit=$?"
+            echo '=== KNOWN PUBLIC CONTROL DOWNLOAD ==='
+            openstd_spider download 'GB 18030-2022' -o out/GB_18030-2022.pdf
+            echo "control-download-exit=$?"
+            ls -lh out/GB_18030-2022.pdf 2>&1
+            [ -f out/GB_18030-2022.pdf ] && head -c 8 out/GB_18030-2022.pdf | xxd
+            echo '=== TARGET INFO ==='
+            openstd_spider info 'GB/T 10589-2008'
+            echo "target-info-exit=$?"
+            echo '=== TARGET DOWNLOAD ==='
+            openstd_spider download 'GB/T 10589-2008' -o out/GBT_10589-2008.pdf
+            echo "target-download-exit=$?"
+            ls -lh out/GBT_10589-2008.pdf 2>&1
+            [ -f out/GBT_10589-2008.pdf ] && head -c 8 out/GBT_10589-2008.pdf | xxd
+          } > out/diagnostics.txt 2>&1
+          cat out/diagnostics.txt
 
-      - name: Download public GB/T standards from official OpenSTD
-        shell: bash
-        run: |
-          set -u
-          mkdir -p out/fulltext
-          cat > standards.txt <<'EOF'
-          GB/T 10589-2008|GBT_10589-2008_低温试验箱技术条件.pdf
-          GB/T 11158-2008|GBT_11158-2008_高温试验箱技术条件.pdf
-          GB/T 10592-2023|GBT_10592-2023_高低温试验箱技术条件.pdf
-          GB/T 10586-2025|GBT_10586-2025_湿热试验箱技术规范.pdf
-          GB/T 11159-2010|GBT_11159-2010_低气压试验箱技术条件.pdf
-          GB/T 10590-2006|GBT_10590-2006_高低温低气压试验箱技术条件.pdf
-          GB/T 10591-2006|GBT_10591-2006_高温低气压试验箱技术条件.pdf
-          GB/T 5170.1-2016|GBT_5170.1-2016_环境试验设备检验方法总则.pdf
-          GB/T 5170.2-2017|GBT_5170.2-2017_温度试验设备检验方法.pdf
-          GB/T 5170.5-2016|GBT_5170.5-2016_湿热试验设备检验方法.pdf
-          GB/T 5170.10-2017|GBT_5170.10-2017_高低温低气压试验设备检验方法.pdf
-          GB/T 2424.6-2021|GBT_2424.6-2021_温度湿度试验箱性能确认.pdf
-          GB/T 32710.1-2016|GBT_32710.1-2016_环境试验仪器设备安全总则.pdf
-          GB/T 32710.2-2016|GBT_32710.2-2016_低温恒温循环装置安全规范.pdf
-          GB/T 32710.4-2016|GBT_32710.4-2016_高温恒温循环装置安全规范.pdf
-          GB/T 33861-2017|GBT_33861-2017_高低温试验箱能效测试方法.pdf
-          GB/T 2421-2020|GBT_2421-2020_环境试验概述和指南.pdf
-          GB/T 2423.1-2008|GBT_2423.1-2008_低温.pdf
-          GB/T 2423.2-2008|GBT_2423.2-2008_高温.pdf
-          GB/T 2423.3-2016|GBT_2423.3-2016_恒定湿热.pdf
-          GB/T 2423.4-2008|GBT_2423.4-2008_交变湿热.pdf
-          GB/T 2423.21-2025|GBT_2423.21-2025_低气压.pdf
-          GB/T 2423.22-2012|GBT_2423.22-2012_温度变化.pdf
-          EOF
-
-          printf 'standard,status,bytes,filename\n' > out/OPENSTD_RESULTS.csv
-          while IFS='|' read -r std filename; do
-            [ -n "$std" ] || continue
-            dest="out/fulltext/$filename"
-            echo "=== $std ==="
-            rm -f "$dest"
-            status=failed
-            if openstd_spider download "$std" -o "$dest"; then
-              status=download
-            else
-              rm -f "$dest"
-              if openstd_spider download --preview "$std" -o "$dest"; then
-                status=preview
-              fi
-            fi
-            if [ -f "$dest" ] && [ "$(head -c 4 "$dest")" = '%PDF' ] && [ "$(stat -c%s "$dest")" -gt 5000 ]; then
-              bytes=$(stat -c%s "$dest")
-              printf '"%s",%s,%s,"%s"\n' "$std" "$status" "$bytes" "$filename" >> out/OPENSTD_RESULTS.csv
-            else
-              rm -f "$dest"
-              printf '"%s",failed,0,"%s"\n' "$std" "$filename" >> out/OPENSTD_RESULTS.csv
-            fi
-          done < standards.txt
-          find out/fulltext -maxdepth 1 -type f -name '*.pdf' -print0 | sort -z | xargs -0 -r sha256sum > out/SHA256SUMS.txt
-          cat out/OPENSTD_RESULTS.csv
-          echo "PDF count: $(find out/fulltext -type f -name '*.pdf' | wc -l)"
-
-      - name: Upload retrieved official files
+      - name: Upload diagnostics
         uses: actions/upload-artifact@v7
         with:
-          name: EnviroEquipment-OpenSTD-Fulltexts
+          name: OpenSTD-Diagnostics
           path: out/
           if-no-files-found: error
           retention-days: 1
