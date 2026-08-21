@@ -1,4 +1,4 @@
-name: Enviro official preview PDF reconstruction
+name: Enviro official GB/T preview batch
 on:
   pull_request:
 permissions:
@@ -6,44 +6,98 @@ permissions:
 jobs:
   retrieve:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
-      - name: Reconstruct GB/T 10589-2008 from official preview
+      - name: Reconstruct official-preview PDFs
         shell: bash
         run: |
           set -euo pipefail
           python -m pip install 'openstd_spider==0.1.1'
           python - <<'PY'
-          import asyncio, pathlib, importlib.util, tempfile, hashlib
-          spec=importlib.util.find_spec('openstd_spider'); root=pathlib.Path(spec.origin).resolve().parent
-          for name in ['request.py']:
-              p=root/name; p.write_text(p.read_text().replace('follow_redirects=False','follow_redirects=True'))
-          p=root/'captcha.py'; p.write_text(p.read_text().replace('img_data.tostring()','img_data.tobytes()'))
-          import openstd_spider
+          import asyncio, pathlib, importlib.util, tempfile, hashlib, csv, traceback
+
+          spec = importlib.util.find_spec('openstd_spider')
+          root = pathlib.Path(spec.origin).resolve().parent
+          p = root / 'request.py'
+          p.write_text(p.read_text(encoding='utf-8').replace('follow_redirects=False','follow_redirects=True'), encoding='utf-8')
+          p = root / 'captcha.py'
+          p.write_text(p.read_text(encoding='utf-8').replace('img_data.tostring()','img_data.tobytes()'), encoding='utf-8')
+
           from openstd_spider import Gb688Dto, fuck_captcha_impl, download_preview_img_impl, reorganize_page_impl
           from openstd_spider.parse.gb688 import gb688_uniq_imgid
           from openstd_spider.pdf import async_render_pdf_impl
-          out=pathlib.Path('out'); out.mkdir()
+
+          items = [
+              ('GB/T 10589-2008','940D5CBB0996AEB0A62B10521DCC8A56','GBT_10589-2008_低温试验箱技术条件_官方预览重建.pdf'),
+              ('GB/T 11158-2008','B4F8CB4F59270D773E969789A3E82A00','GBT_11158-2008_高温试验箱技术条件_官方预览重建.pdf'),
+              ('GB/T 10592-2023','43A98123A5B075565D9C17FCF64095E6','GBT_10592-2023_高低温试验箱技术条件_官方预览重建.pdf'),
+              ('GB/T 10586-2025','F1EF03245EB82A4733DD97BFFB731E7B','GBT_10586-2025_湿热试验箱技术规范_官方预览重建.pdf'),
+              ('GB/T 11159-2010','9CF307E2C435CF7E3F85DD66CA731800','GBT_11159-2010_低气压试验箱技术条件_官方预览重建.pdf'),
+              ('GB/T 10590-2006','C90C5A4A728E7642E5185A37208E80D0','GBT_10590-2006_高低温低气压试验箱技术条件_官方预览重建.pdf'),
+              ('GB/T 10591-2006','57F8A5B61C8CE9F61C8AEC97595B8B73','GBT_10591-2006_高温低气压试验箱技术条件_官方预览重建.pdf'),
+              ('GB/T 5170.1-2016','D860E4F76F7F0019B12B6F0EBD592E84','GBT_5170.1-2016_环境试验设备检验方法总则_官方预览重建.pdf'),
+              ('GB/T 5170.2-2017','F55FAB1073F34CEBDCBE0BC6EF035C39','GBT_5170.2-2017_温度试验设备检验方法_官方预览重建.pdf'),
+              ('GB/T 5170.5-2016','104B804FFD4EC534A28DAC37102DD7B9','GBT_5170.5-2016_湿热试验设备检验方法_官方预览重建.pdf'),
+              ('GB/T 5170.10-2017','369CB2C323C121F003BD0C4A8FE0E9C5','GBT_5170.10-2017_高低温低气压试验设备检验方法_官方预览重建.pdf'),
+              ('GB/T 32710.1-2016','86C6C3E38FD5422F9324CFF232673B68','GBT_32710.1-2016_环境试验仪器设备安全总则_官方预览重建.pdf'),
+              ('GB/T 32710.2-2016','62AB7A85DBD13D757F835E82060D0B14','GBT_32710.2-2016_低温恒温循环装置安全规范_官方预览重建.pdf'),
+              ('GB/T 32710.4-2016','8E3C9C79CA506C7777498A4847B04C92','GBT_32710.4-2016_高温恒温循环装置安全规范_官方预览重建.pdf'),
+              ('GB/T 33861-2017','4A41CC45B9883A4A54C99E7EDBB6AAF0','GBT_33861-2017_高低温试验箱能效测试方法_官方预览重建.pdf'),
+          ]
+
+          out = pathlib.Path('out/fulltext')
+          out.mkdir(parents=True, exist_ok=True)
+          results = []
+
+          async def reconstruct(dto, std, hc, fn):
+              dest = out / fn
+              try:
+                  pages = await asyncio.wait_for(dto.get_pages(hc), timeout=45)
+                  with tempfile.TemporaryDirectory(prefix='openstd-') as td_s:
+                      td = pathlib.Path(td_s)
+                      ids = gb688_uniq_imgid(pages)
+                      await asyncio.wait_for(download_preview_img_impl(dto, td, ids), timeout=180)
+                      await asyncio.wait_for(reorganize_page_impl(pages, td), timeout=180)
+                      await asyncio.wait_for(async_render_pdf_impl(pages, td, dest), timeout=180)
+                  if dest.exists() and dest.stat().st_size > 5000 and dest.read_bytes()[:4] == b'%PDF':
+                      return ('official-preview-reconstructed', len(pages), dest.stat().st_size, '')
+                  dest.unlink(missing_ok=True)
+                  return ('invalid', len(pages), 0, 'output failed PDF validation')
+              except Exception as e:
+                  dest.unlink(missing_ok=True)
+                  return ('failed', 0, 0, f'{type(e).__name__}: {e}')
+
           async def main():
-              dto=Gb688Dto(); await fuck_captcha_impl(dto)
-              pages=await dto.get_pages('940D5CBB0996AEB0A62B10521DCC8A56')
-              print('pages',len(pages))
-              with tempfile.TemporaryDirectory() as td:
-                  td=pathlib.Path(td)
-                  ids=gb688_uniq_imgid(pages)
-                  await download_preview_img_impl(dto,td,ids)
-                  await reorganize_page_impl(pages,td)
-                  dest=out/'GBT_10589-2008_低温试验箱技术条件_官方预览重建.pdf'
-                  await async_render_pdf_impl(pages,td,dest)
-                  print(dest, dest.stat().st_size, dest.read_bytes()[:4])
+              dto = Gb688Dto()
+              try:
+                  await asyncio.wait_for(fuck_captcha_impl(dto), timeout=60)
+                  captcha = 'ok'
+              except Exception as e:
+                  captcha = f'failed: {type(e).__name__}: {e}'
+              print('captcha=', captcha)
+              for idx, (std,hc,fn) in enumerate(items,1):
+                  print(f'[{idx}/{len(items)}] {std}', flush=True)
+                  if captcha != 'ok':
+                      status,pages,bytes_,err='failed',0,0,captcha
+                  else:
+                      status,pages,bytes_,err = await reconstruct(dto,std,hc,fn)
+                  results.append((std,hc,status,pages,bytes_,fn,err))
+                  print(results[-1], flush=True)
+
           asyncio.run(main())
-          p=next(out.glob('*.pdf'))
-          (out/'SHA256SUMS.txt').write_text(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n')
+          with open('out/RESULTS.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.writer(f)
+              w.writerow(['standard','hcno','status','pages','bytes','filename','error'])
+              w.writerows(results)
+          with open('out/SHA256SUMS.txt','w',encoding='utf-8') as f:
+              for q in sorted(out.glob('*.pdf')):
+                  f.write(hashlib.sha256(q.read_bytes()).hexdigest()+'  '+q.name+'\n')
+          print('success_count=', sum(1 for r in results if r[2]=='official-preview-reconstructed'))
           PY
-      - name: Upload result
+      - name: Upload batch
         uses: actions/upload-artifact@v7
         with:
-          name: GBT-10589-Official-Preview-PDF
+          name: EnviroEquipment-Official-GBT-Preview-Batch
           path: out/
           retention-days: 1
           compression-level: 0
