@@ -1,0 +1,5 @@
+
+> cs2-interchange-offline-lab@0.2.0 test:browser
+> node tests/browser.js
+
+81 browser assertions passed

@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-26T01:39:58.150Z",
+  "sourceParent": "49dd44d53bcc41b9e4c6988eda1b24d3c4d89a85",
+  "version": "offline-0.2.0",
+  "browser": "154.0.8037.57",
+  "input": "elevated-full; B.z0=80m; selected=d1",
+  "diagnostic": {
+    "code": "GRADE_LIMIT",
+    "path": "A+>B+",
+    "measured": 16.48439355567696,
+    "limit": 8,
+    "unit": "%",
+    "station": 113.5119065393358,
+    "point": [
+      -43.918597631093164,
+      16.767000511250913
+    ]
+  },
+  "checks": [
+    {
+      "name": "zh: three camera actually moves",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zh: target matches diagnostic XY",
+      "expected": [
+        -43.918597631093164,
+        16.767000511250913
+      ],
+      "actual": [
+        -43.918597631093164,
+        16.767000511250913
+      ]
+    },
+    {
+      "name": "zh: three view remains visible",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zh: plan remains visible",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zh: planar marker matches diagnostic",
+      "expected": [
+        -43.918597631093164,
+        16.767000511250913
+      ],
+      "actual": [
+        -43.918597631093164,
+        16.767000511250913
+      ]
+    },
+    {
+      "name": "zh: plan click preserves three camera",
+      "expected": [
+        318.3314023689068,
+        348.7713202920951,
+        397.23299948874904
+      ],
+      "actual": [
+        318.3314023689068,
+        348.7713202920951,
+        397.23299948874904
+      ]
+    },
+    {
+      "name": "en: three camera actually moves",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "en: target matches diagnostic XY",
+      "expected": [
+        -43.918597631093164,
+        16.767000511250913
+      ],
+      "actual": [
+        -43.918597631093164,
+        16.767000511250913
+      ]
+    },
+    {
+      "name": "en: three view remains visible",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "en: plan remains visible",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "en: planar marker matches diagnostic",
+      "expected": [
+        -43.918597631093164,
+        16.767000511250913
+      ],
+      "actual": [
+        -43.918597631093164,
+        16.767000511250913
+      ]
+    },
+    {
+      "name": "en: plan click preserves three camera",
+      "expected": [
+        318.3314023689068,
+        348.7713202920951,
+        397.23299948874904
+      ],
+      "actual": [
+        318.3314023689068,
+        348.7713202920951,
+        397.23299948874904
+      ]
+    },
+    {
+      "name": "no unhandled browser errors",
+      "expected": [],
+      "actual": []
+    }
+  ]
+}

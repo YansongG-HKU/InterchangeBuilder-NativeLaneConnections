@@ -1,0 +1,202 @@
+{
+  "date": "2026-10-26T01:41:07.385Z",
+  "sourceParent": "49dd44d53bcc41b9e4c6988eda1b24d3c4d89a85",
+  "version": "offline-0.2.0",
+  "browser": "154.0.8037.57",
+  "renderer": "Three.js 0.186.1 WebGL2",
+  "checks": [
+    {
+      "name": "real WebGL2 renderer produces triangles",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "single persistent canvas",
+      "expected": 1,
+      "actual": 1
+    },
+    {
+      "name": "mainline identity labels",
+      "expected": "deep equality",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "full preview contains two mains plus eight ramps",
+      "expected": 10,
+      "actual": 10
+    },
+    {
+      "name": "full fixed OD paths present",
+      "expected": 12,
+      "actual": 12
+    },
+    {
+      "name": "source heights really differ",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "actual left drag rotates camera",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "orbit changes actual rendered pixels",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "actual right drag pans target",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "wheel changes camera distance",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "OD selection highlights full path",
+      "expected": "A->B+",
+      "actual": "A->B+"
+    },
+    {
+      "name": "selected path includes approach and exit",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "language preserves all model/computation data",
+      "expected": "deep equality",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "language preserves camera",
+      "expected": "deep equality",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "partial removes only requested connector",
+      "expected": 9,
+      "actual": 9
+    },
+    {
+      "name": "excluded path is not fabricated",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "excluded selection explicitly labelled",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "full restores connector preview",
+      "expected": 10,
+      "actual": 10
+    },
+    {
+      "name": "elevation edit updates actual scene height",
+      "expected": 80,
+      "actual": 80
+    },
+    {
+      "name": "invalid ramps remain visible red-tagged",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "percent UI stored as dimensionless grade",
+      "expected": 0.03,
+      "actual": 0.03
+    },
+    {
+      "name": "profile view contains computed curve",
+      "expected": 1,
+      "actual": 1
+    },
+    {
+      "name": "profile labels analytical peak and station",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "top camera is above target",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "schema2 export/reload recomputes identical profiles and paths",
+      "expected": "deep equality",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "legacy import does not silently replace current model",
+      "expected": "deep equality",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "accepted legacy migration records assumption",
+      "expected": "legacy-flat-accepted",
+      "actual": "legacy-flat-accepted"
+    },
+    {
+      "name": "flat assumed heights only after acceptance",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "invalid height produces input failure",
+      "expected": "INPUT_INVALID",
+      "actual": "INPUT_INVALID"
+    },
+    {
+      "name": "invalid input clears scene geometry",
+      "expected": 0,
+      "actual": 0
+    },
+    {
+      "name": "mobile real canvas has usable dimensions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mobile zoom button changes view",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no horizontal page overflow on mobile",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "same WebGL canvas reused across input/locale/view changes",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "unavailable WebGL exposes actual 2D fallback",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "fallback reports unavailable renderer",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no unhandled browser errors",
+      "expected": "deep equality",
+      "actual": "deep equality passed"
+    }
+  ],
+  "screenshots": [
+    "three-initial.png",
+    "three-height-en.png",
+    "three-orbit-zh.png",
+    "three-profile-en.png",
+    "three-invalid-top-en.png",
+    "three-mobile-en.png"
+  ]
+}

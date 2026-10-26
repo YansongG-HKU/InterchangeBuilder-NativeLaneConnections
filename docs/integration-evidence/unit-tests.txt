@@ -1,0 +1,49 @@
+
+> cs2-interchange-offline-lab@0.2.0 test
+> node --test tests/*.test.js
+
+✔ 01: input limits and unsupported domain are explicit (22.802488ms)
+✔ 02: stationary and zero-length curves rejected (0.8122ms)
+✔ 03: arc station is metres, local tangent is analytical (0.462619ms)
+✔ 04: skew intersection keeps nonorthogonal original curves (451.142807ms)
+✔ 05: multi-crossings require explicit selection; choose second (277.989031ms)
+✔ 06: near tangent is unsupported and disjoint search not a proof (4.636836ms)
+✔ 07: exact six unique lane edges and no reversal/duplication (659.750085ms)
+✔ 08: full is fixed 12, partial never redefines baseline or adds forbidden reachability (126.557461ms)
+✔ 09: bridge projection union counts identical footprint once (0.471435ms)
+✔ 10: set difference added/removed/retained and nonrectangular area (1.357552ms)
+✔ 11: holes and overflow not clipped out of total (635.292703ms)
+✔ 12: area cap cannot silently delete OD (108.708466ms)
+✔ 13: preferences retain hard constraints and candidate geometry (197.408283ms)
+✔ 14: deterministic reload and immutable input (215.923942ms)
+✔ 15: analytical endpoint tangent continuity for every route (263.63594ms)
+✔ 16: refinement bound decreases and measured area converges (4.188493ms)
+✔ 17: rotation preserves metrics within numerical tolerance (186.098447ms)
+✔ 18: invalid rings, exclusions, selected crossing, schema rejected (7.97749ms)
+✔ 19: no unconditional PASS with unassessed height/levels and no game apply (105.569454ms)
+✔ 20: all UI message entries have Chinese and English (0.186666ms)
+✔ 21: JSON own fields matching prototype names are unsupported (8.270451ms)
+✔ 22: OD and separate split statuses do not hide each other's diagnostics (85.33494ms)
+✔ 23: out-of-range anchors leave the lane experiment NOT_RUN (76.226114ms)
+✔ V01: 0→12m / 200m flat endpoints has 6% average but 9% peak (6.442084ms)
+✔ V02: zero/invalid length rejected before any mesh (0.407515ms)
+✔ V03: equal heights and differing grades detect interior overshoot (0.597302ms)
+✔ V04: endpoint constraints and analytic extrema bound dense samples (4.533114ms)
+✔ V05: grade reverses with travel direction and offset metric is corrected (4.916396ms)
+✔ V06: common datum shift preserves grades, XY/OD and height differences (730.598626ms)
+✔ V07: every ramp matches source elevation and corrected endpoint grade (353.851098ms)
+✔ V08: profile changes keep planar geometry and footprint invariant (229.056844ms)
+✔ V09: invalid vertical fields never reach scene generation (25.920433ms)
+✔ V10: legacy migration is an explicit proposal with flat provenance (6.293098ms)
+✔ V11: preview includes complete required paths, no excluded invented connections (508.008913ms)
+✔ V12: no structural clearance or game PASS from elevation alone (288.73929ms)
+✔ V13: reversed through-profile display uses travel grade sign (303.343877ms)
+✔ V14: emitted 3D entry/exit segment tangents converge in valid elevated fixture (255.153153ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3535.756138

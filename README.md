@@ -8,6 +8,33 @@ InterchangeBuilder Native Lane Connections 是《城市：天际线 II》的道�
 > [!IMPORTANT]
 > 完整二进制 Release 已包含运行所需的全部项目文件，不包含任何《城市：天际线 II》游戏程序集。普通玩家只需下载并解压，无需准备其他模组或开发环境。
 
+## 统一维护：Mod 与离线实验室 / Unified maintenance
+
+本仓是唯一后续主项目。当前integration分支/Draft PR将精确来源 `CS2-Interchange-Lab@e790aa63926ebe7d499c5b811bad2f60248426cb` 的研究、Demo及证据整合到 `labs/interchange-demo`；**尚未合并main**，不修改原Mod运行时或发布包，也不自动合并PR #3/#4。研发归并不等于Demo已接通Mod：适配器仍UNSUPPORTED。 / This is the sole future maintenance repository; integration is proposed, not merged or game-connected.
+
+- [统一文档索引](docs/DOCUMENTATION_INDEX.md) · [导入来源、许可与验证](docs/INTEGRATION.md)
+- [已批准的左转深度计划](docs/LEFT_TURN_PLAN.md)：先整合，后按冻结材料/独立检查/游戏门槛推进；本轮不实现新算法。
+- [离线Lab](labs/interchange-demo/README.md) · [历史测试证据](labs/interchange-demo/docs/OFFLINE_VALIDATION.md)
+
+离线运行与验证（Node 24，真实浏览器脚本使用 `/usr/bin/chromium` 和4173端口）：
+
+```sh
+cd labs/interchange-demo
+npm ci --ignore-scripts
+npm run dev -- --port 4173
+# Another terminal, same lab directory:
+npm test
+npm run test:browser
+npm run test:3d
+node tests/diagnostic-focus.js
+npm run evidence
+npm run build
+```
+
+脚本会改写lab/evidence；先保存历史基线，验证输出另存，见整合记录。Node工具链不移到根目录；原C#构建命令不变。现有CI只覆盖C# Core，本轮离线验证单列。 / Scripts overwrite evidence: preserve the imported baseline before running. Root C# and nested Node workflows remain separate.
+
+许可例外：根MIT仅沿用原项目许可范围；导入Lab自身仍未选择开源许可，遵循其 [RIGHTS](labs/interchange-demo/RIGHTS.md) 与 [第三方声明](labs/interchange-demo/docs/THIRD_PARTY.md)，不因迁入而重新许可。 / Imported lab content is excluded from a new blanket MIT grant.
+
 ## 直接下载安装
 
 1. 从 [v2.2.0 Release](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/releases/tag/v2.2.0) 下载 `InterchangeBuilder-2.2.0-NativeLaneConnections.zip`。
@@ -63,7 +90,7 @@ Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual S
 
 ## 许可证与贡献边界
 
-本项目源码采用 [MIT License](LICENSE)。游戏程序集从不包含在仓库或发布包中；游戏 API 和 NuGet 依赖说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+原Mod源码沿用 [MIT License](LICENSE)；`labs/interchange-demo` 为明确例外，见上方权利说明。游戏程序集从不包含在仓库或发布包中；游戏 API 和 NuGet 依赖说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ---
 

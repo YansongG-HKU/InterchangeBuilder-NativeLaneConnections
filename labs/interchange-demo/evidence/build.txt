@@ -1,0 +1,23 @@
+
+> cs2-interchange-offline-lab@0.2.0 build
+> vite build && node scripts/copy-examples.js
+
+vite v6.4.1 building for production...
+transforming...
+✓ 25 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.37 kB │ gzip:   0.28 kB
+dist/assets/index-BAB0Jxks.css    2.98 kB │ gzip:   1.23 kB
+dist/assets/index-BaGWJiWn.js   619.87 kB │ gzip: 163.63 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.30s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

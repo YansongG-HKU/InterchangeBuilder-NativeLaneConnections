@@ -1,0 +1,38 @@
+
+> cs2-interchange-offline-lab@0.2.0 evidence
+> node tests/evidence.js
+
+curved-skew: expected=NO_CANDIDATE_FOUND; actual=NO_CANDIDATE_FOUND; PASS
+partial: expected=UNKNOWN; actual=UNKNOWN; PASS
+multiple: expected=INPUT_INVALID; actual=INPUT_INVALID; PASS
+near-tangent: expected=UNSUPPORTED; actual=UNSUPPORTED; PASS
+small-site: expected=NO_CANDIDATE_FOUND; actual=NO_CANDIDATE_FOUND; PASS
+exclusion: expected=NO_CANDIDATE_FOUND; actual=NO_CANDIDATE_FOUND; PASS
+invalid: expected=UNSUPPORTED; actual=UNSUPPORTED; PASS
+elevated-full: expected=UNKNOWN; actual=UNKNOWN; PASS
+Area refinement [
+  {
+    id: 'd0.8',
+    samples: [ 128, 256 ],
+    area128: 36787.73030620108,
+    area256: 36788.08345804831,
+    absoluteDifference: 0.3531518472300377,
+    meaning: 'observed difference, NOT a certified area error bound'
+  },
+  {
+    id: 'd1',
+    samples: [ 128, 256 ],
+    area128: 36787.73030620108,
+    area256: 36788.08345804831,
+    absoluteDifference: 0.3531518472300377,
+    meaning: 'observed difference, NOT a certified area error bound'
+  },
+  {
+    id: 'd1.2',
+    samples: [ 128, 256 ],
+    area128: 36787.73030620108,
+    area256: 36788.08345804831,
+    absoluteDifference: 0.3531518472300377,
+    meaning: 'observed difference, NOT a certified area error bound'
+  }
+]
