@@ -1,0 +1,419 @@
+{
+  "date": "2026-10-26T01:40:52.745Z",
+  "sourceCommit": "49dd44d53bcc41b9e4c6988eda1b24d3c4d89a85",
+  "workingTree": "implementation under test; final source hash in manifest",
+  "browser": "154.0.8037.57",
+  "checks": [
+    {
+      "name": "default nonorthogonal full baseline",
+      "expected": 12,
+      "actual": 12
+    },
+    {
+      "name": "computed SVG",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "desktop zh: all six labels",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "desktop zh: labels readable and nonoverlapping",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "desktop zh: L1 selects its connector",
+      "expected": "L1",
+      "actual": "L1"
+    },
+    {
+      "name": "desktop zh: L2 selects its connector",
+      "expected": "L2",
+      "actual": "L2"
+    },
+    {
+      "name": "desktop zh: L3 selects its connector",
+      "expected": "L3",
+      "actual": "L3"
+    },
+    {
+      "name": "desktop zh: L4 selects its connector",
+      "expected": "L4",
+      "actual": "L4"
+    },
+    {
+      "name": "desktop zh: L5 selects its connector",
+      "expected": "L5",
+      "actual": "L5"
+    },
+    {
+      "name": "desktop zh: L6 selects its connector",
+      "expected": "L6",
+      "actual": "L6"
+    },
+    {
+      "name": "desktop zh: selection does not change computations",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "zh: rejects imported constructor",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zh: constructor preserves previous input/result",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "zh: rejects imported toString",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zh: toString preserves previous input/result",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "zh: rejects imported __proto__",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zh: __proto__ preserves previous input/result",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "language leaves geometry/model byte-identical",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "English title",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "desktop en: all six labels",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "desktop en: labels readable and nonoverlapping",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "desktop en: L1 selects its connector",
+      "expected": "L1",
+      "actual": "L1"
+    },
+    {
+      "name": "desktop en: L2 selects its connector",
+      "expected": "L2",
+      "actual": "L2"
+    },
+    {
+      "name": "desktop en: L3 selects its connector",
+      "expected": "L3",
+      "actual": "L3"
+    },
+    {
+      "name": "desktop en: L4 selects its connector",
+      "expected": "L4",
+      "actual": "L4"
+    },
+    {
+      "name": "desktop en: L5 selects its connector",
+      "expected": "L5",
+      "actual": "L5"
+    },
+    {
+      "name": "desktop en: L6 selects its connector",
+      "expected": "L6",
+      "actual": "L6"
+    },
+    {
+      "name": "desktop en: selection does not change computations",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "en: rejects imported constructor",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "en: constructor preserves previous input/result",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "en: rejects imported toString",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "en: toString preserves previous input/result",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "en: rejects imported __proto__",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "en: __proto__ preserves previous input/result",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "partial status",
+      "expected": "UNKNOWN",
+      "actual": "UNKNOWN"
+    },
+    {
+      "name": "partial mode",
+      "expected": "partial",
+      "actual": "partial"
+    },
+    {
+      "name": "fractional numeric parameter",
+      "expected": 92.5,
+      "actual": 92.5
+    },
+    {
+      "name": "undo restores anchor",
+      "expected": 80,
+      "actual": 80
+    },
+    {
+      "name": "suburban selected longer anchor",
+      "expected": "d1.2",
+      "actual": "d1.2"
+    },
+    {
+      "name": "export import restores input and exact result",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "tiny area fails",
+      "expected": "NO_CANDIDATE_FOUND",
+      "actual": "NO_CANDIDATE_FOUND"
+    },
+    {
+      "name": "error targets cap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "diagnostic map marker",
+      "expected": 1,
+      "actual": 1
+    },
+    {
+      "name": "three selectable intersections",
+      "expected": 3,
+      "actual": 3
+    },
+    {
+      "name": "second intersection explicit selection",
+      "expected": 1,
+      "actual": 1
+    },
+    {
+      "name": "near tangent rejection",
+      "expected": "UNSUPPORTED",
+      "actual": "UNSUPPORTED"
+    },
+    {
+      "name": "overflow diagnostic",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "malformed JSON actionable message",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "wrong JSON shape rejected without crash",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "empty numeric input is not coerced to zero",
+      "expected": "INPUT_INVALID",
+      "actual": "INPUT_INVALID"
+    },
+    {
+      "name": "recover from invalid input",
+      "expected": 80,
+      "actual": 80
+    },
+    {
+      "name": "inverse fetch order preserves later selection",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "late fetch cannot overwrite reset",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "late fetch cannot overwrite edit",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "late fetch cannot overwrite language",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "late file read cannot overwrite reset",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "OD status remains independent",
+      "expected": "UNKNOWN",
+      "actual": "UNKNOWN"
+    },
+    {
+      "name": "lane state reports its own violation",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "out-of-range lane experiment English NOT_RUN",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "unrun lane experiment has no connectors",
+      "expected": 0,
+      "actual": 0
+    },
+    {
+      "name": "out-of-range lane experiment Chinese NOT_RUN",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mobile en: all six labels",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "mobile en: labels readable and nonoverlapping",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mobile en: L1 selects its connector",
+      "expected": "L1",
+      "actual": "L1"
+    },
+    {
+      "name": "mobile en: L2 selects its connector",
+      "expected": "L2",
+      "actual": "L2"
+    },
+    {
+      "name": "mobile en: L3 selects its connector",
+      "expected": "L3",
+      "actual": "L3"
+    },
+    {
+      "name": "mobile en: L4 selects its connector",
+      "expected": "L4",
+      "actual": "L4"
+    },
+    {
+      "name": "mobile en: L5 selects its connector",
+      "expected": "L5",
+      "actual": "L5"
+    },
+    {
+      "name": "mobile en: L6 selects its connector",
+      "expected": "L6",
+      "actual": "L6"
+    },
+    {
+      "name": "mobile en: selection does not change computations",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "mobile no horizontal overflow",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mobile zh: all six labels",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "mobile zh: labels readable and nonoverlapping",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mobile zh: L1 selects its connector",
+      "expected": "L1",
+      "actual": "L1"
+    },
+    {
+      "name": "mobile zh: L2 selects its connector",
+      "expected": "L2",
+      "actual": "L2"
+    },
+    {
+      "name": "mobile zh: L3 selects its connector",
+      "expected": "L3",
+      "actual": "L3"
+    },
+    {
+      "name": "mobile zh: L4 selects its connector",
+      "expected": "L4",
+      "actual": "L4"
+    },
+    {
+      "name": "mobile zh: L5 selects its connector",
+      "expected": "L5",
+      "actual": "L5"
+    },
+    {
+      "name": "mobile zh: L6 selects its connector",
+      "expected": "L6",
+      "actual": "L6"
+    },
+    {
+      "name": "mobile zh: selection does not change computations",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    },
+    {
+      "name": "browser console uncaught errors",
+      "expected": "deep equality asserted",
+      "actual": "deep equality passed"
+    }
+  ],
+  "screenshots": [
+    "browser-zh.png",
+    "browser-overflow-en.png",
+    "browser-mobile-en.png",
+    "browser-mobile-zh.png"
+  ]
+}

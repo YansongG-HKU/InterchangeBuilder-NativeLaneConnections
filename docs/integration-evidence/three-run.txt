@@ -1,0 +1,5 @@
+
+> cs2-interchange-offline-lab@0.2.0 test:3d
+> node tests/browser3d.js
+
+37 3D browser assertions passed

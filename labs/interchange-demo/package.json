@@ -1,0 +1,24 @@
+{
+  "name": "cs2-interchange-offline-lab",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build && node scripts/copy-examples.js",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "node tests/browser.js",
+    "evidence": "node tests/evidence.js",
+    "format": "prettier --write src tests scripts",
+    "test:3d": "node tests/browser3d.js"
+  },
+  "dependencies": {
+    "polygon-clipping": "0.15.7",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1",
+    "prettier": "3.6.2",
+    "vite": "6.4.1"
+  }
+}

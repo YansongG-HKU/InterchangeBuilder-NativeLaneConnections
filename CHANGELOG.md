@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — proposed offline-lab integration
+
+- Add an audited source snapshot and isolated Node lab; do not change C# runtime, release files or merge PR #3/#4.
+- Establish one maintenance plan and approved semi-direct left-turn scope; no new algorithm or game validation in this revision.
+- Preserve imported rights, evidence and source provenance; see docs/INTEGRATION.md.
+
 ## 2.2.0 - 2026-08-16
 
 - Added width-aware endpoint candidates that mirror the game's cell-snap and free-width alignment branches.

@@ -1,6 +1,6 @@
 # Dependency notices
 
-InterchangeBuilder Native Lane Connections is an independently developed project. Its source code is provided under the repository's MIT License.
+InterchangeBuilder Native Lane Connections is an independently developed project. Its original Mod source code is provided under the repository's MIT License. Imported labs/interchange-demo content is excluded from this blanket statement; its RIGHTS.md and docs/THIRD_PARTY.md remain authoritative.
 
 ## Cities: Skylines II
 

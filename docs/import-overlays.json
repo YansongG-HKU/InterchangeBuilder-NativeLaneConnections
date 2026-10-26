@@ -1,0 +1,34 @@
+{
+  "overlays": [
+    {
+      "path": "labs/interchange-demo/README.md",
+      "sourceSha256": "0b699fd08541188211209b2a88ecd293595550940453024b9b388bd68052a5b0",
+      "importedSha256": "3fd06e54ce2501871c094acf49243a3a24662c9373dc8d2f75fca88b7b875376",
+      "reason": "Current target maintenance, PR policy and approved-stage status; historical evidence preserved."
+    },
+    {
+      "path": "labs/interchange-demo/docs/DEEP_CASE_PLAN.md",
+      "sourceSha256": "4d0a68af248f9f69573d8242b509805391dbc47076b66405ba6239e9580cf5db",
+      "importedSha256": "76a6468c7bc4da79331998d3337d3757a11abc0da6c7c8432e3e14d4c1ce3900",
+      "reason": "Current target maintenance, PR policy and approved-stage status; historical evidence preserved."
+    },
+    {
+      "path": "labs/interchange-demo/docs/DEVELOPMENT.md",
+      "sourceSha256": "0007de2dcf9916dfb0d59b6933b0c5bb444b66ccf1bfa9caa4fdaf61237bcbdf",
+      "importedSha256": "38d9c7980993f8d9f59520971f369733497cd9144cb88ca2ce8a6c4c093f54ae",
+      "reason": "Current target maintenance, PR policy and approved-stage status; historical evidence preserved."
+    },
+    {
+      "path": "labs/interchange-demo/docs/DOCUMENTATION_INDEX.md",
+      "sourceSha256": "6fbf315972dded147abee75186b5b05ffb57f59a3f3d7c2fb45f69b28ae471b2",
+      "importedSha256": "e9286d3141ee54a11d172b599735171554ba6f6b5d3781a8ea186521bdc2f5f7",
+      "reason": "Current target maintenance, PR policy and approved-stage status; historical evidence preserved."
+    },
+    {
+      "path": "labs/interchange-demo/docs/ROADMAP.md",
+      "sourceSha256": "31fc4125c0321a664eb1a08f98945c3877fe00467486c8175a6011383135f0a4",
+      "importedSha256": "adc138756b53c285d3d9dd474bd1f374f7925dcc766305b1d7f70b0912a0073d",
+      "reason": "Current target maintenance, PR policy and approved-stage status; historical evidence preserved."
+    }
+  ]
+}
