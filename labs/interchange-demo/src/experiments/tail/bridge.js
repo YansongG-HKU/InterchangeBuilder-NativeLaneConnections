@@ -1,6 +1,42 @@
 // Bounded automatic plateau family, not arbitrary obstacle routing.
 // All intervals are exact horizontal stations on a fixed +X straight alignment.
 export function generateBridge(input, budget) {
+  const origin = input.start.position,
+    d = input.start.direction;
+  const local = (p) => [
+    (p[0] - origin[0]) * d[0] + (p[1] - origin[1]) * d[1],
+    -(p[0] - origin[0]) * d[1] + (p[1] - origin[1]) * d[0],
+  ];
+  const direction = (v) => [
+    v[0] * d[0] + v[1] * d[1],
+    -v[0] * d[1] + v[1] * d[0],
+  ];
+  const i = structuredClone(input);
+  for (const p of [i.start, i.end]) {
+    p.position = local(p.position);
+    p.direction = direction(p.direction);
+  }
+  for (const o of i.obstacles) {
+    o.a = local(o.a);
+    o.b = local(o.b);
+    if (o.controls) o.controls = o.controls.map(local);
+  }
+  const near = (x) => Math.abs(x) < 1e-8;
+  for (const p of [i.start, i.end]) {
+    if (near(p.position[1])) p.position[1] = 0;
+    if (near(p.direction[0] - 1) && near(p.direction[1])) p.direction = [1, 0];
+  }
+  for (const o of i.obstacles) if (near(o.a[0] - o.b[0])) o.b[0] = o.a[0];
+  const r = generateLocal(i, budget);
+  for (const c of r.candidates)
+    for (const s of c.segments)
+      s.controls = s.controls.map(([x, y]) => [
+        origin[0] + x * d[0] - y * d[1],
+        origin[1] + x * d[1] + y * d[0],
+      ]);
+  return r;
+}
+function generateLocal(input, budget) {
   const unsupported = (reason) => ({
     status: "UNSUPPORTED",
     reason,

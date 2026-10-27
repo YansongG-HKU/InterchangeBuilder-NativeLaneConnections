@@ -14,4 +14,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../tools/CurveKernelContractRunner/Program.cs" Link="CurveKernelContractChecks.cs" />
+    <None Include="../curve-contract-vectors.json" Link="curve-contract-vectors.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

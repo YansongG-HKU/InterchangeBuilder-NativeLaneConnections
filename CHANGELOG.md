@@ -27,3 +27,5 @@
 - Local pre-delivery review: reject overflowing imported profiles, malformed joins/segments and invalid context elevation before geometry rendering; numerical failures never receive preview permission. Core/browser import regressions and evidence refreshed; game/Anarchy/C#/CI NOT_RUN.
 
 - Local V2: automatic plateau overpass family with independent full-overlap clearance, actual Bezier context corridors/port binding, explicit width rejection, stronger pending-import invalidation and full regression. No runtime/CI/dependency change; game/Anarchy/C#/remote CI NOT_RUN.
+
+- Local development/curve-kernel-port: migrate bounded quintic+finite-tail planar family to default-disabled pure C# Core; add shared JS/C# contracts and actual no-NuGet compiler runner. Lab adds local-frame/arc-length/oblique algorithm checks only. Existing runtime not called/changed, no push/merge/release; engine and standard test/build gates separately unrun.

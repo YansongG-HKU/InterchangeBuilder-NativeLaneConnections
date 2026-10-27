@@ -55,7 +55,12 @@ function split(c) {
   }
   return [left, right];
 }
-export function flatten(c, tolerance = 0.02, maxDepth = 16) {
+export function flatten(
+  c,
+  tolerance = 0.02,
+  maxDepth = 16,
+  maxChord = Infinity,
+) {
   const leaves = [];
   let unresolved = false;
   function walk(q, depth, t0, t1) {
@@ -63,7 +68,7 @@ export function flatten(c, tolerance = 0.02, maxDepth = 16) {
       upper = q.slice(1).reduce((s, p, i) => s + norm(sub(p, q[i])), 0),
       error = Math.max(...q.map((p) => pointDistance(p, q[0], q.at(-1))));
     if (
-      (error <= tolerance && upper - chord <= tolerance) ||
+      (error <= tolerance && upper - chord <= tolerance && chord <= maxChord) ||
       depth === maxDepth ||
       leaves.length >= 1024
     ) {
@@ -81,9 +86,15 @@ export function flatten(c, tolerance = 0.02, maxDepth = 16) {
         upper,
         t0,
         t1,
-        curvatureBound: speed > 1e-10 ? dd / speed ** 2 : Infinity,
+        curvatureBound:
+          speed > 1e-10 ? (error === 0 ? 0 : dd / speed ** 2) : Infinity,
       });
-      if (error > tolerance || upper - chord > tolerance || speed <= 1e-10)
+      if (
+        error > tolerance ||
+        upper - chord > tolerance ||
+        speed <= 1e-10 ||
+        chord > maxChord
+      )
         unresolved = true;
       return;
     }
@@ -522,6 +533,39 @@ export function permission(facts, mode) {
 // Exact bounded-model envelope check: straight +X upper road, perpendicular flat lower road,
 // constant width, zero crossfall, known deck thickness. Not a general 3D solver.
 export function crossingClearance(output, road, required) {
+  const first = output.segments[0].controls,
+    origin = first[0],
+    v = sub(first.at(-1), origin),
+    L = norm(v);
+  if (L < 1e-8) return { status: "UNSUPPORTED" };
+  const d = v.map((x) => x / L),
+    local = (p) => [dot(sub(p, origin), d), cross(d, sub(p, origin))];
+  const oo = {
+    ...output,
+    segments: output.segments.map((s) => {
+      const controls = s.controls.map(local),
+        a = controls[0],
+        b = controls.at(-1),
+        v = sub(b, a);
+      const projection = controls.map((p) => dot(sub(p, a), v));
+      const straight =
+        controls.every((p) => Math.abs(cross(v, sub(p, a))) < 1e-10) &&
+        projection.every((x, i) => i === 0 || x >= projection[i - 1]);
+      return {
+        ...s,
+        kind: straight ? "line" : s.kind,
+        controls: straight ? [a, b] : controls,
+      };
+    }),
+  };
+  const rr = { ...road, a: local(road.a), b: local(road.b) };
+  if (Math.abs(rr.a[0] - rr.b[0]) < 1e-8) rr.b[0] = rr.a[0];
+  const exact = orthogonalClearance(oo, rr, required);
+  if (exact.status !== "UNSUPPORTED")
+    return { ...exact, frame: { origin, direction: d } };
+  return conservativeClearance(output, road, required);
+}
+function orthogonalClearance(output, road, required) {
   const ss = output.segments,
     thickness = output.thickness;
   if (
@@ -610,4 +654,141 @@ export function contextGeometry(input) {
       ]),
     };
   });
+}
+
+// A capsule encloses the complete constant-width flat lower-road corridor.
+// Clip the upper chord against its rectangular strip and circular caps.
+function capsuleInterval(a, b, c, d, r) {
+  const v = sub(d, c),
+    D = norm(v),
+    u = v.map((x) => x / D),
+    x0 = dot(sub(a, c), u),
+    x1 = dot(sub(b, c), u),
+    y0 = cross(u, sub(a, c)),
+    y1 = cross(u, sub(b, c));
+  const intervals = [];
+  let lo = 0,
+    hi = 1;
+  for (const [p, q, min, max] of [
+    [x0, x1, 0, D],
+    [y0, y1, -r, r],
+  ]) {
+    if (Math.abs(q - p) < 1e-12) {
+      if (p < min || p > max) {
+        lo = 1;
+        hi = 0;
+        break;
+      }
+    } else {
+      const a = (min - p) / (q - p),
+        b = (max - p) / (q - p);
+      lo = Math.max(lo, Math.min(a, b));
+      hi = Math.min(hi, Math.max(a, b));
+    }
+  }
+  if (lo <= hi) intervals.push([lo, hi]);
+  const w = sub(b, a),
+    A = dot(w, w);
+  for (const center of [c, d]) {
+    const q = sub(a, center),
+      B = 2 * dot(q, w),
+      C = dot(q, q) - r * r,
+      disc = B * B - 4 * A * C;
+    if (A > 1e-20 && disc >= 0) {
+      const root = Math.sqrt(disc),
+        lo = Math.max(0, (-B - root) / (2 * A)),
+        hi = Math.min(1, (-B + root) / (2 * A));
+      if (lo <= hi) intervals.push([lo, hi]);
+    }
+  }
+  return intervals.length
+    ? [
+        Math.min(...intervals.map((x) => x[0])),
+        Math.max(...intervals.map((x) => x[1])),
+      ]
+    : null;
+}
+function profileMin(z, L, a, b) {
+  const A = 2 * z.z0 - 2 * z.z1 + L * (z.g0 + z.g1),
+    B = 3 * (z.z1 - z.z0) - L * (2 * z.g0 + z.g1),
+    C = L * z.g0,
+    ts = [a, b];
+  if (Math.abs(A) < 1e-12) {
+    if (Math.abs(B) > 1e-12) ts.push(-C / (2 * B));
+  } else {
+    const disc = 4 * B * B - 12 * A * C;
+    if (disc >= 0)
+      ts.push(
+        (-2 * B - Math.sqrt(disc)) / (6 * A),
+        (-2 * B + Math.sqrt(disc)) / (6 * A),
+      );
+  }
+  return Math.min(
+    ...ts
+      .filter((t) => t >= a && t <= b)
+      .map((t) => ((A * t + B) * t + C) * t + z.z0),
+  );
+}
+function conservativeClearance(output, road, required) {
+  if (
+    road.controls ||
+    road.kind !== "road" ||
+    !Number.isFinite(road.z) ||
+    !Number.isFinite(required) ||
+    required < 0 ||
+    !Number.isFinite(output.thickness) ||
+    output.thickness < 0
+  )
+    return { status: "UNSUPPORTED" };
+  let min = Infinity,
+    stationUncertainty = 0,
+    count = 0;
+  for (const s of output.segments) {
+    const c = flatten(s.controls, 0.005, 18, 2);
+    if (c.unresolved || c.lower < 1e-8)
+      return { status: "UNKNOWN", reason: "Clearance subdivision unresolved" };
+    let beforeLo = 0,
+      beforeHi = 0;
+    for (const l of c.leaves) {
+      const interval = capsuleInterval(
+        l.a,
+        l.b,
+        road.a,
+        road.b,
+        (output.width + road.width) / 2 + l.error,
+      );
+      if (interval) {
+        // Curved leaves use their whole station interval: no t-to-arc assumption.
+        const alpha = l.error < 1e-12 ? interval[0] : 0,
+          beta = l.error < 1e-12 ? interval[1] : 1;
+        const a = Math.max(0, (beforeLo + alpha * l.lower) / c.upper),
+          b = Math.min(1, (beforeHi + beta * l.upper) / c.lower);
+        // Hermite height is affine in total L, so both endpoint lengths bound all L.
+        min = Math.min(
+          min,
+          profileMin(s.z, c.lower, a, b),
+          profileMin(s.z, c.upper, a, b),
+        );
+        count++;
+      }
+      beforeLo += l.lower;
+      beforeHi += l.upper;
+    }
+    stationUncertainty += c.upper - c.lower;
+  }
+  const bound = min - output.thickness - road.z;
+  return {
+    status: !Number.isFinite(bound)
+      ? "UNKNOWN"
+      : bound > required + 1e-7
+        ? "VERIFIED_MODEL"
+        : "UNKNOWN",
+    minimumLowerBound: Number.isFinite(bound) ? bound : null,
+    required,
+    stationUncertaintyMeters: stationUncertainty,
+    chordErrorBound: 0.005,
+    coveredLeafIntervals: count,
+    method:
+      "Conservative full-width swept-disc overlap and interval arc-station Hermite bound; below-threshold bound is not an infeasibility proof.",
+  };
 }

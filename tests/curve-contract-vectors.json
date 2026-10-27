@@ -1,0 +1,1395 @@
+{
+  "purpose": "JS/C# differential vectors, NOT independent mathematical truth",
+  "rows": [
+    {
+      "name": "middle-tail",
+      "input": {
+        "schema": 1,
+        "name": "middle-tail",
+        "mode": "normal",
+        "continuity": "G2",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            -40
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            160,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 40,
+        "maxGrade": 0.08,
+        "obstacles": [
+          {
+            "id": "left-neighbor",
+            "kind": "road",
+            "a": [
+              130,
+              14
+            ],
+            "b": [
+              190,
+              14
+            ],
+            "width": 8
+          },
+          {
+            "id": "right-neighbor",
+            "kind": "road",
+            "a": [
+              130,
+              -14
+            ],
+            "b": [
+              190,
+              -14
+            ],
+            "width": 8
+          }
+        ],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              -40
+            ],
+            [
+              20.238577025077632,
+              -40
+            ],
+            [
+              40.477154050155264,
+              -40
+            ],
+            [
+              79.52284594984474,
+              0
+            ],
+            [
+              99.76142297492237,
+              0
+            ],
+            [
+              120,
+              0
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              0
+            ],
+            [
+              160,
+              0
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              -40
+            ],
+            [
+              25.29822128134704,
+              -40
+            ],
+            [
+              50.59644256269408,
+              -40
+            ],
+            [
+              69.40355743730592,
+              0
+            ],
+            [
+              94.70177871865296,
+              0
+            ],
+            [
+              120,
+              0
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              0
+            ],
+            [
+              160,
+              0
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              -40
+            ],
+            [
+              30.357865537616444,
+              -40
+            ],
+            [
+              60.71573107523289,
+              -40
+            ],
+            [
+              59.28426892476711,
+              0
+            ],
+            [
+              89.64213446238355,
+              0
+            ],
+            [
+              120,
+              0
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              0
+            ],
+            [
+              160,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "middle-tail-mirror",
+      "input": {
+        "schema": 1,
+        "name": "middle-tail",
+        "mode": "normal",
+        "continuity": "G2",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            40
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            160,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 40,
+        "maxGrade": 0.08,
+        "obstacles": [
+          {
+            "id": "left-neighbor",
+            "kind": "road",
+            "a": [
+              130,
+              14
+            ],
+            "b": [
+              190,
+              14
+            ],
+            "width": 8
+          },
+          {
+            "id": "right-neighbor",
+            "kind": "road",
+            "a": [
+              130,
+              -14
+            ],
+            "b": [
+              190,
+              -14
+            ],
+            "width": 8
+          }
+        ],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              40
+            ],
+            [
+              20.238577025077632,
+              40
+            ],
+            [
+              40.477154050155264,
+              40
+            ],
+            [
+              79.52284594984474,
+              0
+            ],
+            [
+              99.76142297492237,
+              0
+            ],
+            [
+              120,
+              0
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              0
+            ],
+            [
+              160,
+              0
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              40
+            ],
+            [
+              25.29822128134704,
+              40
+            ],
+            [
+              50.59644256269408,
+              40
+            ],
+            [
+              69.40355743730592,
+              0
+            ],
+            [
+              94.70177871865296,
+              0
+            ],
+            [
+              120,
+              0
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              0
+            ],
+            [
+              160,
+              0
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              40
+            ],
+            [
+              30.357865537616444,
+              40
+            ],
+            [
+              60.71573107523289,
+              40
+            ],
+            [
+              59.28426892476711,
+              0
+            ],
+            [
+              89.64213446238355,
+              0
+            ],
+            [
+              120,
+              0
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              0
+            ],
+            [
+              160,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "same-direction-shift",
+      "input": {
+        "schema": 1,
+        "name": "same-direction-shift",
+        "mode": "normal",
+        "continuity": "G2",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            200,
+            30
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 40,
+        "maxGrade": 0.08,
+        "obstacles": [],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              26.046112953759533,
+              0
+            ],
+            [
+              52.092225907519065,
+              0
+            ],
+            [
+              107.90777409248093,
+              30
+            ],
+            [
+              133.95388704624048,
+              30
+            ],
+            [
+              160,
+              30
+            ]
+          ],
+          "tail": [
+            [
+              160,
+              30
+            ],
+            [
+              200,
+              30
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              32.55764119219941,
+              0
+            ],
+            [
+              65.11528238439882,
+              0
+            ],
+            [
+              94.88471761560118,
+              30
+            ],
+            [
+              127.44235880780059,
+              30
+            ],
+            [
+              160,
+              30
+            ]
+          ],
+          "tail": [
+            [
+              160,
+              30
+            ],
+            [
+              200,
+              30
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              39.0691694306393,
+              0
+            ],
+            [
+              78.1383388612786,
+              0
+            ],
+            [
+              81.8616611387214,
+              30
+            ],
+            [
+              120.9308305693607,
+              30
+            ],
+            [
+              160,
+              30
+            ]
+          ],
+          "tail": [
+            [
+              160,
+              30
+            ],
+            [
+              200,
+              30
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "same-direction-shift-mirror",
+      "input": {
+        "schema": 1,
+        "name": "same-direction-shift",
+        "mode": "normal",
+        "continuity": "G2",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            200,
+            -30
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 40,
+        "maxGrade": 0.08,
+        "obstacles": [],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              26.046112953759533,
+              0
+            ],
+            [
+              52.092225907519065,
+              0
+            ],
+            [
+              107.90777409248093,
+              -30
+            ],
+            [
+              133.95388704624048,
+              -30
+            ],
+            [
+              160,
+              -30
+            ]
+          ],
+          "tail": [
+            [
+              160,
+              -30
+            ],
+            [
+              200,
+              -30
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              32.55764119219941,
+              0
+            ],
+            [
+              65.11528238439882,
+              0
+            ],
+            [
+              94.88471761560118,
+              -30
+            ],
+            [
+              127.44235880780059,
+              -30
+            ],
+            [
+              160,
+              -30
+            ]
+          ],
+          "tail": [
+            [
+              160,
+              -30
+            ],
+            [
+              200,
+              -30
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              39.0691694306393,
+              0
+            ],
+            [
+              78.1383388612786,
+              0
+            ],
+            [
+              81.8616611387214,
+              -30
+            ],
+            [
+              120.9308305693607,
+              -30
+            ],
+            [
+              160,
+              -30
+            ]
+          ],
+          "tail": [
+            [
+              160,
+              -30
+            ],
+            [
+              200,
+              -30
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "straight-main-left",
+      "input": {
+        "schema": 1,
+        "name": "straight-main-left",
+        "mode": "normal",
+        "continuity": "G2",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            120,
+            120
+          ],
+          "direction": [
+            0,
+            1
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 30,
+        "maxGrade": 0.08,
+        "obstacles": [],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              24,
+              0
+            ],
+            [
+              48,
+              0
+            ],
+            [
+              120,
+              42
+            ],
+            [
+              120,
+              66
+            ],
+            [
+              120,
+              90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              90
+            ],
+            [
+              120,
+              120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              30,
+              0
+            ],
+            [
+              60,
+              0
+            ],
+            [
+              120,
+              30
+            ],
+            [
+              120,
+              60
+            ],
+            [
+              120,
+              90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              90
+            ],
+            [
+              120,
+              120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              36,
+              0
+            ],
+            [
+              72,
+              0
+            ],
+            [
+              120,
+              18
+            ],
+            [
+              120,
+              54
+            ],
+            [
+              120,
+              90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              90
+            ],
+            [
+              120,
+              120
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "straight-main-left-mirror",
+      "input": {
+        "schema": 1,
+        "name": "straight-main-left",
+        "mode": "normal",
+        "continuity": "G2",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            120,
+            -120
+          ],
+          "direction": [
+            0,
+            -1
+          ],
+          "offset": 0,
+          "curvature": 0,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 30,
+        "maxGrade": 0.08,
+        "obstacles": [],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              24,
+              0
+            ],
+            [
+              48,
+              0
+            ],
+            [
+              120,
+              -42
+            ],
+            [
+              120,
+              -66
+            ],
+            [
+              120,
+              -90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              -90
+            ],
+            [
+              120,
+              -120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              30,
+              0
+            ],
+            [
+              60,
+              0
+            ],
+            [
+              120,
+              -30
+            ],
+            [
+              120,
+              -60
+            ],
+            [
+              120,
+              -90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              -90
+            ],
+            [
+              120,
+              -120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              36,
+              0
+            ],
+            [
+              72,
+              0
+            ],
+            [
+              120,
+              -18
+            ],
+            [
+              120,
+              -54
+            ],
+            [
+              120,
+              -90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              -90
+            ],
+            [
+              120,
+              -120
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "curved-main-left",
+      "input": {
+        "schema": 1,
+        "name": "curved-main-left",
+        "mode": "normal",
+        "continuity": "G1",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": 0.002,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            120,
+            120
+          ],
+          "direction": [
+            0,
+            1
+          ],
+          "offset": 0,
+          "curvature": 0.01,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 30,
+        "maxGrade": 0.08,
+        "obstacles": [],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              24,
+              0
+            ],
+            [
+              48,
+              1.44
+            ],
+            [
+              120,
+              42
+            ],
+            [
+              120,
+              66
+            ],
+            [
+              120,
+              90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              90
+            ],
+            [
+              120,
+              120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              30,
+              0
+            ],
+            [
+              60,
+              2.25
+            ],
+            [
+              120,
+              30
+            ],
+            [
+              120,
+              60
+            ],
+            [
+              120,
+              90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              90
+            ],
+            [
+              120,
+              120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              36,
+              0
+            ],
+            [
+              72,
+              3.24
+            ],
+            [
+              120,
+              18
+            ],
+            [
+              120,
+              54
+            ],
+            [
+              120,
+              90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              90
+            ],
+            [
+              120,
+              120
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "curved-main-left-mirror",
+      "input": {
+        "schema": 1,
+        "name": "curved-main-left",
+        "mode": "normal",
+        "continuity": "G1",
+        "verticalMode": "endpoint",
+        "start": {
+          "id": "S",
+          "position": [
+            0,
+            0
+          ],
+          "direction": [
+            1,
+            0
+          ],
+          "offset": 0,
+          "curvature": -0.002,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "end": {
+          "id": "T",
+          "position": [
+            120,
+            -120
+          ],
+          "direction": [
+            0,
+            -1
+          ],
+          "offset": 0,
+          "curvature": -0.01,
+          "z": 0,
+          "grade": 0,
+          "side": "middle",
+          "meaning": "explicit selected corridor reference; not an inferred game lane",
+          "width": 8
+        },
+        "width": 8,
+        "tail": 30,
+        "maxGrade": 0.08,
+        "obstacles": [],
+        "joins": []
+      },
+      "candidates": [
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              24,
+              0
+            ],
+            [
+              48,
+              -1.44
+            ],
+            [
+              120,
+              -42
+            ],
+            [
+              120,
+              -66
+            ],
+            [
+              120,
+              -90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              -90
+            ],
+            [
+              120,
+              -120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              30,
+              0
+            ],
+            [
+              60,
+              -2.25
+            ],
+            [
+              120,
+              -30
+            ],
+            [
+              120,
+              -60
+            ],
+            [
+              120,
+              -90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              -90
+            ],
+            [
+              120,
+              -120
+            ]
+          ]
+        },
+        {
+          "controls": [
+            [
+              0,
+              0
+            ],
+            [
+              36,
+              0
+            ],
+            [
+              72,
+              -3.24
+            ],
+            [
+              120,
+              -18
+            ],
+            [
+              120,
+              -54
+            ],
+            [
+              120,
+              -90
+            ]
+          ],
+          "tail": [
+            [
+              120,
+              -90
+            ],
+            [
+              120,
+              -120
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -19,3 +19,5 @@
 用户已明确要求实施Issue #10，6→4+2不再是前置。已落实 [显式直尾实验](../labs/interchange-demo/docs/EXPLICIT_TAIL_EXPERIMENT.md)：手写基准、有限分段生成、独立验收及本地模式切换。完整左转走廊/拓扑、复杂宽度/净空与游戏阶段未完成；等高中部上跨仅支持明确的参考验收，不冒充生成。 / Local bounded slice implemented; full gates remain incomplete. This does not merge integration PR #9 or authorize publishing this experimental branch.
 
 Local V2 now implements bounded straight-plan overpass generation and finite curved main-road context validation; this does not complete general curved over/under left-turn routing. See [contract](../labs/interchange-demo/docs/EXPLICIT_TAIL_PHASE2.md). User authorized further local implementation; public upload remains unapproved for this experimental branch.
+
+Latest user direction: stop treating Demo as a separate product; it verifies left/right-turn curve algorithms for migration. [Current migration contract](MOD_CURVE_MIGRATION.md) supersedes any Lab-only permanent restriction: pure Core additions are authorized on isolated branches, default old runtime remains. Planar candidate family is migrated; engine conversion and game validation await actual external contract.

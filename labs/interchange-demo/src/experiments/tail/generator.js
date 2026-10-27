@@ -1,6 +1,7 @@
+import { elevateCandidates } from "./elevate.js";
 import { generateBridge } from "./bridge.js";
 // Bounded local candidate family. No game node selection, obstacle rerouting or global optimizer.
-export const VERSION = "tail-v2";
+export const VERSION = "tail-v3";
 const add = (a, b) => a.map((v, i) => v + b[i]),
   scale = (a, k) => a.map((v) => v * k);
 const normal = (t) => [-t[1], t[0]];
@@ -175,8 +176,14 @@ export function generate(input, budget = 3) {
         "Variable-width transitions or singular offset ports are unsupported.",
       candidates: [],
     };
-  if (input.verticalMode === "intermediate")
-    return generateBridge(input, budget);
+  if (input.verticalMode === "intermediate") {
+    const direct = generateBridge(input, budget);
+    if (direct.status !== "UNSUPPORTED") return direct;
+    return elevateCandidates(
+      input,
+      generate({ ...input, verticalMode: "endpoint" }, budget),
+    );
+  }
   if (input.verticalMode !== "endpoint")
     return {
       status: "UNSUPPORTED",

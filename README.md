@@ -103,3 +103,5 @@ InterchangeBuilder Native Lane Connections is a Cities: Skylines II mod. It pres
 Issue #10 的首个隔离切片现可在Lab `/curve-lab.html`运行：有限直尾、五次接顺、同向横移、独立走廊检查与模式许可分离。参见 [契约与限制](labs/interchange-demo/docs/EXPLICIT_TAIL_EXPERIMENT.md)。中部跨越生成仍UNSUPPORTED；游戏NOT_RUN。本轮仅本地提交，不推送或更改稳定Mod。 / Bounded local implementation only; existing runtime is unchanged.
 
 Local V2 experiment adds [automatic orthogonal overpass candidates and actual curved context corridors](labs/interchange-demo/docs/EXPLICIT_TAIL_PHASE2.md), with explicit unsupported boundaries and separate evidence. No stable runtime replacement, push or game validation.
+
+Current focus: [curve algorithm verification → Mod Core migration](docs/MOD_CURVE_MIGRATION.md). The Lab is only a calculation/test harness. New default-disabled C# Core candidate construction is local and unconnected to runtime; game construction is not implemented or validated.

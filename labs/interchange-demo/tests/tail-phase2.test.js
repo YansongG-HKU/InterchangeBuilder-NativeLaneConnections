@@ -83,7 +83,7 @@ test("multiple and long crossing regions share plateau; grade budget is not a gl
   ];
   assert.equal(evaluateCase(f.input).status, "PROVEN_CONSTRAINT_CONFLICT");
 });
-test("clearance boundaries, altered thickness and unsupported oblique crossings never relax", () => {
+test("clearance boundaries, altered thickness and unresolved long oblique crossings never relax", () => {
   const f = fixture("automatic-overpass"),
     o = generate(f.input).candidates[0];
   f.input.clearance = 8.5;
@@ -99,10 +99,10 @@ test("clearance boundaries, altered thickness and unsupported oblique crossings 
     false,
   );
   f.input.obstacles[0].b[0] += 1000;
-  assert.equal(generate(f.input).status, "UNSUPPORTED");
-  assert.equal(
+  assert.equal(generate(f.input).status, "SEARCH_BUDGET_EXHAUSTED");
+  assert.notEqual(
     crossingClearance(o, f.input.obstacles[0], 5).status,
-    "UNSUPPORTED",
+    "VERIFIED_MODEL",
   );
 });
 test("actual curved context agrees with fixed ports; all nine directed side pairs preserve identities", () => {

@@ -1,0 +1,29 @@
+{
+  "precedingHead": "d487f8b24cc805d6dc380543b2149bda04491dbd",
+  "hashes": {
+    "scripts/check-curve-port-boundary.py": "601521895e72cd9014311fb94942512f392b8a24c9e8e6b7f277fc8b07e1e77f",
+    "scripts/test-curve-contract-no-nuget.py": "0b7ff6e3fd67c5572bf0eedb5685ab761119b98024937603ffbbacd63fdc7501",
+    "src/InterchangeBuilder.LaneConnections.Core/AlignmentMath.cs": "636862a684d788a9fbbc3cfe0236d6355f2e0ec75b081de9bff4ba13d1abae78",
+    "src/InterchangeBuilder.LaneConnections.Core/ExperimentalCurveKernel.cs": "5e4e2843f6c6e9d6bcf454e00f924f4bd99e4cff36a55e63730a339c5fe477e3",
+    "src/InterchangeBuilder.LaneConnections.Core/InterchangeBuilder.LaneConnections.Core.csproj": "ddedbd4badcf7e0c203b75e06c95bb8bd411564bbea81521605521e05093e97d",
+    "src/InterchangeBuilder.LaneConnections.Core/JunctionArmMath.cs": "beb88cb6b4152a3d7d15b409af7cba0b44a67928acf754c6c9bd0e1c4f704258",
+    "src/InterchangeBuilder.LaneConnections/Bootstrap.cs": "31eedad81b454971a778af49fbd341468ea3d87e569829cc7f74e61c8245a2b6",
+    "src/InterchangeBuilder.LaneConnections/ConnectionSelection.cs": "ce0436dbb9ff8b15c6f9d6a242ab25d4d2b0a8f9052782bd070cb4b2723c8f72",
+    "src/InterchangeBuilder.LaneConnections/ConnectionSelectionStore.cs": "a1a9c350c8c5628736ab3f76d32c59058b7c7892074886e3d734140ac217fc70",
+    "src/InterchangeBuilder.LaneConnections/EndpointAlignmentService.cs": "ca8a030008b56ea2e9dbc6ba405f3942302a9125a0f5d1c7c10162a283cb42cb",
+    "src/InterchangeBuilder.LaneConnections/InterchangeBuilder.LaneConnections.csproj": "da18a7c5b900906fbd9806986f20a885ac7c109becbaf810200bb863c66ddb18",
+    "src/InterchangeBuilder.LaneConnections/Mod.cs": "df7144d0dd2b1a6f7f8cbe01579a077f0393e072c604d1543ea175c4da022243",
+    "src/InterchangeBuilder.LaneConnections/Patches.cs": "0fc0564047c595ee84031ebd19e6704732bda33436853d9ec062c0e60053ccaf",
+    "src/InterchangeBuilder.LaneConnections/UpgradeLog.cs": "eb2cc9d7fe1e3de97502afe5260542703c65d26f795db3aeeaa2952ab3815d86",
+    "tests/InterchangeBuilder.LaneConnections.Core.Tests/AlignmentMathTests.cs": "f4a7cf97ed088fa8294e93d45a194999f81b3409eba681b44e90047d2ac13ad7",
+    "tests/InterchangeBuilder.LaneConnections.Core.Tests/CurveKernelTests.cs": "9c045836c98758ecf353f49aa8976208ca34ee53be9d646154af667fd79f3f2f",
+    "tests/InterchangeBuilder.LaneConnections.Core.Tests/InterchangeBuilder.LaneConnections.Core.Tests.csproj": "155e9bb6d13a7696f9f64df5a3ec3f8eade4d4906f15974a1c5ed72b36f044e2",
+    "tests/curve-contract-vectors.json": "81aa4ba92ca94028201b1919514938f1737da3a58cdd629084360ee78a85056a",
+    "tools/CurveKernelContractRunner/CurveKernelContractRunner.csproj": "1f91abb6313e6bb2eb19e6c3ac59aa8ef84d3122a481b291a7fbf7fc5d3281f3",
+    "tools/CurveKernelContractRunner/Program.cs": "c619f0e4e453650959083c4d23ff4cbe8373eae319476cba508b7c6fff178c23",
+    "tools/InterchangeBuilder.Patcher/InterchangeBuilder.Patcher.csproj": "73f2986f70e87ed653092026c7b1285ca3845ef177bc904f70971fd6e372ab89",
+    "tools/InterchangeBuilder.Patcher/Program.cs": "20065b53173bf6d72b3dc5b7d955ba7ef6c05d54f40d1648db135ed27345aa4f",
+    "tools/InterchangeBuilder.RuntimeSmoke/InterchangeBuilder.RuntimeSmoke.csproj": "5399f55d97713e24463ccc5104858dde14792f33a11181db77f433884892ea00",
+    "tools/InterchangeBuilder.RuntimeSmoke/Program.cs": "e0d1073d29b140a70975b80c7182a27e9f61d9ce33200bd9f775b470907e868c"
+  }
+}
