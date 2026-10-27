@@ -105,3 +105,5 @@ Issue #10 的首个隔离切片现可在Lab `/curve-lab.html`运行：有限直�
 Local V2 experiment adds [automatic orthogonal overpass candidates and actual curved context corridors](labs/interchange-demo/docs/EXPLICIT_TAIL_PHASE2.md), with explicit unsupported boundaries and separate evidence. No stable runtime replacement, push or game validation.
 
 Current focus: [curve algorithm verification → Mod Core migration](docs/MOD_CURVE_MIGRATION.md). The Lab is only a calculation/test harness. New default-disabled C# Core candidate construction is local and unconnected to runtime; game construction is not implemented or validated.
+
+Current local milestone: [independent C# planar verifier](docs/CORE_GEOMETRY_VALIDATION.md) inspects actual geometry and request binding; standard netstandard2.0 build and xUnit now pass. No runtime activation or game permission. / 已迁入独立平面验收，未接入游戏。

@@ -16,6 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../../tools/CurveKernelContractRunner/Program.cs" Link="CurveKernelContractChecks.cs" />
+    <Compile Include="../../tools/CurveKernelContractRunner/VerifierChecks.cs" Link="VerifierChecks.cs" />
+    <None Include="../curve-verifier-vectors.json" Link="curve-verifier-vectors.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../curve-contract-vectors.json" Link="curve-contract-vectors.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

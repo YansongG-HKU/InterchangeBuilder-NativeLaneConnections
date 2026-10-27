@@ -14,8 +14,8 @@ for p in git('ls-tree','-r','--name-only',base).splitlines():
         assert old==new,p
         same.append({'path':p,'blob':new})
 assert not git('diff','d487f8b24cc805d6dc380543b2149bda04491dbd','--','labs/interchange-demo/evidence','labs/interchange-demo/evidence-tail','labs/interchange-demo/evidence-tail-v2')
-calls=[str(p.relative_to(root)) for p in (root/'src/InterchangeBuilder.LaneConnections').glob('*.cs') if 'ExperimentalCurveKernel' in p.read_text()]
+calls=[str(p.relative_to(root)) for p in (root/'src/InterchangeBuilder.LaneConnections').glob('*.cs') if any(name in p.read_text() for name in ('ExperimentalCurveKernel','CurveGeometryVerifier'))]
 assert not calls,calls
 tracked=git('ls-files','--cached','--others','--exclude-standard').splitlines()
 assert not any(p.lower().endswith(('.dll','.exe','.nupkg')) for p in tracked)
-print(json.dumps({'baseline':base,'unchangedOriginalFiles':same,'approvedChangedOriginalFiles':changed,'newCoreSource':'src/InterchangeBuilder.LaneConnections.Core/ExperimentalCurveKernel.cs','runtimeCallSites':calls,'default':'Disabled; CanApplyToGame=false','game':'NOT_RUN','release':'No merge/push/deployment; existing runtime/build/package/CI files unchanged'},indent=2))
+print(json.dumps({'baseline':base,'unchangedOriginalFiles':same,'approvedChangedOriginalFiles':changed,'newCoreSources':['src/InterchangeBuilder.LaneConnections.Core/ExperimentalCurveKernel.cs','src/InterchangeBuilder.LaneConnections.Core/CurveGeometryVerifier.cs'],'runtimeCallSites':calls,'default':'Disabled; CanApplyToGame=false','game':'NOT_RUN','release':'No merge/push/deployment; existing runtime/build/package/CI files unchanged'},indent=2))

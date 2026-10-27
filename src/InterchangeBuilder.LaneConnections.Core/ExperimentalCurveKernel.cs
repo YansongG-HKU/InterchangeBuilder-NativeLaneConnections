@@ -65,6 +65,7 @@ public sealed class CurveCandidate
 public sealed class CurveKernelResult
 {
     private readonly CurveKernelRequest? original;
+    internal CurveKernelRequest? CapturedRequest => original;
     internal CurveKernelResult(CurveKernelStatus status, CurveKernelRequest? request, CurveCandidate[]? candidates = null)
     { original = request; Status = status; Revision = request?.Revision ?? -1; StartKey = request?.Start?.Key; EndKey = request?.End?.Key;
       Mode = request?.Mode ?? CurvePlacementMode.Normal; Candidates = Array.AsReadOnly(candidates ?? Array.Empty<CurveCandidate>()); }
