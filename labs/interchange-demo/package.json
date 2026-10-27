@@ -10,7 +10,10 @@
     "test:browser": "node tests/browser.js",
     "evidence": "node tests/evidence.js",
     "format": "prettier --write src tests scripts",
-    "test:3d": "node tests/browser3d.js"
+    "test:3d": "node tests/browser3d.js",
+    "test:tail": "node --test tests/tail.test.js",
+    "test:tail-browser": "node tests/tail-browser.js",
+    "evidence:tail": "node tests/tail-evidence.js"
   },
   "dependencies": {
     "polygon-clipping": "0.15.7",

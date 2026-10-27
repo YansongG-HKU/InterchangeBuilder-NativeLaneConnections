@@ -125,3 +125,7 @@ Unchanged with reasons: README/OFFLINE_DEMO already promise diagnosis and link d
 ## 目标仓整合维护 / Target-repository maintenance
 
 当前执行计划、全仓索引与导入差异以 [根索引](../../../docs/DOCUMENTATION_INDEX.md) 和 [整合记录](../../../docs/INTEGRATION.md) 为准。本目录旧影响记录保留为历史，不暗示目标main已合并。 / Root index owns current maintenance; prior impact records are historical.
+
+## 2026-10-27 显式直尾实验 / Explicit-tail experiment
+
+新增 [EXPLICIT_TAIL_EXPERIMENT](EXPLICIT_TAIL_EXPERIMENT.md)、[evidence-tail结果](../evidence-tail/RESULTS.md)，更新当前受影响设计/运行/验收文档；完整逐组处置见 [根索引](../../../docs/DOCUMENTATION_INDEX.md)。旧导入manifest/历史证据保持原样，新实验源码哈希单独记录。 / New local implementation evidence is not retroactively written into historical import evidence. No push/PR mutation.

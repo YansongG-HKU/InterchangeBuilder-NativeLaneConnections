@@ -38,3 +38,7 @@
 本轮只将 [深度案例计划](DEEP_CASE_PLAN.md) 写入仓库。后续实施须获得明确执行授权并冻结材料/独立真值/容差；不追加算法或扩展类型。本轮回滚为撤销文档提交，Demo代码与历史证据保持原样。 / This revision is documentation only; subsequent implementation needs execution authorization and evidence/oracle/tolerance freeze. Revert the documentation commit to roll back.
 
 当前维护及获批阶段以 [根计划](../../../docs/LEFT_TURN_PLAN.md) 和 [整合规则](../../../docs/INTEGRATION.md) 为准；不在源仓继续开发。 / Root plan governs current maintenance.
+
+## 当前执行授权 / Current execution scope
+
+最新用户已授权本地实现与验证 [Issue #10切片](EXPLICIT_TAIL_EXPERIMENT.md)，不推送或变更PR。此前“仅文档”描述是上一轮历史；当前游戏、发布与稳定运行时保护不变。 / Implement locally under the latest scope; do not push or mutate PRs.

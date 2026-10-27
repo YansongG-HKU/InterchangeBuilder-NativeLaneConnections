@@ -43,3 +43,5 @@ PASS 必须绑定确切版本组合及证据；版本改变后默认 NEEDS_RETES
 执行前按 [D0–D4](DEEP_CASE_PLAN.md) 固定预期与误差。检查器不得复用生成器的连接结论；正反例、解析/独立复算、性质/收敛/盲测及干净环境复现分别记录。工程人工审查不等于第二个AI浏览。 / Freeze the independent oracle before generation and separately document adversarial, analytic, metamorphic, convergence, held-out and third-party reproduction evidence. Human engineering review is distinct. New gates NOT_RUN.
 
 P0“道路消失/只余桥墩”的 [M11-A–E](research/road_mod_lessons.md) 注入矩阵和A45为独立验收：超时不等于失败、桥墩不等于道路创建成功；FAILED/RECOVERY_REQUIRED/VERIFIED按实测范围报告。 / Timeout and visible piers are not failure/success oracles; recovery tests remain NOT_RUN.
+
+当前 [直尾实测](../evidence-tail/RESULTS.md) 从输出控制点独立重建几何，明确分辨率UNKNOWN与参考/生成边界。完整车道图、地形、桥墩及游戏仍未验证。 / Output-derived checks do not replace game gates.

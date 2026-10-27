@@ -13,3 +13,7 @@
 7. 游戏实际生成、车辆、保存重载、编辑撤销，以及道路/桥墩P0所有权/迟到/补偿必须另门槛。未知版本、基础服务或生命周期实现先列证据缺口，不把条件性timeout保护认作事务恢复。 / Game creation, vehicles, reload, undo and ownership/recovery remain separate gates.
 
 退出条件依次为材料/预期冻结、一个完整离线案例及负例、独立复现/人工审查、固定游戏版本组合实测。当前均未完成；不以新增功能或测试数量计进步。整合PR不会自动开始算法或游戏发布。 / Exit via evidence freeze, one complete offline case plus negatives, independent/human review, then versioned game validation. None is completed by this integration.
+
+## 2026-10-27 首个本地切片 / First local slice
+
+用户已明确要求实施Issue #10，6→4+2不再是前置。已落实 [显式直尾实验](../labs/interchange-demo/docs/EXPLICIT_TAIL_EXPERIMENT.md)：手写基准、有限分段生成、独立验收及本地模式切换。完整左转走廊/拓扑、复杂宽度/净空与游戏阶段未完成；等高中部上跨仅支持明确的参考验收，不冒充生成。 / Local bounded slice implemented; full gates remain incomplete. This does not merge integration PR #9 or authorize publishing this experimental branch.

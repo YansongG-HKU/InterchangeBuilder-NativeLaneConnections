@@ -24,3 +24,5 @@ Diagnostic navigation follows the active view: located errors pan the 3D camera 
 ## 后续范围 / Future scope
 
 [深度案例](DEEP_CASE_PLAN.md) 将三维用于完整车道路径、断面和结构冲突验证；这是未实现目标。现有道路条带、OD高亮和浏览器测试只证明当前展示行为。 / Future lane and structural inspection is not established by current rendering evidence.
+
+新 [直尾页面](EXPLICIT_TAIL_EXPERIMENT.md) 复用ConnectionScene，只消费独立检查器从实际输出生成的点；直线平面段也按纵断面细分，不画端点连线冒充Hermite。背景道路ID用文本列表避免近邻标签遮挡。 / Baseline scene implementation unchanged; the new page owns its inspection data and explicit labels.

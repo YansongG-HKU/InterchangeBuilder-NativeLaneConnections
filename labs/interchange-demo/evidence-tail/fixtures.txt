@@ -1,0 +1,5 @@
+
+> cs2-interchange-offline-lab@0.2.0 evidence:tail
+> node tests/tail-evidence.js
+
+5 independent reference/fault fixtures passed; source hashes recorded

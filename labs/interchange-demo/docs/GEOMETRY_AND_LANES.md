@@ -60,3 +60,7 @@ OD验证限定选中立交影响区内的合法路径；经外部城市路口绕
 ## 完整案例后续契约 / Next complete-case contract
 
 [H1–H4](DEEP_CASE_PLAN.md) 要求完整互通集成6→4+2，检查接收车道、分合流、渐变、方向及交织；独立检查器从实际输出重建有向车道图，不信任连接标记。 / Integrate the fork into the interchange and independently reconstruct directed lane reachability; current isolated fork and centerline preview do not satisfy this contract. NOT_RUN.
+
+## 当前曲线切片 / Current curve slice
+
+按最新用户范围，6→4+2不再作为曲线实验前置。新增 [有限直尾与五次接顺](EXPLICIT_TAIL_EXPERIMENT.md)，旅行方向侧偏、常偏移曲率/坡度度量校正、显式G1/G2取舍；独立输出验收不是游戏车道图。 / Current slice removes the fork prerequisite and preserves actual geometry/graph boundaries.

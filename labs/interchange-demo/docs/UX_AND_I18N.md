@@ -75,3 +75,7 @@ Schema 2 UI adds bilingual height/grade controls, orbit/pan/zoom/reset/top, comp
 [深度案例计划](DEEP_CASE_PLAN.md) 的车道完整追踪、断面和结构冲突定位尚未实现。现有OD高亮不等于完整逐车道交互。 / Future lane-level tracing, sections and structural conflict localization remain unimplemented; existing OD highlighting is not lane-level validation.
 
 未来恢复界面应分开FAILED、RECOVERY_REQUIRED和已验证范围，显示账本与未清理附属物，不把仅桥墩存在显示成成功；见 [P0](research/road_mod_lessons.md)。 / Future recovery UI must expose unresolved ownership/cleanup and verified scope. Not implemented.
+
+## 显式直尾页面 / Explicit-tail page
+
+新增双语 `/curve-lab.html`：生成/参考检查明确区分，参数/模式revision绑定展示验收导出，输入中间态许可过期，三维/二维显示同一输出点。正常/无碰撞仅对合成建筑类别改变本地许可；道路及几何错误仍阻塞，不修改第三方开关。详见 [契约](EXPLICIT_TAIL_EXPERIMENT.md)。 / Bilingual local permission experiment, no Anarchy compatibility claim.

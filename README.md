@@ -97,3 +97,7 @@ Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual S
 ## English summary
 
 InterchangeBuilder Native Lane Connections is a Cities: Skylines II mod. It preserves centre alignment, adds width-aware left/centre/right candidates, follows native connection compatibility, resolves multi-arm junctions from pointer direction, and carries the selected alignment through placement. The ready-to-use release contains every required project file; game files are never included.
+
+## 本地曲线实验 V1 / Local curve experiment
+
+Issue #10 的首个隔离切片现可在Lab `/curve-lab.html`运行：有限直尾、五次接顺、同向横移、独立走廊检查与模式许可分离。参见 [契约与限制](labs/interchange-demo/docs/EXPLICIT_TAIL_EXPERIMENT.md)。中部跨越生成仍UNSUPPORTED；游戏NOT_RUN。本轮仅本地提交，不推送或更改稳定Mod。 / Bounded local implementation only; existing runtime is unchanged.

@@ -17,3 +17,9 @@
 - Added 12 core tests and a seven-target runtime metadata smoke harness.
 - Made the build accept explicit base-package and game paths without embedding game assemblies in source control.
 - Published a ready-to-use binary package with direct Skyve II installation instructions.
+
+## Local experiment — 2026-10-27
+
+- Add isolated explicit straight-tail/quintic transition experiment and independent reference/fault checks for Issue #10; preserve baseline/runtime.
+- Intermediate crossing generation remains unsupported; reference-only full-width orthogonal clearance is separate.
+- No push, PR mutation, merge, release or game validation in this task.

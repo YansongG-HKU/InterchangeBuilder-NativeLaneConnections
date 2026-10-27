@@ -79,3 +79,7 @@ npm run build
 ## 下一阶段：一个完整深度案例 / Next: one complete deep case
 
 [新版研究与执行门槛](docs/DEEP_CASE_PLAN.md)：以逐车道拓扑、三维几何、独立检查与游戏映射贯通一个案例；本次仅研究/文档，算法、独立真值和游戏验证均未执行。现有Demo历史测试不等于新目标完成。 / Research/design only; no new algorithm, independent oracle or game validation has been executed.
+
+## 显式直尾实验 / Explicit-tail experiment
+
+打开 `/curve-lab.html`，独立于原基线；支持有限真实直尾、同向横移/局部左转、参考检查与本地碰撞许可切换。见 [实验契约](docs/EXPLICIT_TAIL_EXPERIMENT.md) 与 [实测结果](evidence-tail/RESULTS.md)。`npm run test:tail`、`npm run test:tail-browser`、`npm run evidence:tail`；中部高跨生成及游戏适配未实现。 / New bounded experiment, not a replacement for baseline or the stable Mod.

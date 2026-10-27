@@ -61,3 +61,7 @@ Height/terrain caps, structural clearance, local stacked decks, full structure/g
 ## 历史证据边界 / Historical evidence boundary
 
 上述测试属于现有Demo。新 [深度案例D0–D4](DEEP_CASE_PLAN.md) 全部NOT_RUN；本轮仅文档链接/一致性检查，不重跑或改写历史数值，不把旧断言计作独立真值验证。 / Existing results remain historical demo evidence; documentation-only changes do not execute the new deep-case gates.
+
+## 2026-10-27 本地曲线实验 / Local curve experiment
+
+新增实测及最终源哈希记录在 [evidence-tail](../evidence-tail/RESULTS.md)，不改本目录历史evidence。原二维/三维/定位回归复跑后恢复历史输出；新测试不代表全套游戏验收。 / New evidence is separate, with baseline regression and no game/CI claim.

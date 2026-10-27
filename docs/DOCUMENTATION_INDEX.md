@@ -17,3 +17,11 @@ Verification: local Markdown links and full import/overlay SHA-256 comparisons; 
 ## Public-upload resumption / 公开上传恢复
 
 Updated INTEGRATION and integration-evidence/RESULTS and added [Mod protection hashes](integration-evidence/mod-protection.json): latest authorization permits public upload but no source-repository update. Reviewed all remaining tracked documents; prior impact reasons still apply, no new behavior or algorithm scope. Root build/package coupling is explicitly documented (documentation payload only). Code and prior test inputs are unchanged, so no redundant runtime suite rerun.
+
+## 2026-10-27 local explicit-tail implementation impact
+
+New [experiment contract](../labs/interchange-demo/docs/EXPLICIT_TAIL_EXPERIMENT.md) and [actual results](../labs/interchange-demo/evidence-tail/RESULTS.md) describe the local Issue #10 slice. User explicitly removed 6→4+2 as a prerequisite and authorized local code/tests only; no push or PR mutation.
+
+Updated root README/CHANGELOG/LEFT_TURN_PLAN and this index; updated lab README, DESIGN_REQUIREMENTS, GEOMETRY_AND_LANES, UX_AND_I18N, REQUIREMENTS_ACCEPTANCE, DEVELOPMENT, ROADMAP, COMPATIBILITY, OFFLINE_DEMO, OFFLINE_VALIDATION, THREE_D_DESIGN, VERTICAL_PROFILES, DEEP_CASE_PLAN, SOURCES, VALIDATION and lab index to distinguish implemented limited generation, independently checked references and unsupported/game boundaries. New page/modules/fixtures/tests/Vite multi-entry config and separate evidence belong only to labs/interchange-demo.
+
+Reviewed unchanged: AGENTS/CONTRIBUTING and templates already govern local evidence and whole-document discipline; RIGHTS/THIRD_PARTY and root notices unchanged (no dependencies or copied code); original Mod README-upgrade/release records remain historical; INTEGRATION/import manifests and old integration/source evidence are immutable baseline records, not claims that this new experiment matches the old source snapshot; CURVED_SITE_OPTIMIZATION/REALISM_AND_GAMEPLAY/ROAD_RULES/EXPERIMENT_TEMPLATE retain full future requirements and existing boundaries; eight research documents remain dated source analysis. Existing C# source/tests/tools/UI, root build/CI/release configuration and game adapter remain unchanged. Fresh final-code isolation hashes are recorded with the new evidence, not inferred from the old report.

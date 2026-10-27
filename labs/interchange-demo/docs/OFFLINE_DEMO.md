@@ -90,3 +90,7 @@ See [vertical V1 and schema 2](VERTICAL_PROFILES.md) and [3D scene contract](THR
 ## 下一阶段状态 / Next-stage status
 
 现有能力保持不变。[深度案例计划](DEEP_CASE_PLAN.md) 是未执行的后续研究：集成逐车道拓扑、独立检查器、完整结构及游戏映射都不能从当前预览推断完成。 / Current runtime remains unchanged; new integrated lane, independent checker, structural and game gates are unexecuted.
+
+## 独立曲线页 / Separate curve page
+
+新增 [显式直尾实验](EXPLICIT_TAIL_EXPERIMENT.md)，使用独立输入/输出与检查器，不改原solver；`npm run build`包含两个HTML入口。保持Node隔离，原页面和历史证据保留。 / Separate bounded page; baseline solver and historical evidence remain intact.

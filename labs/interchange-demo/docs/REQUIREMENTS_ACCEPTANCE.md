@@ -92,3 +92,7 @@ A43 / R29：生成前审查材料、H1–H5失败条件、独立车道/OD真值�
 A45 / P0：用户“道路消失只余桥墩”报告的未来故障回归，按 [M11-A–E](research/road_mod_lessons.md) 验证所有权、异步收敛、实际道路/支撑读回、幂等补偿及结构化错误。覆盖部分成功、迟到、误归属、删除失败和恢复重载，不误删原道路。根因UNKNOWN、游戏复现NOT_RUN，不声称已修复。 / Future recovery gate; ownership and verified read-back must survive fault injection without damaging the pre-existing world. Unknown cause, unexecuted runtime reproduction.
 
 A46：将 [M01–M10](research/road_mod_lessons.md) 映射到H1–H5，测试方向镜像、边缘交叉、删除唯一出口、近邻/上下重叠、旧snapshot、道路B选择不被起点A覆盖、动态metadata及贪心反例。 / Reference-derived port, lane, identity and matching counterexamples; all NOT_RUN.
+
+## Issue #10 子集实测 / Executed subset
+
+[新证据](../evidence-tail/RESULTS.md) 覆盖中间有限直尾、同向横移、直/弯局部端口左转及独立中部高跨参考，并注入缩短尾段、断链、接反、G2冲突、过厚桥面等故障。命名道路对+区域豁免、模式事实不变、转换重验、分辨率UNKNOWN另测。完整曲线路面接缝、复杂净空及游戏门槛仍NOT_RUN。 / Partial offline acceptance only, not completion of Issue #10 or A43–A46.

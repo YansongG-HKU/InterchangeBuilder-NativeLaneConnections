@@ -70,3 +70,5 @@
 P0必须在适配设计中落实M11-A–E：operation所有权账本、可收敛异步状态、道路及依赖实际读回、幂等且按实测依赖顺序的补偿、归属/车道/空间判据分离。覆盖部分成功、迟到/取消后返回、错误归属、删除失败、ID复用、并发、人工改动及恢复中重载。禁止邻近扫描乱删、盲删桥墩、仅延长timeout或开启Anarchy掩盖。 / Prioritize ownership, asynchronous reconciliation, read-back, idempotent compensation and independent predicates with fault injection; preserve existing world objects. These are future adapter contracts, not an engine transaction guarantee or implementation.
 
 M01–M10的方向/端口边界/default-explicit-forbidden、状态快照、动态metadata、XZ归属和贪心配对反例纳入D0冻结清单。D4不得以预览、桥墩存在或保守保留替代VERIFIED。 / Freeze reference-derived adversarial cases before implementation; preview, piers or conservative retention cannot certify D4.
+
+当前执行更新：用户已明确曲线功能落地，6→4+2不再作为本轮前置。[有限直尾实现](EXPLICIT_TAIL_EXPERIMENT.md) 是首个局部实验，不证明完整D0–D4案例已通过。 / Latest scope authorizes this local slice without the fork prerequisite; full gates remain incomplete.

@@ -74,3 +74,7 @@ Current implementation scope and evidence: [profiles](VERTICAL_PROFILES.md), [sc
 R29：按 [深度案例计划](DEEP_CASE_PLAN.md) 冻结H1–H5假设、独立真值、材料来源和误差；优先一个完整案例，不以功能/测试数量验收。R30：拓扑先行、平纵横联合、独立重建检查及独立游戏门槛。 / Freeze falsifiable hypotheses, provenance/errors and independent oracles; prioritize one integrated case with topology-first joint geometry, reconstructed validation and separate game gates. Both requirements are DESIGN ONLY / NOT_RUN.
 
 R31 / P0：用户道路消失只余桥墩报告要求未来所有权账本、异步收敛、真实道路/依赖验证和幂等恢复；按 [M11-A–E](research/road_mod_lessons.md) 及A45验证，未知根因不得写已修复。 / Future ownership and recovery contract; runtime NOT_RUN, cause UNKNOWN.
+
+## Issue #10 本地实现 / Local implementation
+
+[显式直尾契约](EXPLICIT_TAIL_EXPERIMENT.md) 实现有限子集：固定端口身份/方向/侧位，先预留有限线段，再求五次曲线接顺。6→4+2不是本轮前置；完整车道/游戏门槛保留。 / Explicit finite tail and independent checks implement a subset only.

@@ -50,3 +50,5 @@ A nonzero-mainline-grade variation of the `elevated-full` fixture also checks in
 ## 后续联合设计 / Future joint design
 
 [深度案例](DEEP_CASE_PLAN.md) 将平纵横及结构包络联合验证；当前单段Hermite与中心线高差诊断不足以完成H4。 / Single-segment profiles and crossing height diagnostics do not satisfy future full-width structural validation. Existing bounded implementation is unchanged.
+
+新 [直尾实验](EXPLICIT_TAIL_EXPERIMENT.md) 使用独立输出检查和长度区间传播；正交高跨仅参考验收，自动中段升降生成UNSUPPORTED。 / Baseline single-profile implementation remains unchanged; new reference checks do not establish general clearance.

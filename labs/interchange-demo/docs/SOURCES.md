@@ -88,3 +88,5 @@ https://mods.paradoxplaza.com/mods/133736/Windows
 [参考机制与反例](research/road_mod_lessons.md) 收录Network Multitool、Node Controller Renewal、TM:PE、Move It作者材料，以及用户确认的InterchangeBuilder-NativeLaneConnections固定main/未合并PR研究。CS1 master为动态读取快照，无可靠SHA，不伪造固定版本；旧仓main与PR4分别固定到9f083061/0e9b3449，测试数量仅自报。 / Distinguish dynamic author sources, pinned main, unmerged proposals and unverified test claims.
 
 用户“修路失败/道路消失/只余桥墩”是直接观察，具体版本/日志/存档缺失；原因假设与源码证据分列，不将条件性补丁认作已解决。新 [深度计划](DEEP_CASE_PLAN.md) 用这些材料设计反例，未执行或移植代码。 / Direct user observations do not establish causality; references inform unexecuted adversarial contracts only.
+
+2026-10-27：以目标仓 [Issue #10](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/issues/10) 及两条评论为直尾/模式契约；新增 [实验](EXPLICIT_TAIL_EXPERIMENT.md) 的参数与手写几何均明确合成，无新游戏硬限或第三方代码复制。 / Issue-driven synthetic experiment, not a standards claim.

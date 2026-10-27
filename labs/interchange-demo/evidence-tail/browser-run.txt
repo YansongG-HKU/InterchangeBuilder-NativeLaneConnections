@@ -1,0 +1,5 @@
+
+> cs2-interchange-offline-lab@0.2.0 test:tail-browser
+> node tests/tail-browser.js
+
+25 tail browser assertions passed

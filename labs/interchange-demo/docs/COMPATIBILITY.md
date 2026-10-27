@@ -37,3 +37,5 @@ Placemaker是交互参考，不自动加入运行依赖。RB/Traffic等外部编
 [D4](DEEP_CASE_PLAN.md) 要求固定CS2 build、道路资产和Road Builder/Anarchy版本，实际车道读回、车辆、保存重载及编辑撤销。版本目前未选定，全部NOT_RUN；CS1源码与旧项目PR不能替代当前CS2实测。 / Exact runtime versions remain unset; historical source/PR research does not establish compatibility.
 
 旧项目和CS1机制的 [来源边界及P0恢复契约](research/road_mod_lessons.md) 不证明CS2原子事务、Undo或稳定lane API；Anarchy只读能力探测不得替用户开关。 / Source lessons are not a compatibility guarantee; do not change the user’s Anarchy setting.
+
+实验页面的normal/no-collision只是 [本地building许可策略](EXPLICIT_TAIL_EXPERIMENT.md)，不读写或模拟Anarchy全局状态，也不是任何CS2版本兼容结果。 / Local mode semantics establish no third-party compatibility.
