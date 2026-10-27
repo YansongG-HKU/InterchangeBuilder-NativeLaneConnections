@@ -1,5 +1,6 @@
+import { generateBridge } from "./bridge.js";
 // Bounded local candidate family. No game node selection, obstacle rerouting or global optimizer.
-export const VERSION = "tail-v1";
+export const VERSION = "tail-v2";
 const add = (a, b) => a.map((v, i) => v + b[i]),
   scale = (a, k) => a.map((v) => v * k);
 const normal = (t) => [-t[1], t[0]];
@@ -95,6 +96,13 @@ export function validateInput(input) {
       !["road", "building"].includes(o.kind) ||
       (o.z !== undefined && (!finite(o.z) || Math.abs(o.z) > 1000)) ||
       (o.crossing !== undefined && typeof o.crossing !== "boolean") ||
+      (o.controls !== undefined &&
+        (!Array.isArray(o.controls) ||
+          o.controls.length < 2 ||
+          o.controls.length > 6 ||
+          !o.controls.every(point) ||
+          JSON.stringify(o.controls[0]) !== JSON.stringify(o.a) ||
+          JSON.stringify(o.controls.at(-1)) !== JSON.stringify(o.b))) ||
       !point(o.a) ||
       !point(o.b) ||
       Math.hypot(o.b[0] - o.a[0], o.b[1] - o.a[1]) < 1e-6 ||
@@ -105,7 +113,28 @@ export function validateInput(input) {
       return "obstacle";
   if (new Set(input.obstacles.map((o) => o.id)).size !== input.obstacles.length)
     return "obstacle ids";
-  if (input.clearance !== undefined && (!finite(input.clearance) || input.clearance < 0 || input.clearance > 1000))
+  if (
+    input.deckThickness !== undefined &&
+    (!finite(input.deckThickness) ||
+      input.deckThickness < 0 ||
+      input.deckThickness > 100)
+  )
+    return "deckThickness";
+  for (const p of [input.start, input.end]) {
+    if (
+      p.roadId !== undefined &&
+      (typeof p.roadId !== "string" ||
+        !input.obstacles.some((o) => o.kind === "road" && o.id === p.roadId) ||
+        !finite(p.roadT) ||
+        p.roadT < 0 ||
+        p.roadT > 1)
+    )
+      return "port road binding";
+  }
+  if (
+    input.clearance !== undefined &&
+    (!finite(input.clearance) || input.clearance < 0 || input.clearance > 1000)
+  )
     return "clearance";
   for (const j of input.joins)
     if (
@@ -126,6 +155,16 @@ export function generate(input, budget = 3) {
   if (invalid)
     return { status: "INPUT_INVALID", reason: invalid, candidates: [] };
   if (
+    input.widthProfile !== undefined ||
+    input.obstacles.some((o) => o.widthProfile !== undefined)
+  )
+    return {
+      status: "UNSUPPORTED",
+      reason: "Variable width corridors are not supported.",
+      candidates: [],
+    };
+
+  if (
     [input.start, input.end].some(
       (p) => p.width !== input.width || 1 - p.offset * p.curvature <= 0.05,
     )
@@ -136,6 +175,8 @@ export function generate(input, budget = 3) {
         "Variable-width transitions or singular offset ports are unsupported.",
       candidates: [],
     };
+  if (input.verticalMode === "intermediate")
+    return generateBridge(input, budget);
   if (input.verticalMode !== "endpoint")
     return {
       status: "UNSUPPORTED",

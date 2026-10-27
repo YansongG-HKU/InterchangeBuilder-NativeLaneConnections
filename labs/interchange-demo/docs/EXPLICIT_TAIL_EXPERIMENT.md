@@ -48,3 +48,7 @@ The four groups cover tail, lateral shift, local straight/curved-port left turns
 回滚本地实验提交即可恢复原基线。目标main、稳定C#、构建/发布配置与既有PR不改。 / Revert the experiment commit; stable runtime and remote refs are untouched.
 
 Independent pre-delivery review found and fixed finite-but-overflowing imported profiles, malformed null join/segment shapes and invalid context elevation. Numeric output limits are computational bounds, not CS2 rules; nonfinite derived values fail closed with no drawable geometry.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

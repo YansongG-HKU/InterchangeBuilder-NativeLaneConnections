@@ -96,3 +96,7 @@ A46：将 [M01–M10](research/road_mod_lessons.md) 映射到H1–H5，测试方
 ## Issue #10 子集实测 / Executed subset
 
 [新证据](../evidence-tail/RESULTS.md) 覆盖中间有限直尾、同向横移、直/弯局部端口左转及独立中部高跨参考，并注入缩短尾段、断链、接反、G2冲突、过厚桥面等故障。命名道路对+区域豁免、模式事实不变、转换重验、分辨率UNKNOWN另测。完整曲线路面接缝、复杂净空及游戏门槛仍NOT_RUN。 / Partial offline acceptance only, not completion of Issue #10 or A43–A46.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

@@ -94,3 +94,7 @@ See [vertical V1 and schema 2](VERTICAL_PROFILES.md) and [3D scene contract](THR
 ## 独立曲线页 / Separate curve page
 
 新增 [显式直尾实验](EXPLICIT_TAIL_EXPERIMENT.md)，使用独立输入/输出与检查器，不改原solver；`npm run build`包含两个HTML入口。保持Node隔离，原页面和历史证据保留。 / Separate bounded page; baseline solver and historical evidence remain intact.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

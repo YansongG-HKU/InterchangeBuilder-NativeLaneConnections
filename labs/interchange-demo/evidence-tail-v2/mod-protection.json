@@ -1,0 +1,150 @@
+{
+  "baseline": "9f083061cdcf2bb08ed03c0527ebbd6f591c1179",
+  "experimentBase": "a13fa7919abcd4689bff035f65bd6d618978cc2b",
+  "protectedFiles": [
+    {
+      "path": ".gitattributes",
+      "baselineBlob": "d0933793f08e5623aabf6571cc08c7d523e93322",
+      "actualBlob": "d0933793f08e5623aabf6571cc08c7d523e93322"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "baselineBlob": "ba0d8cbe245496d5dc49ac1e3aaab7a5d75131d2",
+      "actualBlob": "ba0d8cbe245496d5dc49ac1e3aaab7a5d75131d2"
+    },
+    {
+      "path": ".gitignore",
+      "baselineBlob": "435e304acb57c426d7921b3a1716123e6e8d072d",
+      "actualBlob": "435e304acb57c426d7921b3a1716123e6e8d072d"
+    },
+    {
+      "path": "Directory.Build.props",
+      "baselineBlob": "0cfa5853dd49f42e770684720521d8f571f994d9",
+      "actualBlob": "0cfa5853dd49f42e770684720521d8f571f994d9"
+    },
+    {
+      "path": "LICENSE",
+      "baselineBlob": "e3875bed149e5bbba4e8cb90164f47489768027c",
+      "actualBlob": "e3875bed149e5bbba4e8cb90164f47489768027c"
+    },
+    {
+      "path": "README-upgrade.md",
+      "baselineBlob": "4eb0c4e5c4477a5495f91d263debf7349dc699e4",
+      "actualBlob": "4eb0c4e5c4477a5495f91d263debf7349dc699e4"
+    },
+    {
+      "path": "docs/releases/v2.2.0.md",
+      "baselineBlob": "ea383dc4a6137b460f7935cd4e3864ae55089cc7",
+      "actualBlob": "ea383dc4a6137b460f7935cd4e3864ae55089cc7"
+    },
+    {
+      "path": "scripts/build-upgrade.ps1",
+      "baselineBlob": "9d93e78ffbe2bb649ac698711042fa4600ce9841",
+      "actualBlob": "9d93e78ffbe2bb649ac698711042fa4600ce9841"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections.Core/AlignmentMath.cs",
+      "baselineBlob": "d0aa9305fd0a5a7cd0608d7ad61004b09fb27ec7",
+      "actualBlob": "d0aa9305fd0a5a7cd0608d7ad61004b09fb27ec7"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections.Core/InterchangeBuilder.LaneConnections.Core.csproj",
+      "baselineBlob": "1974dbfa3faf2c5b869128d6387b2cd9a067ce66",
+      "actualBlob": "1974dbfa3faf2c5b869128d6387b2cd9a067ce66"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections.Core/JunctionArmMath.cs",
+      "baselineBlob": "b23bbc55778dd82810f0e9b3de4911ac594a9f70",
+      "actualBlob": "b23bbc55778dd82810f0e9b3de4911ac594a9f70"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/Bootstrap.cs",
+      "baselineBlob": "bccd634a294076989fec2dc99016139738ee0784",
+      "actualBlob": "bccd634a294076989fec2dc99016139738ee0784"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/ConnectionSelection.cs",
+      "baselineBlob": "2a84472e0ec5fddf0a13c7f5f1c17311c221a704",
+      "actualBlob": "2a84472e0ec5fddf0a13c7f5f1c17311c221a704"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/ConnectionSelectionStore.cs",
+      "baselineBlob": "6eb60819750ff168a00c936d48b88f9d99a36f0d",
+      "actualBlob": "6eb60819750ff168a00c936d48b88f9d99a36f0d"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/EndpointAlignmentService.cs",
+      "baselineBlob": "0635f95007c863e136c5578fa6c43e2a535b35d4",
+      "actualBlob": "0635f95007c863e136c5578fa6c43e2a535b35d4"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/InterchangeBuilder.LaneConnections.csproj",
+      "baselineBlob": "9972ae5495a0f5bf366706192f4c315fe0dd32dc",
+      "actualBlob": "9972ae5495a0f5bf366706192f4c315fe0dd32dc"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/Mod.cs",
+      "baselineBlob": "51f3469b74058892c7983709ee28a6a408750526",
+      "actualBlob": "51f3469b74058892c7983709ee28a6a408750526"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/Patches.cs",
+      "baselineBlob": "3eb3c6b2b3a162afdcc397f6a0979c5e6e05bb92",
+      "actualBlob": "3eb3c6b2b3a162afdcc397f6a0979c5e6e05bb92"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/UpgradeLog.cs",
+      "baselineBlob": "9a241c68d9d31d4ed623141d6a162e3ee1663752",
+      "actualBlob": "9a241c68d9d31d4ed623141d6a162e3ee1663752"
+    },
+    {
+      "path": "tests/InterchangeBuilder.LaneConnections.Core.Tests/AlignmentMathTests.cs",
+      "baselineBlob": "2f65ecbc438c21595cbe4679d74fef391868b333",
+      "actualBlob": "2f65ecbc438c21595cbe4679d74fef391868b333"
+    },
+    {
+      "path": "tests/InterchangeBuilder.LaneConnections.Core.Tests/InterchangeBuilder.LaneConnections.Core.Tests.csproj",
+      "baselineBlob": "b03a8f83dc27073a50e8879d099c2b957c10e228",
+      "actualBlob": "b03a8f83dc27073a50e8879d099c2b957c10e228"
+    },
+    {
+      "path": "tools/InterchangeBuilder.Patcher/InterchangeBuilder.Patcher.csproj",
+      "baselineBlob": "e2c80a62ae4d1b3586731c87686ef85233d3f6ff",
+      "actualBlob": "e2c80a62ae4d1b3586731c87686ef85233d3f6ff"
+    },
+    {
+      "path": "tools/InterchangeBuilder.Patcher/Program.cs",
+      "baselineBlob": "a98dc103a4bc3a53f0d493fdd8958437e4c670ed",
+      "actualBlob": "a98dc103a4bc3a53f0d493fdd8958437e4c670ed"
+    },
+    {
+      "path": "tools/InterchangeBuilder.RuntimeSmoke/InterchangeBuilder.RuntimeSmoke.csproj",
+      "baselineBlob": "271e74251373974d2e3b11efe7791efe6ceb29fb",
+      "actualBlob": "271e74251373974d2e3b11efe7791efe6ceb29fb"
+    },
+    {
+      "path": "tools/InterchangeBuilder.RuntimeSmoke/Program.cs",
+      "baselineBlob": "a23a3cdab5f9bc11e126a1f929350632a3e80568",
+      "actualBlob": "a23a3cdab5f9bc11e126a1f929350632a3e80568"
+    },
+    {
+      "path": "ui/InterchangeBuilder.localization.css",
+      "baselineBlob": "86b047fabef457a5ca88cc13e70bb16829e03446",
+      "actualBlob": "86b047fabef457a5ca88cc13e70bb16829e03446"
+    },
+    {
+      "path": "ui/InterchangeBuilder.zh-CN.json",
+      "baselineBlob": "ef3e7d4b38634fbb2ba81997c179014912ab54b9",
+      "actualBlob": "ef3e7d4b38634fbb2ba81997c179014912ab54b9"
+    }
+  ],
+  "staticFindings": [
+    "Existing project/build/CI blobs unchanged; explicit project and vendor/UI paths do not include labs.",
+    "No C# project, props/targets or game binary in lab.",
+    "Only nested Vite build adds curve-lab.html; original C# build/packaging unchanged.",
+    "Historic evidence and baseline solver/scene/UI module/adapter unchanged.",
+    "Static isolation, not MSBuild evaluation or game validation."
+  ],
+  "status": "VERIFIED_STATIC",
+  "game": "NOT_RUN"
+}

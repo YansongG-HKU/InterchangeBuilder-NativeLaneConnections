@@ -78,3 +78,7 @@ R31 / P0：用户道路消失只余桥墩报告要求未来所有权账本、异
 ## Issue #10 本地实现 / Local implementation
 
 [显式直尾契约](EXPLICIT_TAIL_EXPERIMENT.md) 实现有限子集：固定端口身份/方向/侧位，先预留有限线段，再求五次曲线接顺。6→4+2不是本轮前置；完整车道/游戏门槛保留。 / Explicit finite tail and independent checks implement a subset only.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

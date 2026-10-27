@@ -39,3 +39,7 @@ Placemaker是交互参考，不自动加入运行依赖。RB/Traffic等外部编
 旧项目和CS1机制的 [来源边界及P0恢复契约](research/road_mod_lessons.md) 不证明CS2原子事务、Undo或稳定lane API；Anarchy只读能力探测不得替用户开关。 / Source lessons are not a compatibility guarantee; do not change the user’s Anarchy setting.
 
 实验页面的normal/no-collision只是 [本地building许可策略](EXPLICIT_TAIL_EXPERIMENT.md)，不读写或模拟Anarchy全局状态，也不是任何CS2版本兼容结果。 / Local mode semantics establish no third-party compatibility.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

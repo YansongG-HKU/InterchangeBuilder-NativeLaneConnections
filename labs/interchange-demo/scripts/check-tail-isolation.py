@@ -1,6 +1,6 @@
 """Read-only final-tree protection check; does not touch runtime files or remote refs."""
 from pathlib import Path
-import hashlib, json, subprocess
+import hashlib, json, subprocess, os
 root = Path(__file__).resolve().parents[3]
 lab = root / 'labs/interchange-demo'
 base = '9f083061cdcf2bb08ed03c0527ebbd6f591c1179'
@@ -19,5 +19,5 @@ tracked = git('ls-files','--cached','--others','--exclude-standard').decode().sp
 newfiles = [p for p in tracked if p.startswith('labs/interchange-demo/')]
 assert not any(p.endswith(('.cs','.csproj','.props','.targets','.dll','.exe')) for p in newfiles)
 report = {'baseline':base,'experimentBase':'a13fa7919abcd4689bff035f65bd6d618978cc2b','protectedFiles':rows,'staticFindings':['Existing project/build/CI blobs unchanged; explicit project and vendor/UI paths do not include labs.','No C# project, props/targets or game binary in lab.','Only nested Vite build adds curve-lab.html; original C# build/packaging unchanged.','Historic evidence and baseline solver/scene/UI module/adapter unchanged.','Static isolation, not MSBuild evaluation or game validation.'],'status':'VERIFIED_STATIC','game':'NOT_RUN'}
-(lab/'evidence-tail/mod-protection.json').write_text(json.dumps(report,indent=2)+'\n')
+(lab/os.environ.get('EVIDENCE_DIR','evidence-tail')/'mod-protection.json').write_text(json.dumps(report,indent=2)+'\n')
 print(f'{len(rows)} original protected files verified; baseline solver/scene/evidence unchanged')

@@ -64,3 +64,7 @@ OD验证限定选中立交影响区内的合法路径；经外部城市路口绕
 ## 当前曲线切片 / Current curve slice
 
 按最新用户范围，6→4+2不再作为曲线实验前置。新增 [有限直尾与五次接顺](EXPLICIT_TAIL_EXPERIMENT.md)，旅行方向侧偏、常偏移曲率/坡度度量校正、显式G1/G2取舍；独立输出验收不是游戏车道图。 / Current slice removes the fork prerequisite and preserves actual geometry/graph boundaries.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

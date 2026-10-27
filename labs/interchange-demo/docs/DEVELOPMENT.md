@@ -42,3 +42,7 @@
 ## 当前执行授权 / Current execution scope
 
 最新用户已授权本地实现与验证 [Issue #10切片](EXPLICIT_TAIL_EXPERIMENT.md)，不推送或变更PR。此前“仅文档”描述是上一轮历史；当前游戏、发布与稳定运行时保护不变。 / Implement locally under the latest scope; do not push or mutate PRs.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

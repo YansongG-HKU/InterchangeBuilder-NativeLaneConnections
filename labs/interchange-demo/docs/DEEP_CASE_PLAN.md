@@ -72,3 +72,7 @@ P0必须在适配设计中落实M11-A–E：operation所有权账本、可收敛
 M01–M10的方向/端口边界/default-explicit-forbidden、状态快照、动态metadata、XZ归属和贪心配对反例纳入D0冻结清单。D4不得以预览、桥墩存在或保守保留替代VERIFIED。 / Freeze reference-derived adversarial cases before implementation; preview, piers or conservative retention cannot certify D4.
 
 当前执行更新：用户已明确曲线功能落地，6→4+2不再作为本轮前置。[有限直尾实现](EXPLICIT_TAIL_EXPERIMENT.md) 是首个局部实验，不证明完整D0–D4案例已通过。 / Latest scope authorizes this local slice without the fork prerequisite; full gates remain incomplete.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

@@ -25,3 +25,5 @@
 - No push, PR mutation, merge, release or game validation in this task.
 
 - Local pre-delivery review: reject overflowing imported profiles, malformed joins/segments and invalid context elevation before geometry rendering; numerical failures never receive preview permission. Core/browser import regressions and evidence refreshed; game/Anarchy/C#/CI NOT_RUN.
+
+- Local V2: automatic plateau overpass family with independent full-overlap clearance, actual Bezier context corridors/port binding, explicit width rejection, stronger pending-import invalidation and full regression. No runtime/CI/dependency change; game/Anarchy/C#/remote CI NOT_RUN.

@@ -37,3 +37,7 @@ P0恢复设计同时纳入D0：用户道路消失/残留桥墩观察及 [M11-A�
 ## 当前首个切片 / Current first slice
 
 [直尾实验](EXPLICIT_TAIL_EXPERIMENT.md) 已有有限可运行实现；6→4+2无前置依赖。下一阶段仍需完整曲线走廊/分段高差生成/结构检查及独立游戏验证，未完成项不改标。 / Bounded progress does not complete deeper gates.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

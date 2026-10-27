@@ -162,8 +162,11 @@ export function inspect(
             p.every((v) => Number.isFinite(v) && Math.abs(v) <= 10000),
         ) &&
         s.z &&
-        ["z0", "z1", "g0", "g1"].every((k) =>
-          Number.isFinite(s.z[k]) && Math.abs(s.z[k]) <= (k.startsWith("z") ? 10000 : 10)),
+        ["z0", "z1", "g0", "g1"].every(
+          (k) =>
+            Number.isFinite(s.z[k]) &&
+            Math.abs(s.z[k]) <= (k.startsWith("z") ? 10000 : 10),
+        ),
     )
   )
     return {
@@ -172,6 +175,12 @@ export function inspect(
       metrics,
       points: [],
     };
+  if (
+    input.widthProfile !== undefined ||
+    input.obstacles.some((o) => o.widthProfile !== undefined) ||
+    segments.some((s) => s.width !== undefined || s.widthProfile !== undefined)
+  )
+    fail("VARIABLE_WIDTH_UNSUPPORTED", {}, "unknown");
   if (
     output.route !== "ramp" ||
     output.startId !== input.start.id ||
@@ -194,6 +203,31 @@ export function inspect(
     )
   )
     fail("WIDTH_OR_OFFSET_UNSUPPORTED", {}, "unknown");
+  for (const p of [input.start, input.end]) {
+    if (p.roadId !== undefined) {
+      const road = input.obstacles.find((o) => o.id === p.roadId);
+      if (p.width !== road.width)
+        fail("PORT_CONTEXT_WIDTH_UNSUPPORTED", { road: p.roadId }, "unknown");
+      if (Math.abs(p.offset) + p.width / 2 > road.width / 2 + 1e-7)
+        fail("PORT_CONTEXT_LATERAL_EXTENT", { road: p.roadId }, "unknown");
+      const j = jet(road.controls ?? [road.a, road.b], p.roadT);
+      if (
+        norm(sub(j.p, p.position)) > 1e-7 ||
+        angle(j.d, p.direction) > 1e-7 ||
+        !Number.isFinite(j.k) ||
+        Math.abs(j.k - p.curvature) > 1e-7 ||
+        !Number.isFinite(road.z) ||
+        Math.abs(road.z - p.z) > 1e-7 ||
+        p.grade !== 0
+      )
+        fail("PORT_CONTEXT_MISMATCH", { road: p.roadId });
+    }
+  }
+  if (
+    input.deckThickness !== undefined &&
+    output.thickness !== input.deckThickness
+  )
+    fail("THICKNESS_MISMATCH");
   const curves = segments.map((s) => flatten(s.controls, tolerance, maxDepth));
   if (curves.some((c) => c.lower < 1e-8))
     return {
@@ -332,31 +366,39 @@ export function inspect(
       uncertain = false,
       hit = false,
       exempt = 0;
-    for (const l of leaves) {
-      const d =
-        segmentDistance(l.a, l.b, o.a, o.b) - (input.width + o.width) / 2;
-      const pad = input.width / 2 + l.error;
-      // Conservative whole primitive bound; exemption is a named pair AND a region.
-      const join = input.joins.some(
-        (j) =>
-          j.route === output.route &&
-          j.road === o.id &&
-          [l.a, l.b].every(
-            (p) =>
-              p[0] - pad >= j.box[0] &&
-              p[0] + pad <= j.box[2] &&
-              p[1] - pad >= j.box[1] &&
-              p[1] + pad <= j.box[3],
-          ),
-      );
-      if (join) {
-        exempt++;
-        continue;
+    const context = flatten(o.controls ?? [o.a, o.b], tolerance, maxDepth);
+    if (context.unresolved)
+      fail("CONTEXT_RESOLUTION", { road: o.id }, "unknown");
+    if (context.leaves.some((l) => (l.curvatureBound * o.width) / 2 >= 1))
+      fail("CONTEXT_OFFSET_REGULARITY", { road: o.id }, "unknown");
+    for (const l of leaves)
+      for (const other of context.leaves) {
+        const error = l.error + other.error;
+        const d =
+          segmentDistance(l.a, l.b, other.a, other.b) -
+          (input.width + o.width) / 2;
+        const pad = input.width / 2 + l.error;
+        // Conservative whole primitive bound; exemption is a named pair AND a region.
+        const join = input.joins.some(
+          (j) =>
+            j.route === output.route &&
+            j.road === o.id &&
+            [l.a, l.b].every(
+              (p) =>
+                p[0] - pad >= j.box[0] &&
+                p[0] + pad <= j.box[2] &&
+                p[1] - pad >= j.box[1] &&
+                p[1] + pad <= j.box[3],
+            ),
+        );
+        if (join) {
+          exempt++;
+          continue;
+        }
+        gap = Math.min(gap, d - error);
+        if (d + error < -1e-7) hit = true;
+        else if (d - error <= 1e-7) uncertain = true;
       }
-      gap = Math.min(gap, d - l.error);
-      if (d + l.error < -1e-7) hit = true;
-      else if (d - l.error <= 1e-7) uncertain = true;
-    }
     if (Number.isFinite(gap))
       metrics.minRoadGap =
         metrics.minRoadGap === null ? gap : Math.min(gap, metrics.minRoadGap);
@@ -371,7 +413,7 @@ export function inspect(
         exemptPrimitives: exempt,
         clearance,
       });
-      if (clearance?.status === "VERIFIED_REFERENCE") {
+      if (clearance?.status === "VERIFIED_MODEL") {
       } else if (clearance)
         fail(
           clearance.status === "FAILED"
@@ -422,11 +464,23 @@ export function inspect(
     });
   });
   // Never allow failed floating-point arithmetic to fall through comparisons.
-  const finiteTree = (v) => typeof v === "number" ? Number.isFinite(v)
-    : Array.isArray(v) ? v.every(finiteTree)
-    : v && typeof v === "object" ? Object.values(v).every(finiteTree) : true;
+  const finiteTree = (v) =>
+    typeof v === "number"
+      ? Number.isFinite(v)
+      : Array.isArray(v)
+        ? v.every(finiteTree)
+        : v && typeof v === "object"
+          ? Object.values(v).every(finiteTree)
+          : true;
   if (!finiteTree({ metrics, points, collisions }))
-    return { status: "NUMERICAL_FAILURE", issues: [{ code: "NONFINITE_DERIVED", severity: "error" }], metrics: {}, points: [], collisions: [], clearance: "UNKNOWN" };
+    return {
+      status: "NUMERICAL_FAILURE",
+      issues: [{ code: "NONFINITE_DERIVED", severity: "error" }],
+      metrics: {},
+      points: [],
+      collisions: [],
+      clearance: "UNKNOWN",
+    };
   const errors = issues.filter((x) => x.severity === "error"),
     unknown = issues.some((x) => x.severity === "unknown");
   return {
@@ -465,12 +519,13 @@ export function permission(facts, mode) {
   };
 }
 
-// Exact reference-only envelope check: straight +X upper road, perpendicular flat lower road,
+// Exact bounded-model envelope check: straight +X upper road, perpendicular flat lower road,
 // constant width, zero crossfall, known deck thickness. Not a general 3D solver.
 export function crossingClearance(output, road, required) {
   const ss = output.segments,
     thickness = output.thickness;
   if (
+    road.controls !== undefined ||
     !Number.isFinite(required) ||
     required < 0 ||
     !Number.isFinite(thickness) ||
@@ -525,11 +580,34 @@ export function crossingClearance(output, road, required) {
   }
   if (covered < range[1] - range[0] - 1e-8) return { status: "UNSUPPORTED" };
   return {
-    status: min >= required ? "VERIFIED_REFERENCE" : "FAILED",
+    status: !Number.isFinite(min)
+      ? "UNSUPPORTED"
+      : Math.abs(min - required) <= 1e-7
+        ? "UNKNOWN"
+        : min > required
+          ? "VERIFIED_MODEL"
+          : "FAILED",
     minimum: min,
     required,
     fullOverlapX: range,
     scope:
-      "Full-width orthogonal flat-deck reference only; terrain/supports NOT_RUN",
+      "Full-width orthogonal flat-deck model only; terrain/supports NOT_RUN",
   };
+}
+
+// Render actual context curves using the same bounded subdivision, no decorative fit.
+export function contextGeometry(input) {
+  return input.obstacles.map((o) => {
+    const c = flatten(o.controls ?? [o.a, o.b]);
+    return {
+      id: o.id,
+      kind: "mainline",
+      side: 1,
+      width: o.width,
+      points: [c.leaves[0].a, ...c.leaves.map((l) => l.b)].map((p) => [
+        ...p,
+        o.z ?? 0,
+      ]),
+    };
+  });
 }

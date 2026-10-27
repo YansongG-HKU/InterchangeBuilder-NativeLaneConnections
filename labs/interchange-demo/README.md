@@ -83,3 +83,7 @@ npm run build
 ## 显式直尾实验 / Explicit-tail experiment
 
 打开 `/curve-lab.html`，独立于原基线；支持有限真实直尾、同向横移/局部左转、参考检查与本地碰撞许可切换。见 [实验契约](docs/EXPLICIT_TAIL_EXPERIMENT.md) 与 [实测结果](evidence-tail/RESULTS.md)。`npm run test:tail`、`npm run test:tail-browser`、`npm run evidence:tail`；中部高跨生成及游戏适配未实现。 / New bounded experiment, not a replacement for baseline or the stable Mod.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](docs/EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

@@ -26,3 +26,7 @@ Diagnostic navigation follows the active view: located errors pan the 3D camera 
 [深度案例](DEEP_CASE_PLAN.md) 将三维用于完整车道路径、断面和结构冲突验证；这是未实现目标。现有道路条带、OD高亮和浏览器测试只证明当前展示行为。 / Future lane and structural inspection is not established by current rendering evidence.
 
 新 [直尾页面](EXPLICIT_TAIL_EXPERIMENT.md) 复用ConnectionScene，只消费独立检查器从实际输出生成的点；直线平面段也按纵断面细分，不画端点连线冒充Hermite。背景道路ID用文本列表避免近邻标签遮挡。 / Baseline scene implementation unchanged; the new page owns its inspection data and explicit labels.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

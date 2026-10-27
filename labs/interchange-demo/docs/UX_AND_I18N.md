@@ -79,3 +79,7 @@ Schema 2 UI adds bilingual height/grade controls, orbit/pan/zoom/reset/top, comp
 ## 显式直尾页面 / Explicit-tail page
 
 新增双语 `/curve-lab.html`：生成/参考检查明确区分，参数/模式revision绑定展示验收导出，输入中间态许可过期，三维/二维显示同一输出点。正常/无碰撞仅对合成建筑类别改变本地许可；道路及几何错误仍阻塞，不修改第三方开关。详见 [契约](EXPLICIT_TAIL_EXPERIMENT.md)。 / Bilingual local permission experiment, no Anarchy compatibility claim.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

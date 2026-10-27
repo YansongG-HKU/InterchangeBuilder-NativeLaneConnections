@@ -90,3 +90,7 @@ https://mods.paradoxplaza.com/mods/133736/Windows
 用户“修路失败/道路消失/只余桥墩”是直接观察，具体版本/日志/存档缺失；原因假设与源码证据分列，不将条件性补丁认作已解决。新 [深度计划](DEEP_CASE_PLAN.md) 用这些材料设计反例，未执行或移植代码。 / Direct user observations do not establish causality; references inform unexecuted adversarial contracts only.
 
 2026-10-27：以目标仓 [Issue #10](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/issues/10) 及两条评论为直尾/模式契约；新增 [实验](EXPLICIT_TAIL_EXPERIMENT.md) 的参数与手写几何均明确合成，无新游戏硬限或第三方代码复制。 / Issue-driven synthetic experiment, not a standards claim.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。

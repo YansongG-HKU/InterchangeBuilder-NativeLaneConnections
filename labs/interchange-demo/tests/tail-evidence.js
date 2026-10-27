@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
+import { VERSION } from "../src/experiments/tail/generator.js";
 import { inspect } from "../src/experiments/tail/checker.js";
 import { evaluateCase } from "../src/experiments/tail/run.js";
 const rows = [];
@@ -57,10 +58,10 @@ const hashes = Object.fromEntries(
     ]),
 );
 fs.writeFileSync(
-  "evidence-tail/computation.json",
+  `${process.env.EVIDENCE_DIR ?? "evidence-tail"}/computation.json`,
   JSON.stringify(
     {
-      version: "tail-v1",
+      version: VERSION,
       sourceParent: execFileSync("git", ["rev-parse", "HEAD"], {
         encoding: "utf8",
       }).trim(),
