@@ -2,13 +2,13 @@
 
 本地实验分支 `experiment/explicit-tail-v1`，基于PR #9 `a13fa7919abcd4689bff035f65bd6d618978cc2b`，2026-10-27 UTC。只在云端修改/验证，不推送或变更PR。 / Local cloud implementation, no remote mutation.
 
-输入/预期/故障/实测和本次源码SHA-256见 [computation.json](computation.json)，控制点参考与故障名称另保存在`tests/tail-fixtures`。报告中的sourceParent是基线提交；最终本地提交由交付消息给出，源码manifest标识运行内容。不是把基线SHA冒作新代码版本。 / Source hashes identify tested contents; sourceParent is only the baseline.
+输入/预期/故障/实测和本次源码SHA-256见 [computation.json](computation.json)，控制点参考与故障名称另保存在`tests/tail-fixtures`。报告中的sourceParent是该次运行前的提交；最终本地提交由交付消息给出，源码manifest标识运行内容。不是把基线SHA冒作新代码版本。 / Source hashes identify tested contents; sourceParent is the commit preceding the recorded run.
 
 | Command (from lab directory) | Actual result |
 |---|---|
-| `npm test` | 58 tests passed: 37 preserved baseline + 21 new reference/property/boundary/fault tests. [Output](unit-tests.txt) |
+| `npm test` | 59 tests passed: 37 preserved baseline + 22 new reference/property/boundary/fault tests. [Output](unit-tests.txt) |
 | `npm run evidence:tail` | Five explicit reference/fault fixtures covering four classes; all expected checks passed. [Records](computation.json) |
-| `npm run test:tail-browser` | 25 actual Chromium assertions passed. [Output](browser-run.txt), [record](browser.json) |
+| `npm run test:tail-browser` | 29 actual Chromium assertions passed. [Output](browser-run.txt), [record](browser.json) |
 | `npm run test:browser` | 81 baseline assertions passed. [Output](baseline-browser-run.txt), [record](baseline-browser.json) |
 | `npm run test:3d` | 37 baseline WebGL assertions passed. [Output](baseline-three-run.txt), [record](baseline-browser3d.json) |
 | `node tests/diagnostic-focus.js` | 13 baseline focus assertions passed. [Output](baseline-focus-run.txt), [record](baseline-diagnostic-focus.json) |
@@ -22,3 +22,9 @@ Visual inspection caught and fixed endpoint-only rendering of straight-plan Herm
 Reference bridge maximum grade7.5%, full overlap minimum deck-bottom difference8.5m with known1.5m thickness; changing thickness or low interval edges fails independently. This is only orthogonal/flat full-width reference validation; generating the equal-height arch remains UNSUPPORTED. General curved 3D clearance, terrain, supports, variable-width seams, complete lane graph and game conversion remain UNKNOWN/NOT_RUN.
 
 Historical lab evidence was copied aside before baseline browser tests and restored byte-for-byte. New outputs are separate here. Existing runtime/project/build/CI blobs are unchanged; static inspection confirms explicit C# project/vendor/UI paths do not sweep in lab JS/HTML. This is not MSBuild or game execution. Local C# tests/build, game/Anarchy compatibility, save/reload, ownership recovery, traffic and P0 pier failure reproduction are NOT_RUN. CI for this unpushed branch is NOT_RUN. Revert the local experiment commit for rollback.
+
+## Independent review follow-up
+
+Read-only agent inspected actual generator/checker/UI and fixtures, not just the delivery summary. Found a P1 finite-overflow bug: internal z=1e308 could create NaN grade/points and receive VERIFIED_BOUNDED. Fixed bounded output profiles plus derived-finite rejection; malformed null join/segment and invalid context elevation also fail closed. Added core regression and four actual browser import checks. Final core/evidence/new-browser/build and static isolation rerun; baseline 81/37/13 results retained because their code is unchanged. Full game/Anarchy/C#/CI remain NOT_RUN. Separate agent review is code inspection, not engineering certification or game verification.
+
+57-file initial change classification: 21 documentation, 18 evidence (including this report), 5 experiment source, 8 tests/fixtures, 5 entry/config/check scripts. Total content965710 bytes; largest computation.json427167 bytes and browser.json192264 bytes are requested reproducibility evidence, not build bundles. No node_modules/dist/game binaries/secrets/private paths tracked. Initial screenshots show scene only: bridge-reference-en is a reference, not generated output. No public preview URL. Library delivery attempt failed at tool discovery with network error; no attachment ID was returned.

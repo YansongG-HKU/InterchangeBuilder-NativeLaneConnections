@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-27T19:52:48.912Z",
+  "date": "2026-10-27T19:59:04.797Z",
   "browser": "154.0.8037.57",
   "checks": [
     {
@@ -7876,6 +7876,26 @@
       "name": "bad import retains previous model",
       "expected": "middle-tail",
       "actual": "middle-tail"
+    },
+    {
+      "name": "overflow import fails numerical validation",
+      "expected": "NUMERICAL_FAILURE",
+      "actual": "NUMERICAL_FAILURE"
+    },
+    {
+      "name": "overflow import has no drawable points",
+      "expected": [],
+      "actual": []
+    },
+    {
+      "name": "overflow import cannot receive preview permission",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "invalid context height rejected before rendering",
+      "expected": "IMPORT_REJECTED: INPUT_INVALID",
+      "actual": "IMPORT_REJECTED: INPUT_INVALID"
     },
     {
       "name": "mobile no horizontal overflow",

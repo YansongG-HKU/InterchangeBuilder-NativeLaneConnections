@@ -18,7 +18,7 @@
 
 `generator.js`使用显式五次控制点/二项式求值；`checker.js`不导入生成器，不采信valid/connected标记，用de Casteljau及控制多边形复算输出。手写参考在`tests/tail-fixtures`，含输入、预期和解析依据；反例实际输出保存在`evidence-tail/computation.json`，不是从生成器结果倒推答案。 / Handwritten reference geometry and explicit faults provide an independent oracle, not a generated valid flag.
 
-检查G0、**有向**G1、端/段G2残差、标高/纵坡、显式线段组成的最大直尾长度。曲线细分使用控制点到弦的最大距离界、弦长下界和控制多边形长度上界；默认0.02m分辨率、深度16，超预算或导数正则性无法界定为UNKNOWN。位置/角度/曲率/接头容差1e-7（各自m/rad/1/m），为实验参数而非CS2规范。 / Adaptive bounds and experimental tolerances are explicit; insufficient resolution never becomes a pass.
+检查G0、**有向**G1、端/段G2残差、标高/纵坡、显式线段组成的最大直尾长度。曲线细分使用控制点到弦的最大距离界、弦长下界和控制多边形长度上界；默认0.02m分辨率、深度16，超预算或导数正则性无法界定为UNKNOWN。导入输出高程限±10000m、坡度限±10（数值支持域，非工程许可）；上下文道路高程限±1000m。所有派生度量/显示点非有限时为NUMERICAL_FAILURE且无网格，禁止NaN比较落空。位置/角度/曲率/接头容差1e-7（各自m/rad/1/m），为实验参数而非CS2规范。 / Adaptive bounds and experimental tolerances are explicit; insufficient resolution never becomes a pass.
 
 完整宽度按**平面中心线扫掠半径width/2的圆盘走廊**检查，包含转弯、接顺和尾段，属于明确保守几何模型，不是假称精确桥梁结构。对直线邻路做线段距离±曲线弦误差界；间距落入不确定带为UNKNOWN。非相邻中心线交叉/远离沿程的走廊重叠单独检查；局部偏移正则性用导数界保守核验，不能证明时UNKNOWN。 / Full-width swept-disc corridors, including transitions, are distinct from complete structural/earthwork envelopes.
 
@@ -46,3 +46,5 @@ The four groups cover tail, lateral shift, local straight/curved-port left turns
 `npm test`覆盖旧基线及新增纯计算测试；`node tests/tail-browser.js`为真实Chromium新页面交互；`node tests/tail-evidence.js`记录输入/手写预期/实测/故障/源哈希；旧browser/browser3d/diagnostic-focus回归单列。浏览器固定viewport，有真实截图；新证据在`evidence-tail`，旧`evidence`恢复原样。最终命令、计数与保护检查见 [实验结果](../evidence-tail/RESULTS.md)。 / Evidence remains separate from historic snapshots; source/game/CI claims are distinct.
 
 回滚本地实验提交即可恢复原基线。目标main、稳定C#、构建/发布配置与既有PR不改。 / Revert the experiment commit; stable runtime and remote refs are untouched.
+
+Independent pre-delivery review found and fixed finite-but-overflowing imported profiles, malformed null join/segment shapes and invalid context elevation. Numeric output limits are computational bounds, not CS2 rules; nonfinite derived values fail closed with no drawable geometry.

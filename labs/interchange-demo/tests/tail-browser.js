@@ -169,6 +169,19 @@ try {
     "middle-tail",
     (await snap()).input.name,
   );
+  const overflow = JSON.parse(fs.readFileSync("tests/tail-fixtures/middle-tail.json"));
+  overflow.reference.segments[0].z.z1 = 1e308;
+  overflow.reference.segments[1].z.z0 = 1e308;
+  await page.locator("#import").setInputFiles({ name: "overflow.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify({ schema: "tail-preview-v1", input: overflow.input, output: overflow.reference })) });
+  await page.waitForFunction(() => window.tailSnapshot().result.status === "IMPORTED_RECHECK");
+  check("overflow import fails numerical validation", "NUMERICAL_FAILURE", (await snap()).selected.facts.status);
+  check("overflow import has no drawable points", [], (await snap()).selected.facts.points);
+  check("overflow import cannot receive preview permission", false, (await snap()).selected.permission.allowedForOfflinePreview);
+  overflow.input.obstacles[0].z = "bad";
+  await page.locator("#import").setInputFiles({ name: "bad-context-height.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify({ schema: "tail-preview-v1", input: overflow.input, output: overflow.reference })) });
+  await page.waitForFunction(() => window.tailSnapshot().error.startsWith("IMPORT_REJECTED"));
+  check("invalid context height rejected before rendering", "IMPORT_REJECTED: INPUT_INVALID", (await snap()).error);
+  await page.locator("#fixture").selectOption("middle-tail");
   await page.setViewportSize({ width: 390, height: 844 });
   await page.locator("#camera-reset").click();
   check(

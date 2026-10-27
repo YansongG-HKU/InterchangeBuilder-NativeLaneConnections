@@ -23,3 +23,5 @@
 - Add isolated explicit straight-tail/quintic transition experiment and independent reference/fault checks for Issue #10; preserve baseline/runtime.
 - Intermediate crossing generation remains unsupported; reference-only full-width orthogonal clearance is separate.
 - No push, PR mutation, merge, release or game validation in this task.
+
+- Local pre-delivery review: reject overflowing imported profiles, malformed joins/segments and invalid context elevation before geometry rendering; numerical failures never receive preview permission. Core/browser import regressions and evidence refreshed; game/Anarchy/C#/CI NOT_RUN.

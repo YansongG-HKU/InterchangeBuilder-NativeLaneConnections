@@ -129,3 +129,5 @@ Unchanged with reasons: README/OFFLINE_DEMO already promise diagnosis and link d
 ## 2026-10-27 显式直尾实验 / Explicit-tail experiment
 
 新增 [EXPLICIT_TAIL_EXPERIMENT](EXPLICIT_TAIL_EXPERIMENT.md)、[evidence-tail结果](../evidence-tail/RESULTS.md)，更新当前受影响设计/运行/验收文档；完整逐组处置见 [根索引](../../../docs/DOCUMENTATION_INDEX.md)。旧导入manifest/历史证据保持原样，新实验源码哈希单独记录。 / New local implementation evidence is not retroactively written into historical import evidence. No push/PR mutation.
+
+Pre-delivery independent review: updated experiment contract/results, input/output numeric validation and import regressions; refreshed only evidence-tail. Other documents retain the same limited support, rights, workflow, historical evidence and NOT_RUN boundaries; all prior unchanged-group reasons remain applicable. No new dependency, stable runtime change, push or PR mutation. / 交付前独立审查修复数值溢出与异常输入边界，不扩展功能。

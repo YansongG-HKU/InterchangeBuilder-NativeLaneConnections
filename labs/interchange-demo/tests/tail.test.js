@@ -334,3 +334,23 @@ test("numerical/domain failures are not relabelled as a completed search", () =>
   f.input.start.curvature = 1;
   assert.equal(evaluateCase(f.input).status, "NUMERICAL_FAILURE");
 });
+
+ test("review: overflowing imported profiles and malformed shapes fail closed", () => {
+  const f = fixture("middle-tail");
+  f.reference.segments[0].z.z1 = 1e308;
+  f.reference.segments[1].z.z0 = 1e308;
+  const facts = inspect(f.input, f.reference);
+  assert.equal(facts.status, "NUMERICAL_FAILURE");
+  assert.deepEqual(facts.points, []);
+  assert.equal(permission(facts, "no-collision").allowedForOfflinePreview, false);
+  f.reference.segments = [null];
+  assert.equal(inspect(f.input, f.reference).status, "NUMERICAL_FAILURE");
+  f.input.joins = [null];
+  assert.equal(evaluateCase(f.input).status, "INPUT_INVALID");
+  const valid = fixture("middle-tail");
+  for (const z of ["bad", 1e308]) {
+    const bad = clone(valid.input); bad.obstacles[0].z = z;
+    assert.equal(evaluateCase(bad).status, "INPUT_INVALID");
+  }
+  assert.equal(inspect(valid.input, valid.reference, { maxDepth: NaN }).status, "NUMERICAL_FAILURE");
+});

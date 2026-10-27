@@ -133,6 +133,7 @@ export function inspect(
   if (
     !Number.isFinite(tolerance) ||
     tolerance <= 0 ||
+    !Number.isInteger(maxDepth) ||
     maxDepth < 0 ||
     maxDepth > 18
   )
@@ -148,6 +149,7 @@ export function inspect(
     segments.length > 16 ||
     !segments.every(
       (s) =>
+        s &&
         ["bezier", "line"].includes(s.kind) &&
         Array.isArray(s.controls) &&
         s.controls.length >= 2 &&
@@ -160,13 +162,15 @@ export function inspect(
             p.every((v) => Number.isFinite(v) && Math.abs(v) <= 10000),
         ) &&
         s.z &&
-        ["z0", "z1", "g0", "g1"].every((k) => Number.isFinite(s.z[k])),
+        ["z0", "z1", "g0", "g1"].every((k) =>
+          Number.isFinite(s.z[k]) && Math.abs(s.z[k]) <= (k.startsWith("z") ? 10000 : 10)),
     )
   )
     return {
       status: "NUMERICAL_FAILURE",
       issues: [{ code: "INVALID_OUTPUT", severity: "error" }],
       metrics,
+      points: [],
     };
   if (
     output.route !== "ramp" ||
@@ -417,6 +421,12 @@ export function inspect(
       length += l.lower;
     });
   });
+  // Never allow failed floating-point arithmetic to fall through comparisons.
+  const finiteTree = (v) => typeof v === "number" ? Number.isFinite(v)
+    : Array.isArray(v) ? v.every(finiteTree)
+    : v && typeof v === "object" ? Object.values(v).every(finiteTree) : true;
+  if (!finiteTree({ metrics, points, collisions }))
+    return { status: "NUMERICAL_FAILURE", issues: [{ code: "NONFINITE_DERIVED", severity: "error" }], metrics: {}, points: [], collisions: [], clearance: "UNKNOWN" };
   const errors = issues.filter((x) => x.severity === "error"),
     unknown = issues.some((x) => x.severity === "unknown");
   return {

@@ -93,6 +93,8 @@ export function validateInput(input) {
       !o ||
       typeof o.id !== "string" ||
       !["road", "building"].includes(o.kind) ||
+      (o.z !== undefined && (!finite(o.z) || Math.abs(o.z) > 1000)) ||
+      (o.crossing !== undefined && typeof o.crossing !== "boolean") ||
       !point(o.a) ||
       !point(o.b) ||
       Math.hypot(o.b[0] - o.a[0], o.b[1] - o.a[1]) < 1e-6 ||
@@ -103,8 +105,11 @@ export function validateInput(input) {
       return "obstacle";
   if (new Set(input.obstacles.map((o) => o.id)).size !== input.obstacles.length)
     return "obstacle ids";
+  if (input.clearance !== undefined && (!finite(input.clearance) || input.clearance < 0 || input.clearance > 1000))
+    return "clearance";
   for (const j of input.joins)
     if (
+      !j ||
       j.route !== "ramp" ||
       typeof j.road !== "string" ||
       !Array.isArray(j.box) ||
