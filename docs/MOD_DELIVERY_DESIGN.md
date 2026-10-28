@@ -122,3 +122,33 @@ P1：明确单匝道direct/semi-directional/loop类别与非凸禁区不同绕�
 P2：clothoid等新曲线只在固定benchmark证明收益后迁入，分别报告安全域、算时、段数与转换成本；不按算法名称堆功能。
 
 优先验收：同端口direct与loop对照；U形限制与不同通道；全幅窄通道临界；两个高区联合平台；近邻高低约束不足但绕远可行；弯内侧坡度；环形非局部自接近；精确拆分、旋转及镜像等价。失败、搜索耗尽、必要约束冲突和数值UNKNOWN分开，不能为通过而放松冻结真值。
+
+## 十一、数值/偏移/转换来源及最终设计收口
+
+父线程完成的原始资料调查归档如下，均为方法参考，不是已实现依赖或游戏保证：
+
+| 来源 | 本设计采用的义务 | 不能推导 |
+|---|---|---|
+| [MIT局部偏移退化与全局self](https://web.mit.edu/hyperbook/Patrikalakis-Maekawa-Cho/node220.html) | 局部曲率/偏移退化与远参数自接近分别检查 | 局部正则即全局无重叠 |
+| [CGAL Interval_nt官方文档](https://doc.cgal.org/latest/Number_types/classCGAL_1_1Interval__nt.html) | 每步包含与舍入语义是可靠区间的基础；必须核实平台行为 | 固定epsilon自动成为可靠区间，或本仓已用CGAL |
+| [TightInclusion作者页面](https://continuous-collision-detection.github.io/tight_inclusion/) | 从特定CCD算法学习可靠判定/退化/预算设计 | 可直接覆盖道路法向扫掠或游戏结构 |
+| [Bernstein CCD作者论文](https://pmc.ncbi.nlm.nih.gov/articles/PMC4283478/) | 区分浮点近似与精确方案的可靠范围 | 浮点版本可靠；特定恒速mesh方法已涵盖输入误差/道路曲面 |
+| [Levien论文第9章](https://levien.com/phd/thesis.pdf) | 转换误差按位置、角度、曲率、弧长分别约束，保留源/目标参数对应 | 外观相似或位置误差小即所有导数安全 |
+| [Bezier导数教学资料](https://pages.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/Bezier/bezier-der.html) | 控制多边形导数/分段曲线数学参考 | 浮点实现已有机器包含性认证 |
+| [ASAM OpenDRIVE1.8.1高程](https://simulation.pages.asam.net/opendrive-group/opendrive-antora-gen/ASAM_OpenDRIVE_Specification/v1.8.1/specification/10_roads/10_05_elevation.html) | 已核读的沿s高程表示补充；与前列1.8.0版本分别标注 | 最新所有条文、CS2格式或实际建路契约 |
+
+### 证明扩展的覆盖账本
+
+保留窄cone快速充分条件。宽cone/loop走局部patch及跨接缝局部证书，再覆盖全部非局部参数对。账本逐项保存参数块、局部定理、舍入界、分离外界或实交见证、未决原因与预算。未覆盖一块，全局即UNKNOWN；相邻块不自动豁免。外包络分离、可靠实体交叠见证、UNKNOWN三态不混合。合法loop拓扑与证书不足分别呈现。
+
+### 非线性纵断面的区间构造
+
+新增profile支持域拟为按水平弧长的分段三次/五次，兼容P0二次特例。把整个弧长区间传播到高程多项式，遇profile接缝必须拆分；检查z、z'、z''区间及内部极值，不能只看端点。多个跨越的连续上下界共同约束整段profile，端高/端坡与竖曲线也属于硬输入。上下道路及梁体厚度的全重叠区证据必须来自同一几何版本。
+
+无横坡、恒宽法向条带模型F(s,u)=(r(s)+uN(s),z(s))中，平面纵向度量为|1-uκ|；若半宽记为w且wK<1，可用全幅坡度上界 |z'|/(1-wK)。这里w是半宽，不与代码Width混淆；这是模型推导，不是游戏阈值。变宽、横坡、水平偏置厚度或结构截面改变必须重新推导，不能直接复用。当前非零坡圆弧接直尾的全幅切平面反例仍有效。
+
+### 转换与真实创建的最后门禁
+
+转换应输出源段/源参数区间→目标段/目标参数区间映射及逐项误差界；真实直尾不参与近似拟合。针对转换后的实际三次输出重新执行端口、连续性、尾长、半径/坡度、外部空间、self及结构检查。之后才讨论引擎最短段/节点/资产约束与实际创建。创建成功必须实际回读，不以预览、对象存在或桥墩存在代替完整道路。
+
+实施先后最终确定为：①必要数值包含性与真实转换契约并行；②非线性高程joint-crossing切片；③宽cone全域覆盖账本；④真实引擎回读/所有权恢复独立门槛。每步保留有限支持域和停止条件，不无限扩Demo、不预先发布。上述来源和方案仅归档设计，本轮没有新增任何实现、阈值变更或运行验证。
