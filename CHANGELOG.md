@@ -31,3 +31,5 @@
 - Local development/curve-kernel-port: migrate bounded quintic+finite-tail planar family to default-disabled pure C# Core; add shared JS/C# contracts and actual no-NuGet compiler runner. Lab adds local-frame/arc-length/oblique algorithm checks only. Existing runtime not called/changed, no push/merge/release; engine and standard test/build gates separately unrun.
 
 Current local milestone: [independent C# planar verifier](docs/CORE_GEOMETRY_VALIDATION.md) inspects actual geometry and request binding; standard netstandard2.0 build and xUnit now pass. No runtime activation or game permission. / 已迁入独立平面验收，未接入游戏。
+
+2026-10-28 local extension: [curve primitives, bounded station/profile functions and inspected split candidates](docs/CURVE_FUNCTIONS.md). The original inspector scope and game exclusions remain; experimental search is default-disabled. / 已扩充纯数学内核，未启用游戏路径。

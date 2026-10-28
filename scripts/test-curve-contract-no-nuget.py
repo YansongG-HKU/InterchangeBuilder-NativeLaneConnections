@@ -22,5 +22,5 @@ with tempfile.TemporaryDirectory(prefix='cs2-curve-contract-') as tmp:
     result=json.loads(run.stdout)
     result['scope']='Actual .NET8 compilation/execution of Core source; netstandard2.0/xUnit/game builds NOT_RUN'
     result['compiler']=str(compiler.relative_to(sdk))
-    result['sourceHashes']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources+[vectors,root/'tests/curve-verifier-vectors.json',Path(__file__)]}
+    result['sourceHashes']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources+[vectors,root/'tests/curve-verifier-vectors.json',root/'tests/curve-function-oracles.json',Path(__file__)]}
     print(json.dumps(result,indent=2))

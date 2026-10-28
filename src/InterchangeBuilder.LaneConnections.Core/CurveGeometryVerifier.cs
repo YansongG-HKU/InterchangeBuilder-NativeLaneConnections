@@ -112,9 +112,11 @@ public static class CurveGeometryVerifier
             var a=c[0];var b=c[c.Count-1];double lower=Length(b-a),upper=0,error=0;
             for(int i=0;i<c.Count;i++){error=Math.Max(error,PointDistance(c[i],a,b));if(i>0)upper+=Length(c[i]-c[i-1]);}
             if((error<=tolerance&&upper-lower<=tolerance)||depth==maxDepth){
-                double speed=double.PositiveInfinity,dd=0;foreach(var d in Derivative(c))speed=Math.Min(speed,Dot(d,b-a)/(lower==0?1:lower));if(c.Count>2)foreach(var d in Derivative(Derivative(c)))dd=Math.Max(dd,Length(d));
+                double speed=double.PositiveInfinity;foreach(var d in Derivative(c))speed=Math.Min(speed,Dot(d,b-a)/(lower==0?1:lower));
                 if(error>tolerance||upper-lower>tolerance||speed<=1e-10)Unknown("RESOLUTION_OR_REGULARITY");
-                double curvature=speed>1e-10?(error==0?0:dd/(speed*speed)):double.PositiveInfinity;if(curvature*r.Width/2>=1)Unknown("OFFSET_REGULARITY_UNCERTAIN");
+                double crossBound=0;
+                if(c.Count>2)foreach(var v in Derivative(c))foreach(var acc in Derivative(Derivative(c)))crossBound=Math.Max(crossBound,Math.Abs(Cross(v,acc)));
+                double curvature=speed>1e-10?crossBound/(speed*speed*speed):double.PositiveInfinity;if(curvature*r.Width/2>=1)Unknown("OFFSET_REGULARITY_UNCERTAIN");
                 leaves.Add(new Leaf{A=a,B=b,Error=error,Lower=lower,Upper=upper,Station=station});station+=lower;totalUpper+=upper;return;
             }
             Split(c,out var l,out var rr);Walk(l,depth+1);Walk(rr,depth+1);

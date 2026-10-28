@@ -46,6 +46,7 @@ public static class CurveKernelContractChecks
             for(int n=0;n<q.Candidates.Count;n++){var points=expected[n].GetProperty("controls");var tail=expected[n].GetProperty("tail");bool ok=true;for(int j=0;j<6;j++)ok&=Near(q.Candidates[n].Controls[j].X,points[j][0].GetDouble())&&Near(q.Candidates[n].Controls[j].Y,points[j][1].GetDouble());ok&=Near(q.Candidates[n].TailEnd.X,tail[1][0].GetDouble())&&Near(q.Candidates[n].TailEnd.Y,tail[1][1].GetDouble());Check("JS/C# actual controls "+row.GetProperty("name").GetString()+"/"+n,ok);}
         }
         records.AddRange(VerifierChecks.Run(Path.Combine(Path.GetDirectoryName(vectors)!,"curve-verifier-vectors.json")));
+        records.AddRange(FunctionChecks.Run(Path.Combine(Path.GetDirectoryName(vectors)!,"curve-function-oracles.json")));
         return records;
     }
 }
@@ -54,7 +55,7 @@ public static class Program
 {
     public static int Main(string[] args)
     {
-        try {var records=CurveKernelContractChecks.Run(args[0]);Console.WriteLine(JsonSerializer.Serialize(new { runtime=Environment.Version.ToString(),count=records.Count,records },new JsonSerializerOptions{WriteIndented=true}));return 0;}
+        try {var records=CurveKernelContractChecks.Run(args[0]);Console.WriteLine(JsonSerializer.Serialize(new { runtime=Environment.Version.ToString(),count=records.Count,records,comparisons=FunctionChecks.Comparisons },new JsonSerializerOptions{WriteIndented=true}));return 0;}
         catch(Exception e){Console.Error.WriteLine(e);return 1;}
     }
 }

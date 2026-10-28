@@ -33,3 +33,5 @@ See [current evidence and exact commands](curve-verifier-evidence/RESULTS.md). J
 Fresh protection uses `scripts/check-curve-port-boundary.py`: existing runtime/installation/build/release/CI remain unchanged. Prior27-file reports are historical evidence, not a permanent prohibition on authorized Core work. Game, Anarchy, actual net48/base Mod build and remote CI remain NOT_RUN. No installed files touched.
 
 Official temporary SDK tool reference: https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script .
+
+2026-10-28 local extension: [curve primitives, bounded station/profile functions and inspected split candidates](CURVE_FUNCTIONS.md). The original inspector scope and game exclusions remain; experimental search is default-disabled. / 已扩充纯数学内核，未启用游戏路径。
