@@ -97,3 +97,29 @@ Release 同时提供 SHA-256 校验文件。普通玩家不需要安装 Visual S
 ## English summary
 
 InterchangeBuilder Native Lane Connections is a Cities: Skylines II mod. It preserves centre alignment, adds width-aware left/centre/right candidates, follows native connection compatibility, resolves multi-arm junctions from pointer direction, and carries the selected alignment through placement. The ready-to-use release contains every required project file; game files are never included.
+
+## 本地曲线实验 V1 / Local curve experiment
+
+Issue #10 的首个隔离切片现可在Lab `/curve-lab.html`运行：有限直尾、五次接顺、同向横移、独立走廊检查与模式许可分离。参见 [契约与限制](labs/interchange-demo/docs/EXPLICIT_TAIL_EXPERIMENT.md)。中部跨越生成仍UNSUPPORTED；游戏NOT_RUN。本轮仅本地提交，不推送或更改稳定Mod。 / Bounded local implementation only; existing runtime is unchanged.
+
+Local V2 experiment adds [automatic orthogonal overpass candidates and actual curved context corridors](labs/interchange-demo/docs/EXPLICIT_TAIL_PHASE2.md), with explicit unsupported boundaries and separate evidence. No stable runtime replacement, push or game validation.
+
+Current focus: [curve algorithm verification → Mod Core migration](docs/MOD_CURVE_MIGRATION.md). The Lab is only a calculation/test harness. New default-disabled C# Core candidate construction is local and unconnected to runtime; game construction is not implemented or validated.
+
+Current local milestone: [independent C# planar verifier](docs/CORE_GEOMETRY_VALIDATION.md) inspects actual geometry and request binding; standard netstandard2.0 build and xUnit now pass. No runtime activation or game permission. / 已迁入独立平面验收，未接入游戏。
+
+2026-10-28 local extension: [curve primitives, bounded station/profile functions and inspected split candidates](docs/CURVE_FUNCTIONS.md). The original inspector scope and game exclusions remain; experimental search is default-disabled. / 已扩充纯数学内核，未启用游戏路径。
+
+Current extension: [hard-region routing and independent smoothing validation](docs/RESTRICTED_ROUTING.md); bounded planar support, runtime disabled.
+
+[Partial spatial proof checkpoint](docs/SPATIAL_PROOF_CHECKPOINT.md): exact straight-prism references only; curved 3D/global self-proof and selection integration remain incomplete. Current runtime/game boundaries unchanged.
+
+[Nonstraight exact quarter-arc proof slice](docs/QUARTER_ARC_PROOF.md) adds bounded flat annular-strip+tail full-domain certification and actual 3D candidate selection. General curved/nonconstant-profile proof remains incomplete.
+
+[General rising/descending Bezier external certificate](docs/BEZIER_EXTERNAL_3D.md) now checks continuous station envelopes against all supplied obstacles. General self remains UNKNOWN; no complete placement permission.
+
+[Noncircular normal-strip global sufficient certificate](docs/NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.
+
+2026-10-28 [面向可用Mod的代码事实调查与分阶段设计](docs/MOD_DELIVERY_DESIGN.md)：仅设计，本轮无新增算法/运行验证；先冻结真实接口并推进有限连接迁入。
+
+2026-10-28 [structured numerical assurance](docs/NUMERICAL_ASSURANCE.md): all experimental result types explicitly remain EngineeringChecksOnly/IsMachineCertified=false/CanApplyToGame=false. User now authorizes stacked Draft PR publication; no merge/release.

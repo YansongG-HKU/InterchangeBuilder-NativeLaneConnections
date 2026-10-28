@@ -1,0 +1,29 @@
+[
+  {
+    "suite": "browser.js",
+    "exit": 0,
+    "initialFailure": "isolated copy lacked Git metadata at evidence-write stage"
+  },
+  {
+    "suite": "browser3d.js",
+    "exit": 0,
+    "initialFailure": "isolated copy lacked Git metadata at evidence-write stage"
+  },
+  {
+    "suite": "diagnostic-focus.js",
+    "exit": 0,
+    "initialFailure": "isolated copy lacked Git metadata at evidence-write stage"
+  },
+  {
+    "suite": "tail-browser.js",
+    "exit": 0
+  },
+  {
+    "suite": "tail-phase2-browser.js",
+    "exit": 0
+  },
+  {
+    "suite": "curve-port-browser.js",
+    "exit": 0
+  }
+]

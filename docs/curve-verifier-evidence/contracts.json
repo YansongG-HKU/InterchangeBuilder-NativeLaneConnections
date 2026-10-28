@@ -1,0 +1,979 @@
+{
+  "runtime": "8.0.33",
+  "count": 192,
+  "records": [
+    {
+      "name": "default disabled and no game capability",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent straight oracle controls x0,32,64,96,128,160",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "numeric overflow invalid",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zero direction invalid",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zero transition degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "strict G2 and nonzero target curvature conflict",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "same snapshot matches",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "changed node identity invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "changed revision invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mode switch invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "same ids and revision but edited geometry invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mode does not alter geometry or grant game permission",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side -1/-1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/-1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/-1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/-1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side -1/0 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/0/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/0/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/0/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side -1/1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side 1/-1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/-1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/-1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/-1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side 1/0 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/0/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/0/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/0/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side 1/1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count middle-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count middle-tail-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail-mirror/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count same-direction-shift",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count same-direction-shift-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift-mirror/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count straight-main-left",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count straight-main-left-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left-mirror/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count curved-main-left",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count curved-main-left-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left-mirror/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent straight oracle actual output locally verified",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "generated actual output is independently verified",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "invalid candidate index rejected",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "same revision changed tail invalidates captured request",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mode switch invalidates captured request",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "fresh mode verification preserves geometric facts",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "null geometry invalid",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "null segment invalid",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "invalid resolution rejects",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "actual output width mismatch rejects",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "unsupported width does not become local pass",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "raw output copied immutably",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "nonfinite or extreme actual output rejected NaN",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "nonfinite or extreme actual output rejected Infinity",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "nonfinite or extreme actual output rejected 1.7976931348623157E+308",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent nonadjacent self-crossing fault detected",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance middle-tail/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output middle-tail/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance middle-tail/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance same-direction-shift/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output same-direction-shift/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance same-direction-shift/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance straight-main-left/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output straight-main-left/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance straight-main-left/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/none",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/position",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/join-gap",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/reverse-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/fake-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/short-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/numeric",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual-output acceptance curved-main-left/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "no-collision does not relax actual output curved-main-left/low-resolution",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "reconstructed actual output acceptance curved-main-left/low-resolution",
+      "expected": true,
+      "actual": true
+    }
+  ],
+  "scope": "Actual .NET8 compilation/execution of Core source; netstandard2.0/xUnit/game builds NOT_RUN",
+  "compiler": "sdk/8.0.427/Roslyn/bincore/csc.dll",
+  "sourceHashes": {
+    "src/InterchangeBuilder.LaneConnections.Core/AlignmentMath.cs": "636862a684d788a9fbbc3cfe0236d6355f2e0ec75b081de9bff4ba13d1abae78",
+    "src/InterchangeBuilder.LaneConnections.Core/CurveGeometryVerifier.cs": "dd4d5a947f89ce998b3d9705623e1ff1ca926971ebffe906d2f7241ae7cc9fcc",
+    "src/InterchangeBuilder.LaneConnections.Core/ExperimentalCurveKernel.cs": "0e543b800d9eca47d272c0e46338e9aa2cc53ae5a95ec4612e35c6863bcc5253",
+    "src/InterchangeBuilder.LaneConnections.Core/JunctionArmMath.cs": "beb88cb6b4152a3d7d15b409af7cba0b44a67928acf754c6c9bd0e1c4f704258",
+    "tools/CurveKernelContractRunner/Program.cs": "ae597628a305afd756c1db8a59331f8dc0a5a20374007d4b9cafee1ec6057735",
+    "tools/CurveKernelContractRunner/VerifierChecks.cs": "6bbb841cdf6d28ecae9c8bc9fd0c71619f5568130cdee2bba2fe31f6e1c40454",
+    "tests/curve-contract-vectors.json": "81aa4ba92ca94028201b1919514938f1737da3a58cdd629084360ee78a85056a",
+    "tests/curve-verifier-vectors.json": "e9084499d24d0518756426f0885cf42278c68c80524acec78f76078b25e63550",
+    "scripts/test-curve-contract-no-nuget.py": "0745ac474550ace6f353cbebf23c92060db40fa9ab75bfc98546991bdb54110b"
+  }
+}

@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><Nullable>enable</Nullable><DefineConstants>$(DefineConstants);CURVE_CONTRACT_RUNNER</DefineConstants></PropertyGroup>
+  <ItemGroup><Compile Include="../../src/InterchangeBuilder.LaneConnections.Core/*.cs" Link="%(Filename)%(Extension)" /></ItemGroup>
+</Project>

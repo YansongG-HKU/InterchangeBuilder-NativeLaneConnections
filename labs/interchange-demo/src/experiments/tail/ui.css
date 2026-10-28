@@ -1,0 +1,44 @@
+#tail-app main {
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+}
+#tail-app pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+#tail-app #three-host {
+  height: 420px;
+  position: relative;
+}
+#tail-plan {
+  width: 100%;
+  height: 250px;
+  background: #101c29;
+}
+#tail-app input[type="checkbox"] {
+  width: auto;
+}
+#tail-app .toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+#tail-app a {
+  color: #99dacc;
+}
+@media (max-width: 700px) {
+  #tail-app main {
+    display: flex;
+    flex-direction: column;
+  }
+  #tail-app #three-host {
+    height: 320px;
+  }
+  #tail-app button {
+    min-height: 44px;
+  }
+}
+
+#tail-app .scene-label-layer {
+  display: none;
+}

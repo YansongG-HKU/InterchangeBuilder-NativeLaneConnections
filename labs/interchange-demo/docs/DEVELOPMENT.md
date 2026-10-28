@@ -38,3 +38,13 @@
 本轮只将 [深度案例计划](DEEP_CASE_PLAN.md) 写入仓库。后续实施须获得明确执行授权并冻结材料/独立真值/容差；不追加算法或扩展类型。本轮回滚为撤销文档提交，Demo代码与历史证据保持原样。 / This revision is documentation only; subsequent implementation needs execution authorization and evidence/oracle/tolerance freeze. Revert the documentation commit to roll back.
 
 当前维护及获批阶段以 [根计划](../../../docs/LEFT_TURN_PLAN.md) 和 [整合规则](../../../docs/INTEGRATION.md) 为准；不在源仓继续开发。 / Root plan governs current maintenance.
+
+## 当前执行授权 / Current execution scope
+
+最新用户已授权本地实现与验证 [Issue #10切片](EXPLICIT_TAIL_EXPERIMENT.md)，不推送或变更PR。此前“仅文档”描述是上一轮历史；当前游戏、发布与稳定运行时保护不变。 / Implement locally under the latest scope; do not push or mutate PRs.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

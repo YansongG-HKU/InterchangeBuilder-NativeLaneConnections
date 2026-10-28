@@ -88,3 +88,11 @@ https://mods.paradoxplaza.com/mods/133736/Windows
 [参考机制与反例](research/road_mod_lessons.md) 收录Network Multitool、Node Controller Renewal、TM:PE、Move It作者材料，以及用户确认的InterchangeBuilder-NativeLaneConnections固定main/未合并PR研究。CS1 master为动态读取快照，无可靠SHA，不伪造固定版本；旧仓main与PR4分别固定到9f083061/0e9b3449，测试数量仅自报。 / Distinguish dynamic author sources, pinned main, unmerged proposals and unverified test claims.
 
 用户“修路失败/道路消失/只余桥墩”是直接观察，具体版本/日志/存档缺失；原因假设与源码证据分列，不将条件性补丁认作已解决。新 [深度计划](DEEP_CASE_PLAN.md) 用这些材料设计反例，未执行或移植代码。 / Direct user observations do not establish causality; references inform unexecuted adversarial contracts only.
+
+2026-10-27：以目标仓 [Issue #10](https://github.com/YansongG-HKU/InterchangeBuilder-NativeLaneConnections/issues/10) 及两条评论为直尾/模式契约；新增 [实验](EXPLICIT_TAIL_EXPERIMENT.md) 的参数与手写几何均明确合成，无新游戏硬限或第三方代码复制。 / Issue-driven synthetic experiment, not a standards claim.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

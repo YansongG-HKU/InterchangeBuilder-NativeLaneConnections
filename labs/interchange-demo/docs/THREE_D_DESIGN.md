@@ -24,3 +24,11 @@ Diagnostic navigation follows the active view: located errors pan the 3D camera 
 ## 后续范围 / Future scope
 
 [深度案例](DEEP_CASE_PLAN.md) 将三维用于完整车道路径、断面和结构冲突验证；这是未实现目标。现有道路条带、OD高亮和浏览器测试只证明当前展示行为。 / Future lane and structural inspection is not established by current rendering evidence.
+
+新 [直尾页面](EXPLICIT_TAIL_EXPERIMENT.md) 复用ConnectionScene，只消费独立检查器从实际输出生成的点；直线平面段也按纵断面细分，不画端点连线冒充Hermite。背景道路ID用文本列表避免近邻标签遮挡。 / Baseline scene implementation unchanged; the new page owns its inspection data and explicit labels.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

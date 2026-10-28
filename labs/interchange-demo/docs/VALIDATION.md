@@ -43,3 +43,11 @@ PASS 必须绑定确切版本组合及证据；版本改变后默认 NEEDS_RETES
 执行前按 [D0–D4](DEEP_CASE_PLAN.md) 固定预期与误差。检查器不得复用生成器的连接结论；正反例、解析/独立复算、性质/收敛/盲测及干净环境复现分别记录。工程人工审查不等于第二个AI浏览。 / Freeze the independent oracle before generation and separately document adversarial, analytic, metamorphic, convergence, held-out and third-party reproduction evidence. Human engineering review is distinct. New gates NOT_RUN.
 
 P0“道路消失/只余桥墩”的 [M11-A–E](research/road_mod_lessons.md) 注入矩阵和A45为独立验收：超时不等于失败、桥墩不等于道路创建成功；FAILED/RECOVERY_REQUIRED/VERIFIED按实测范围报告。 / Timeout and visible piers are not failure/success oracles; recovery tests remain NOT_RUN.
+
+当前 [直尾实测](../evidence-tail/RESULTS.md) 从输出控制点独立重建几何，明确分辨率UNKNOWN与参考/生成边界。完整车道图、地形、桥墩及游戏仍未验证。 / Output-derived checks do not replace game gates.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

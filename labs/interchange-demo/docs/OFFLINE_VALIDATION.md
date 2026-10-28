@@ -61,3 +61,13 @@ Height/terrain caps, structural clearance, local stacked decks, full structure/g
 ## 历史证据边界 / Historical evidence boundary
 
 上述测试属于现有Demo。新 [深度案例D0–D4](DEEP_CASE_PLAN.md) 全部NOT_RUN；本轮仅文档链接/一致性检查，不重跑或改写历史数值，不把旧断言计作独立真值验证。 / Existing results remain historical demo evidence; documentation-only changes do not execute the new deep-case gates.
+
+## 2026-10-27 本地曲线实验 / Local curve experiment
+
+新增实测及最终源哈希记录在 [evidence-tail](../evidence-tail/RESULTS.md)，不改本目录历史evidence。原二维/三维/定位回归复跑后恢复历史输出；新测试不代表全套游戏验收。 / New evidence is separate, with baseline regression and no game/CI claim.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

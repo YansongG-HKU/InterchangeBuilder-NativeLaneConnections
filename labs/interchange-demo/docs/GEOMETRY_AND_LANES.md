@@ -60,3 +60,13 @@ OD验证限定选中立交影响区内的合法路径；经外部城市路口绕
 ## 完整案例后续契约 / Next complete-case contract
 
 [H1–H4](DEEP_CASE_PLAN.md) 要求完整互通集成6→4+2，检查接收车道、分合流、渐变、方向及交织；独立检查器从实际输出重建有向车道图，不信任连接标记。 / Integrate the fork into the interchange and independently reconstruct directed lane reachability; current isolated fork and centerline preview do not satisfy this contract. NOT_RUN.
+
+## 当前曲线切片 / Current curve slice
+
+按最新用户范围，6→4+2不再作为曲线实验前置。新增 [有限直尾与五次接顺](EXPLICIT_TAIL_EXPERIMENT.md)，旅行方向侧偏、常偏移曲率/坡度度量校正、显式G1/G2取舍；独立输出验收不是游戏车道图。 / Current slice removes the fork prerequisite and preserves actual geometry/graph boundaries.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

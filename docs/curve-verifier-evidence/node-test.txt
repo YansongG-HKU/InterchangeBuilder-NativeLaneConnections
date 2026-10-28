@@ -1,0 +1,92 @@
+
+> cs2-interchange-offline-lab@0.2.0 test
+> node --test tests/*.test.js
+
+✔ 01: input limits and unsupported domain are explicit (38.960858ms)
+✔ 02: stationary and zero-length curves rejected (0.793775ms)
+✔ 03: arc station is metres, local tangent is analytical (0.717356ms)
+✔ 04: skew intersection keeps nonorthogonal original curves (714.553078ms)
+✔ 05: multi-crossings require explicit selection; choose second (346.805926ms)
+✔ 06: near tangent is unsupported and disjoint search not a proof (7.893389ms)
+✔ 07: exact six unique lane edges and no reversal/duplication (1050.229915ms)
+✔ 08: full is fixed 12, partial never redefines baseline or adds forbidden reachability (164.358925ms)
+✔ 09: bridge projection union counts identical footprint once (0.587712ms)
+✔ 10: set difference added/removed/retained and nonrectangular area (1.670299ms)
+✔ 11: holes and overflow not clipped out of total (740.671344ms)
+✔ 12: area cap cannot silently delete OD (130.702231ms)
+✔ 13: preferences retain hard constraints and candidate geometry (280.512123ms)
+✔ 14: deterministic reload and immutable input (307.714293ms)
+✔ 15: analytical endpoint tangent continuity for every route (341.901788ms)
+✔ 16: refinement bound decreases and measured area converges (6.448369ms)
+✔ 17: rotation preserves metrics within numerical tolerance (256.187583ms)
+✔ 18: invalid rings, exclusions, selected crossing, schema rejected (8.769585ms)
+✔ 19: no unconditional PASS with unassessed height/levels and no game apply (114.511393ms)
+✔ 20: all UI message entries have Chinese and English (0.352441ms)
+✔ 21: JSON own fields matching prototype names are unsupported (8.385336ms)
+✔ 22: OD and separate split statuses do not hide each other's diagnostics (98.058979ms)
+✔ 23: out-of-range anchors leave the lane experiment NOT_RUN (95.981104ms)
+✔ automatic crossing: independent 440m/10m/7.5% oracle; generation never consumes reference (18.82397ms)
+✔ same physical profile split at half-station preserves grade and full-overlap clearance (2.366829ms)
+✔ multiple and long crossing regions share plateau; grade budget is not a global infeasibility proof (12.003709ms)
+✔ clearance boundaries, altered thickness and unresolved long oblique crossings never relax (51.395289ms)
+✔ actual curved context agrees with fixed ports; all nine directed side pairs preserve identities (1498.401445ms)
+✔ curved-neighbor collision is not reduced to its endpoint chord or exempted by other road id (19.214859ms)
+✔ variable widths explicitly unsupported on input and output; narrow corridors fail closed (27.129804ms)
+✔ near-collinear, near-reverse, short acute and curvature-sign candidates retain finite fail-closed diagnostics (198.595894ms)
+✔ context and route rotate/translate/mirror together without changing bounded decisions (50.175187ms)
+✔ actual 90degree and general-angle generated overpasses preserve endpoints grade and clearance (20.441923ms)
+✔ curved oblique candidate compared with independently frozen polynomial reference; exact finite tail retained (257.780415ms)
+✔ oblique envelope includes low slope edges and near-parallel long overlap; neither mode invents clearance (3.147696ms)
+✔ thicker deck and low vertical injection cannot pass conservative curved overlap (83.950577ms)
+✔ curved profile insufficient grade remains bounded search failure and right-turn mirror is equivalent (395.940868ms)
+✔ nonlinear collinear parameterization preserves physical profile, not Bezier t (0.958299ms)
+✔ left and mirrored right turn profiles retain fixed G1 ports and finite tail (362.863024ms)
+✔ independent handwritten oracle: middle-tail and injected fault (34.988155ms)
+✔ independent handwritten oracle: same-direction-shift and injected fault (13.223219ms)
+✔ independent handwritten oracle: straight-main-left and injected fault (18.742467ms)
+✔ independent handwritten oracle: curved-main-left and injected fault (22.604116ms)
+✔ independent handwritten oracle: equal-height-overpass and injected fault (2.863128ms)
+✔ bounded generated candidates survive independent and transport checks (243.371638ms)
+✔ strict tail and nonzero target curvature G2 is a proven local conflict; bridge generation unsupported (12.813653ms)
+✔ normal/no-collision facts preserved; only synthetic building overlaps can relax (33.832765ms)
+✔ named-pair AND bounded-region join exemptions never exempt adjacent road (29.509121ms)
+✔ inspector distrusts flags and rejects nonfinite, degeneracy, width, identity and conversion loss (32.758449ms)
+✔ low subdivision budget reports UNKNOWN, refined length bounds converge (13.991463ms)
+✔ nonadjacent crossing and close full-width limbs detected (0.815411ms)
+✔ planar straight tail supports nonzero elevation grade; excessive grade fails (43.005867ms)
+✔ full overlap reference catches low edge even if crossing midpoint has clearance (1.499263ms)
+✔ rigid rotation/translation and mirror preserve bounded checks and travel-side semantics (25.688055ms)
+✔ schema invalid side, zero direction, missing values rejected without NaN geometry (1.004778ms)
+✔ thin clearance margins retain numerical uncertainty instead of false PASS (9.231839ms)
+✔ nearby nonadjacent full-width limbs overlap even without centerline crossing (0.607684ms)
+✔ port curvature and grade use actual constant-offset travel metric; widths are explicit (25.684232ms)
+✔ display points actually follow the reference Hermite arch, not endpoint-only chords (0.902265ms)
+✔ numerical/domain failures are not relabelled as a completed search (10.732781ms)
+✔ review: overflowing imported profiles and malformed shapes fail closed (1.169938ms)
+✔ V01: 0→12m / 200m flat endpoints has 6% average but 9% peak (2.756682ms)
+✔ V02: zero/invalid length rejected before any mesh (0.538832ms)
+✔ V03: equal heights and differing grades detect interior overshoot (0.272709ms)
+✔ V04: endpoint constraints and analytic extrema bound dense samples (9.78556ms)
+✔ V05: grade reverses with travel direction and offset metric is corrected (1.663187ms)
+✔ V06: common datum shift preserves grades, XY/OD and height differences (806.455479ms)
+✔ V07: every ramp matches source elevation and corrected endpoint grade (306.893464ms)
+✔ V08: profile changes keep planar geometry and footprint invariant (267.768027ms)
+✔ V09: invalid vertical fields never reach scene generation (22.860241ms)
+✔ V10: legacy migration is an explicit proposal with flat provenance (5.228462ms)
+✔ V11: preview includes complete required paths, no excluded invented connections (515.861611ms)
+✔ V12: no structural clearance or game PASS from elevation alone (337.209242ms)
+✔ V13: reversed through-profile display uses travel grade sign (336.505472ms)
+✔ V14: emitted 3D entry/exit segment tangents converge in valid elevated fixture (269.800614ms)
+ℹ tests 75
+ℹ suites 0
+ℹ pass 75
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4940.715036
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

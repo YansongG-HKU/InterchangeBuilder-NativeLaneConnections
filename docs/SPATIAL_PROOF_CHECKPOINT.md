@@ -1,0 +1,15 @@
+# Spatial proof checkpoint — incomplete / 三维证明检查点（未完成）
+
+Base461d1ce9c124f9451eaf53921c9f691f2eb2adc7. This checkpoint adds exact analytic regression primitives, not the requested complete curved-road 3D verifier. No runtime caller or candidate-selection integration exists. CanApplyToGame always false.
+
+Implemented: axis-aligned nonzero horizontal straight rectangular road prisms with constant width, surface elevation and positive underside thickness. Continuous enclosing-box separation proves a sufficient clearance lower bound; overlapping exact prisms have an interior-overlap witness. Contact/insufficient clearance without an overlap witness remains Unknown. External generic enclosures never yield overlap witnesses. Their producer must independently justify enclosure validity; this API does not authenticate supplied bounds or bind them to a curve.
+
+EntireSingleStraight first inspects captured request/geometry, then requires every actual segment to be an exact forward collinear axis-aligned line. Its rectangular parameterization is injective over the entire longitudinal interval; exact subdivision preserves the result, without skipping adjacent segments. Curved/Bezier representations remain Unknown even if visually straight, because the general diagonal-domain proof is not implemented. Separated in this function denotes injectivity of this limited single straight body, not separation from outside roads, terrain or vehicle volumes.
+
+Independent examples: 8m-wide perpendicular prisms with lower surface0, upper surface12 and thickness2 have underside gap10; clearance9 is separated, equality10 Unknown. Increasing upper thickness to13 creates actual interior overlap. Overlapping loose curve boxes remain Unknown. Exact split straight route passes the limited injectivity check; quintic representation remains Unknown.
+
+Remaining proof obligations: curve-generated continuous 3D envelopes using horizontal-arc-length/profile bounds; complete parameter-pair domain coverage including each curve interior and legal local diagonal; explicit local injectivity neighborhoods rather than index/station skips; joint semantics; width/thickness/crossfall support; full-area grade/clearance extrema; automatic multi-crossing profile generation and selection; full request/profile/constraint revision binding. Variable width, crossfall, piers, terrain, vehicles and game meshes are not represented. This checkpoint must not be promoted to global curved safety or game readiness. External game dependencies do not block these mathematical obligations.
+
+Tests and source hashes are recorded in spatial-checkpoint-evidence. No UI/JS production changes, new dependencies, push/PR/merge/release or installation. Stable runtime/build/CI unchanged. Historical evidence remains intact. This is a recoverable partial checkpoint, not completion of the delegated 3D/global-self-overlap task.
+
+[Nonstraight exact quarter-arc proof slice](QUARTER_ARC_PROOF.md) adds bounded flat annular-strip+tail full-domain certification and actual 3D candidate selection. General curved/nonconstant-profile proof remains incomplete.

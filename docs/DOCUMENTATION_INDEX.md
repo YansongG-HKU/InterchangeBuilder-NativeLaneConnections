@@ -17,3 +17,71 @@ Verification: local Markdown links and full import/overlay SHA-256 comparisons; 
 ## Public-upload resumption / 公开上传恢复
 
 Updated INTEGRATION and integration-evidence/RESULTS and added [Mod protection hashes](integration-evidence/mod-protection.json): latest authorization permits public upload but no source-repository update. Reviewed all remaining tracked documents; prior impact reasons still apply, no new behavior or algorithm scope. Root build/package coupling is explicitly documented (documentation payload only). Code and prior test inputs are unchanged, so no redundant runtime suite rerun.
+
+## 2026-10-27 local explicit-tail implementation impact
+
+New [experiment contract](../labs/interchange-demo/docs/EXPLICIT_TAIL_EXPERIMENT.md) and [actual results](../labs/interchange-demo/evidence-tail/RESULTS.md) describe the local Issue #10 slice. User explicitly removed 6→4+2 as a prerequisite and authorized local code/tests only; no push or PR mutation.
+
+Updated root README/CHANGELOG/LEFT_TURN_PLAN and this index; updated lab README, DESIGN_REQUIREMENTS, GEOMETRY_AND_LANES, UX_AND_I18N, REQUIREMENTS_ACCEPTANCE, DEVELOPMENT, ROADMAP, COMPATIBILITY, OFFLINE_DEMO, OFFLINE_VALIDATION, THREE_D_DESIGN, VERTICAL_PROFILES, DEEP_CASE_PLAN, SOURCES, VALIDATION and lab index to distinguish implemented limited generation, independently checked references and unsupported/game boundaries. New page/modules/fixtures/tests/Vite multi-entry config and separate evidence belong only to labs/interchange-demo.
+
+Reviewed unchanged: AGENTS/CONTRIBUTING and templates already govern local evidence and whole-document discipline; RIGHTS/THIRD_PARTY and root notices unchanged (no dependencies or copied code); original Mod README-upgrade/release records remain historical; INTEGRATION/import manifests and old integration/source evidence are immutable baseline records, not claims that this new experiment matches the old source snapshot; CURVED_SITE_OPTIMIZATION/REALISM_AND_GAMEPLAY/ROAD_RULES/EXPERIMENT_TEMPLATE retain full future requirements and existing boundaries; eight research documents remain dated source analysis. Existing C# source/tests/tools/UI, root build/CI/release configuration and game adapter remain unchanged. Fresh final-code isolation hashes are recorded with the new evidence, not inferred from the old report.
+
+Pre-delivery independent review: updated experiment contract/results, input/output numeric validation and import regressions; refreshed only evidence-tail. Other documents retain the same limited support, rights, workflow, historical evidence and NOT_RUN boundaries; all prior unchanged-group reasons remain applicable. No new dependency, stable runtime change, push or PR mutation. / 交付前独立审查修复数值溢出与异常输入边界，不扩展功能。
+
+## 2026-10-27 V2 complete impact review
+
+New [V2 contract](../labs/interchange-demo/docs/EXPLICIT_TAIL_PHASE2.md) and evidence-tail-v2 record bounded automatic overpass generation, actual context curves, independent checks and import races. Updated root README/CHANGELOG/LEFT_TURN_PLAN and both indices; lab README, COMPATIBILITY, DEEP_CASE_PLAN, DESIGN_REQUIREMENTS, DEVELOPMENT, GEOMETRY_AND_LANES, OFFLINE_DEMO, OFFLINE_VALIDATION, REQUIREMENTS_ACCEPTANCE, ROADMAP, SOURCES, THREE_D_DESIGN, UX_AND_I18N, VALIDATION, VERTICAL_PROFILES, EXPLICIT_TAIL_EXPERIMENT distinguish current additional capabilities from V1 historical limits. Updated fixtures retain old references and add explicit known-thickness automatic and bound-context cases.
+
+All other tracked documents reviewed unchanged: AGENTS/CONTRIBUTING/templates still govern local-only work/evidence; RIGHTS/licenses/notices unchanged without copied source/dependencies; original Mod releases and source research remain historical; INTEGRATION/manifests and prior evidence remain immutable baseline records; CURVED_SITE_OPTIMIZATION/REALISM_AND_GAMEPLAY/ROAD_RULES/EXPERIMENT_TEMPLATE retain full unmet goals and game gates. Stable C#/build/package/CI untouched; no game binaries/private data. New script optional EVIDENCE_DIR only selects lab report destination.
+
+## Algorithm-to-Mod migration impact
+
+New [migration contract](MOD_CURVE_MIGRATION.md) and current source/test evidence distinguish Lab calculation, pure C# Core and actual game adapter. Updated root AGENTS/README/CHANGELOG/LEFT_TURN_PLAN, both indices and lab current design/development/compatibility/validation/roadmap/geometry/vertical/UI/sources/V1/V2 contracts. New Core class is default-disabled and has no runtime call site; test project adds shared contracts. New no-NuGet runner is actual compilation, not a claimed xUnit run.
+
+All other tracked documentation reviewed unchanged: CONTRIBUTING/templates still apply; RIGHTS/licenses/notices unchanged without copied external code/dependencies; old research/releases/integration/manifests/evidence remain historical; CURVED_SITE_OPTIMIZATION/REALISM_AND_GAMEPLAY/ROAD_RULES/EXPERIMENT_TEMPLATE retain unmet full requirements and independent game gates. Existing runtime/build/release/CI/installation unchanged. Historical27-file protection is not rewritten; current approved Core/test diff has a separate boundary report. No push or PR changes.
+
+## Independent C# verifier impact / 独立验收迁入
+
+New [local planar contract](CORE_GEOMETRY_VALIDATION.md) and root docs/curve-verifier-evidence preserve current actual-source tests, failure diagnosis and supported XDG recovery. Updated active migration summaries in root README/CHANGELOG/LEFT_TURN_PLAN/MOD_CURVE_MIGRATION and lab README plus current design/development/compatibility/geometry/vertical/UI/validation/roadmap/sources/V1/V2 docs: C# local verification is implemented; standard netstandard/xUnit now pass. Earlier execution records are immutable and retain their then-NOT_RUN status.
+
+All tracked Markdown groups reviewed: AGENTS/CONTRIBUTING/templates still apply without rule changes; rights/licenses/notices unchanged (no new dependency or copied external code); integration manifests, original release/readme-upgrade and dated research/evidence remain historical; broader optimization/realism/road-rule plans still contain unmet goals, not current claims. No JS production/UI or game adapter changed, so prior browser evidence is preserved and no new screenshot is claimed. Runtime/build/package/CI unchanged; test project/standalone runner explicitly integrate verifier contracts. No push or PR action.
+
+## 2026-10-28 curve functions impact
+
+New [function/search contract](CURVE_FUNCTIONS.md) and root curve-functions-evidence preserve current outputs, bounds, comparisons and tests. Updated root README/CHANGELOG/LEFT_TURN_PLAN/MOD_CURVE_MIGRATION/CORE_GEOMETRY_VALIDATION; current lab summary paragraphs date prior192 results and refer to current extension. No Lab product/UI/production JS changes.
+
+Reviewed all tracked Markdown: AGENTS/CONTRIBUTING/templates unchanged because local execution and evidence policy still apply; licenses/rights/notices unchanged without dependencies or copied code; historical research/release/import manifests and earlier evidence remain immutable. Broader lane/terrain/game plans retain unmet requirements. Existing external corridor/vertical JS contracts are unchanged, not newly implemented C# capabilities. Runtime/build/release/CI unchanged; only pure Core and test links evolve. No push, merge, release, new screenshot or game test.
+
+## Restricted-region slice impact
+
+Added [current contract](RESTRICTED_ROUTING.md), Core router/verifier and regression evidence; root current roadmap/migration/README/changelog link it. All tracked document groups reviewed: existing scope pages remain valid historical/local contracts; licenses, research, import/release records and old evidence unchanged; AGENTS/CONTRIBUTING apply without changes. No Lab production/UI change. Runtime, build, packaging and CI unchanged. New rectangle scope does not claim soft collision or merge-exemption support.
+
+[Partial spatial proof checkpoint](SPATIAL_PROOF_CHECKPOINT.md): exact straight-prism references only; curved 3D/global self-proof and selection integration remain incomplete. Current runtime/game boundaries unchanged.
+
+Impact review: current root links updated; prior bounded curve/restricted contracts remain accurate and unchanged. All historical research/evidence/import/release documents, licenses, AGENTS/CONTRIBUTING and lab design/UI documents retain their existing scope; this checkpoint adds no Lab production feature. No prior proof status is upgraded.
+
+[Nonstraight exact quarter-arc proof slice](QUARTER_ARC_PROOF.md) adds bounded flat annular-strip+tail full-domain certification and actual 3D candidate selection. General curved/nonconstant-profile proof remains incomplete.
+
+Impact: current root links updated. Historical checkpoints/evidence preserve then-status; broader design/lab/research documents retain unmet general requirements. AGENTS/CONTRIBUTING, rights, dependency notices, release/import records unchanged; no production JS/UI/runtime/build/CI changes. No browser rerun or game status upgrade.
+
+[General rising/descending Bezier external certificate](BEZIER_EXTERNAL_3D.md) now checks continuous station envelopes against all supplied obstacles. General self remains UNKNOWN; no complete placement permission.
+
+Whole-document impact: current root roadmap/migration/proof links updated. Historical evidence/research/import/release records retain original scope; lab and bounded model contracts remain accurate without a new UI or game claim. AGENTS/CONTRIBUTING/licenses unchanged; no new dependency or copied code. Runtime/build/CI unchanged.
+
+[Noncircular normal-strip global sufficient certificate](NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.
+
+Impact review: current root self/external proof links updated. Existing local/curve contracts remain valid prerequisites; research, import/release records and historical evidence remain dated. Lab docs/UI, licenses, AGENTS/CONTRIBUTING unchanged: no production feature/dependency/game status change. Complete parameter-square coverage is justified by the new theorem, not by expanding old local exemptions.
+
+2026-10-28 [面向可用Mod的代码事实调查与分阶段设计](MOD_DELIVERY_DESIGN.md)：仅设计，本轮无新增算法/运行验证；先冻结真实接口并推进有限连接迁入。
+
+本次文档影响：新增交付设计，更新当前根入口/计划/迁移索引。已核对其余受控文档：历史证据/研究/发布/import保留当时状态；几何/3D/self契约描述实现而非本轮提案，故不改算法能力；Lab文档无产品变更；AGENTS/CONTRIBUTING与许可仍适用。运行时、Core、测试、构建/CI/发布文件均未修改。本轮只核对代码/远端与文档链接，不复跑旧测试。官方/作者补充来源待父线程提供，不能冒充已核实。
+
+数值审计影响补充：更新当前NORMAL_STRIP_SELF_PROOF、BEZIER_EXTERNAL_3D、QUARTER_ARC_PROOF、CORE_GEOMETRY_VALIDATION、CURVE_FUNCTIONS、RESTRICTED_ROUTING，统一声明double工程guard不等于严格机器包含性证明。历史evidence保持原样；本次未改代码、阈值或测试预期。
+
+官方/作者调查补充：MOD_DELIVERY_DESIGN新增父线程核读的WSDOT、作者规划论文、TxDOT、FHWA、ASAM1.8.0来源及P0/P1/P2次序。未引用未核实的ASAM1.9章节；本次仍仅文档设计，不改变现有能力、代码、历史证据或测试状态。其余文档沿用前述无需修改理由。
+
+最终来源归档：MOD_DELIVERY_DESIGN补齐MIT/CGAL/TightInclusion/BernsteinCCD/Levien/Bezier导数/ASAM1.8.1，记录各来源迁移边界、覆盖账本、非线性profile区间及半宽坡度公式。前述不改文档组理由继续有效；没有新增代码/依赖/测试或游戏事实。用户报告附件从当前设计文档生成，仓库文本为维护源。
+
+2026-10-28 [structured numerical assurance](NUMERICAL_ASSURANCE.md): all experimental result types explicitly remain EngineeringChecksOnly/IsMachineCertified=false/CanApplyToGame=false. User now authorizes stacked Draft PR publication; no merge/release.
+
+Release-slice impact review: new assurance contract/records and root current links updated. Other proof/model pages remain scoped engineering methods with the common numerical audit qualifier; historical evidence/research/import/release records retain then-status, not current authorization. Lab UI/production JS/contracts and rights/AGENTS/CONTRIBUTING unchanged (no new product behavior/dependency). Runtime/build/package/CI unchanged. Fresh independent browser outputs use a temporary copy, preserving all tracked history.

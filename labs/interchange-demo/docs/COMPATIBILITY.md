@@ -37,3 +37,11 @@ Placemaker是交互参考，不自动加入运行依赖。RB/Traffic等外部编
 [D4](DEEP_CASE_PLAN.md) 要求固定CS2 build、道路资产和Road Builder/Anarchy版本，实际车道读回、车辆、保存重载及编辑撤销。版本目前未选定，全部NOT_RUN；CS1源码与旧项目PR不能替代当前CS2实测。 / Exact runtime versions remain unset; historical source/PR research does not establish compatibility.
 
 旧项目和CS1机制的 [来源边界及P0恢复契约](research/road_mod_lessons.md) 不证明CS2原子事务、Undo或稳定lane API；Anarchy只读能力探测不得替用户开关。 / Source lessons are not a compatibility guarantee; do not change the user’s Anarchy setting.
+
+实验页面的normal/no-collision只是 [本地building许可策略](EXPLICIT_TAIL_EXPERIMENT.md)，不读写或模拟Anarchy全局状态，也不是任何CS2版本兼容结果。 / Local mode semantics establish no third-party compatibility.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

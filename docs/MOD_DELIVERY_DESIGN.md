@@ -1,0 +1,156 @@
+# 面向可用 Mod 的调查与分阶段设计
+
+调查代码基线：fa1e070c17751b0ab95efea4d05c537ce041aeb6，2026-10-28，development/curve-kernel-port。本轮只读调查与本地设计文档；没有新增算法、游戏验证或发布授权。父线程的官方/作者资料调查待补入，以下外部接口结论只来自当前仓库，不冒充已取得完整引擎契约。
+
+## 一、优先交付目标
+
+先打通一个用户固定节点、方向及侧位的正常左/右连接：保留现有连接功能→生成可解释曲线→预览同一输出→转换后独立复验→默认关闭的真实建路试验→失败恢复与保存重载。Demo仅计算、比较、回归；不继续建设独立产品。不能为等待全部形态的数学定理而无限延期可用 Mod，也不能以假接口绕过基础包缺口。
+
+近期最低产品切片采用普通定向/半定向连接、恒宽、显式直尾、有限路幅模型；端口不能随搜索自动移动。6→4+2不是前置。保留现有稳定路径，实验路由必须可关闭；新证书未知时禁止自动批准完整建路，但可明确标注的诊断预览。
+
+## 二、现有能力事实表
+
+| 层 | 仓内实际实现 | 可证/可运行范围 | 不得推导 |
+|---|---|---|---|
+| 现有运行时 | EndpointAlignmentService、Patches、ConnectionSelectionStore、Bootstrap | 宽度侧偏候选、原生CanConnect、SelectedNode/RampEndpoint与snapshot传递 | 新曲线内核已接入、全事务恢复 |
+| 平面生成 | ExperimentalCurveKernel | 五次接顺＋真实有限直尾，默认关闭 | 任意曲线、全局最优 |
+| 候选扩充 | CurveFunctions、CurveCandidateSearch | 解析线/圆弧函数、Hermite、弧长界、固定13候选及独立检查 | 圆弧/回旋线已转成游戏格式 |
+| 硬区路由 | RestrictedCurveRouting | 最多8有向矩形、恒宽/边距、可见性种子后平滑；中央冻结案例原13全败、新13预算通过 | 非凸任意建筑、全交通拓扑 |
+| 局部验收 | CurveGeometryVerifier | 实际端点/方向/曲率/接缝/直尾/数值/局部正则；明确短站距边界 | 全局无自交 |
+| 全局self | NormalStripSelfProof | 精确G0/G1接缝、切向锥β<π/2、rK<cosβ的法向条带全域注入 | 所有宽切向锥、回环、圆盘实体本身单射 |
+| 外部3D | BezierExternalSpatialProof | 实际Bezier，z(s)=a+gs，恒宽已知厚度，连续叶包络×全部输入障碍包络；一般self仍独立 | 非线性剖面、所有横坡/桥墩、实体碰撞见证 |
+| 精确3D参考 | SpatialEnvelopeProof、QuarterArcSpatialProof | 直棱柱、常高四分之一圆弧＋直尾的受限解析证明及候选选择 | 通用三维构造、非零坡全幅G1 |
+| 纵断面工具 | CurveVerticalFunctions及Lab既有剖面 | Hermite高程/坡度、长度区间峰坡；Lab有限自动跨越 | C#全套多跨越生成已完成 |
+| 游戏适配 | 无新运行时调用；Lab adapter能力false | 纯Core可测试 | 已真实建路、车辆通行、兼容或存档验证 |
+
+历史818详细检查、13项xUnit、75项Node是前一实现里程碑的结果，本轮未重复执行，不能写为新验收。详见各不可变evidence目录。当前证明使用有限域工程浮点余量，不是形式化IEEE证明。
+
+## 三、连接场景矩阵
+
+| 连接问题 | 拓扑/几何选择 | 首期策略与状态 | 后续必须验证 |
+|---|---|---|---|
+| 定向左/右转 | 固定进入/驶出端口与行驶切向 | 现五次/分段候选，恒宽/直尾独立验收 | 转换、真实接入与通行 |
+| 半定向左转 | 绕过交叉区，明确上/下关系 | 限制区路径种子＋联合平纵断面（后者未全实现） | 全重叠区净空、坡长与桥体 |
+| 环形左转 | 大角度/回环，长占地 | 现切向锥证书不覆盖，self UNKNOWN | 分区局部注入证明＋非局部参数对域检查 |
+| 左侧/右侧匝道 | 行驶方向定义左右，非世界轴 | 保留选定侧位；禁止搜索换侧 | prefab/实际lane方向与接收口 |
+| 中间接入 | 先保留真实直尾及路幅走廊 | 现显式尾段；G2非零目标曲率冲突拒绝 | 游戏节点分割及接入定义 |
+| 同向汇入/横移 | 固定出口、渐变与接收方向 | 现S形候选及受限self族 | 汇入长度、实际lane、交织 |
+| 弯主路 | 端口曲率/偏移/截面取自实际边界 | 现曲率/侧偏域有限；不盲抄中心线坡度 | 偏移曲线度量、动态资产宽度 |
+| 密集城区 | 硬禁区/保留走廊/紧凑多目标 | 矩形路由有证据；多边形后续 | 不放宽硬区换取外观 |
+| 多层多跨越 | 每交叉拓扑关系、联合剖面 | C#线性坡外部分离可验，生成未闭环 | 高程区间联合求解、结构/层数 |
+
+这些是连接问题样例，不宣称已经生成完整立交。城区/郊区只改变通过硬约束后的偏好，不改变必要OD、用户节点或安全阈值。
+
+## 四、端口与结果契约
+
+输入需包含：稳定实体index+version或基础包等效身份、snapshot/revision；选定道路prefab及动态composition；精确节点位置、行驶方向、左右/中侧位、实际边界宽度/车道方向；允许接入区间；水平曲率、标高/沿行驶方向纵坡及来源；固定直尾长度/连续性等级；硬禁区、道路实体/结构厚度、净距与参数来源；碰撞模式及其被确认能力。
+
+未知字段保持unknown，不从图片或预览补造。影像不作高程真值。数值全部标单位、坐标系、标高基准和误差。现Core Key是调用者不透明身份，不等于游戏entity提取已完成。
+
+输出固定ResultId/revision与完整输入摘要，保存拓扑/几何/剖面/转换版本；预览、检查和提交用同一实际输出。每次编辑、模式切换、导入或异步加载使旧许可失效。证书分栏：局部几何、外部空间、全局self、转换误差、引擎能力、实际创建。任何一项未知不能被另一项绿灯代替。
+
+## 五、分层设计与选择
+
+1. 拓扑走廊：先选绕左/绕右/半定向/环线及上下关系，再生成曲线；不要所有端口直接连线后任意抬高。固定预算记录路径族、尝试数和时间，原算法同输入/同检查器对照。
+2. 平面曲线：原五次为可靠基线；解析线/圆弧作参考或种子；分段多项式便于约束端点/曲率及保留尾段。双圆弧常有G1曲率跳变，不能作为G2成品；回旋线适合以弧长控制曲率的试验，但还需积分/反演/转换误差与算时证据，不因名称替换已验基线。
+3. 非线性剖面：以真实水平站距为自变量，交叉重叠区域形成连续高程下/上界；桥体厚度与道路/通行包络分别定义。用分段Hermite或其他可界定多项式，冻结端坡/峰坡/竖曲线约束；解析导数极值与区间长度共同检查。多跨越先合并相近约束形成平台或可行带，不逐交点堆波浪。
+4. 全宽3D：先冻结实际法向截面与厚度方向。当前外部圆盘包络是正常法向条带的外包含；非零坡圆弧内缘坡度不同且接尾全幅G1失败已有反例，后续必须处理真实截面曲面，不能只检查中心线。曲线叶的XY、station和z区间连续包围，近切/预算不足UNKNOWN。
+5. self：现全局锥充分定理优先服务正常连接。扩大到宽锥时，可把路线分成已证局部注入块，再对所有块间及块内剩余参数对递归检查；每个合法对角域排除都要有定理，不按编号/站距跳过。小切向跳跃/接缝重叠的精确dyadic门禁不可撤销。回环必须包括同高阶曲段内部，不仅段对。
+6. 引擎转换：保持直尾为独立直段。五次→游戏三次的分片转换须有位置/切向/曲率/弧长误差界、端点固定、接缝等级和重新认证；拟合不能缩掉尾段。引擎最短段/节点/合并规则未知，不填社区常数。转换失败回到候选或拒绝，不修改用户端口。
+7. 创建与恢复：默认关闭的版本能力分派；完整真实契约核实前仅Core输出。应用级operation ID、对象账本区分新建/修改/借用，关联真实依赖和entity version。requested/pending/created/verified/recovery-required/rolled-back明确；超时不等于失败。实际回读道路、prefab、拓扑、桥墩关系后才能VERIFIED。幂等补偿仅操作已确认本次所有权对象，不能按近邻扫删或仅延长timeout。
+
+## 六、主要扩展的替代与停止条件
+
+- 大回环：先保持UNKNOWN；可选分块证明/参数对区间法，或限定显式弧段拓扑和解析模型。若无法证明局部邻域安全，不输出全域VERIFIED。必要时只提供标注预览，不自动建路。
+- 非线性高程：优先把多项式z(s)在station区间求极值并传播弧长误差，避免先做任意地形。过陡/端坡不合为候选失败；预算未找到与必要长度冲突分开。
+- 非凸禁区：可追溯分解为凸多边形/矩形外覆盖，再路由＋实际平滑复验；外覆盖可能误拒绝但不得漏碰。任意多边形支持前冻结孔洞、接触和坐标误差语义。
+- 多匝道：先把既有道路作为硬空间输入，后做带优先级/联合搜索；不能各自通过后假设相互无碰撞。软建筑类别只有经引擎能力核实才可改变放置许可，保留原碰撞事实，硬用户禁区永不随模式消失。
+- 搜索收益：同候选预算和额外预算分别报告，另列CPU时间、段数、长度/占地/平顺指标；13候选不是等时。只声称冻结案例被救活，不统计测试总数当算法质量。
+
+## 七、基础包与实际版本缺口
+
+事实：runtime csproj是net48、扩展Version2.2.0、Harmony2.2.2；依赖InterchangeBuilderAssembly、Game、Unity.Entities/Mathematics、Colossal相关程序集。build-upgrade.ps1默认vendor/InterchangeBuilder-Base并要求InterchangeBuilder.dll、三平台native payload、UI及images；README-upgrade说明从发布ZIP提取基础包。
+
+这些材料可以确定所需文件类别和配置参数，不能确定基础DLL的准确版本/hash、目标游戏版本或完整CurveRoadApplyService实现。Bootstrap反射CreateDefinitionEntities(snapshot)及7参数CreateCoursePosition并检查部分返回/参数，不代表可传整条新曲线、原子事务或撤销保证。现Game.Net.Curve.m_Bezier a/b/c/d读取也不证明完整建路输入。
+
+本次目标工作树未发现Game.dll或基础InterchangeBuilder.dll，未扫描用户电脑、安装游戏或下载未知二进制。最小接入输入：合法可用的基础发布包版本+hash+云端路径、对应Game/Unity/Colossal版本与程序集路径、实际创建/分段/依赖生命周期契约。得到后先只读元数据和签名试验；不要求先替换用户正常安装。
+
+## 八、有界阶段及验收
+
+A. 接口冻结与转换研究（优先，与纯数学并行）：固定一个基础/游戏版本组合，输出能力表、实际选点snapshot契约、默认关闭路线和三次转换原型。停止：签名/许可/依赖不清则不接引擎，保留纯Core进展。
+
+B. 一个左/右连接端到端：节点/侧位不变、真实直尾、正常与拒绝用例、转换后复验、预览输出同版。停止：转换误差或最短段规则未知不自动创建。
+
+C. 一个半定向跨越：非线性升坡/平台/降坡，至少两处完整重叠区域；端点同高不能用单Hermite假拱起。降高/增厚/窄场地/近并行坡端负例。停止：外部或self未知不得完整许可。
+
+D. 创建与恢复P0：部分成功、先墩后路、晚到成功、重复回调、无snapshot、英文错误文本改变、删除失败、外部编辑、保存重载恢复；现象“仅剩桥墩”无真实版本/日志仍NOT_RUN，不预先宣布根因已修。
+
+E. 游戏独立门槛：真实车道/方向/新旧路径、车辆通行、存档重载、编辑撤销、资产与可选无碰撞版本组合。离线图论、RuntimeSmoke元数据、Core测试均不能代替。先在隔离授权环境试验，不覆盖已安装可用版本。
+
+每阶段证据：冻结输入/独立预期/容差来源、实际输出、源版本/算法与证书版本、覆盖区间/未覆盖原因、真实操作日志与截图、失败记录、复现命令。第三方干净环境复现及工程人工审查各自独立；AI审查不代替它们。达到阶段验收即进入Mod迁入，不无限扩Demo或证明所有可能道路。
+
+## 九、补充审计：数学证明与机器数值认证分层
+
+代码事实：NormalStripSelfProof的精确dyadic仅覆盖接缝位置/边方向谓词；其余导数、投影、atan2、cos及K仍是double＋固定guard。BezierExternalSpatialProof使用double细分、弦长/控制多边形累积并加1e-7，SpatialEnvelopeProof用double间隔＋1e-8。CurveFunctions.Measure的上下界也是实数算术理论界在double中的实现。当前没有全链路有向舍入、interval库或每步误差传播证明。部分文档已称工程余量，这个限定必须作为所有“证书/连续保守/全域通过”措辞的全局解释，不能只藏在数值段落。
+
+因此分三层记录：
+
+- 数学层：例如rK<cosβ的充分定理、极坐标单射、实数Bezier凸包/弧长界，逻辑证明成立的前提需逐项列出。
+- 实数算法层：完整参数域是否覆盖、外包络分离是否充分、是否只凭内界见证碰撞、是否有未证接缝/对角区间。预算不足/域外UNKNOWN。
+- 机器实现层：现double工程余量尚未形成逐步包含性认证；API的Separated是当前实现状态，不能升级为经过机器验证的严格数值安全证明。测试通过和独立数学审查不能填补这项缺口。
+
+下一步优先对必要谓词与界建立误差预算：输入浮点数作为精确dyadic基准；控制细分/导数/长度sqrt/累计站距/profile极值/三角函数逐步外包；拓扑分支使用filtered exact predicates或明确的不可判定区间。可选本地有向舍入/interval实现，但须先验证运行时/JIT平台语义和代价；不能仅增加epsilon后宣称已解决。给每个返回Separated的输出保存最小余量和误差上界，余量不大于误差即UNKNOWN。完成前游戏自动许可仍false，不调整测试预期掩盖问题。
+
+WSDOT Chapter1360（父线程核实公开2024版）将directional/semi-directional/loop作为路线类别，涉及用地/交织/连续性/层次：[官方资料](https://wsdot.wa.gov/publications/manuals/fulltext/M22-01/1360.pdf)。据此合法loop属于拓扑选项；现窄锥证书不覆盖它只能得到证书UNKNOWN，绝不是“loop非法”。本资料不是CS2规则或尺寸阈值。CGAL/作者CCD资料待父线程完整核实后补入，不能把尚未阅读来源当已有实现依据。
+
+## 十、官方与作者调查补充（父线程已核读）
+
+以下为设计依据，不代表代码已实现或CS2硬限：
+
+- [WSDOT Chapter1360，2024-09](https://wsdot.wa.gov/publications/manuals/fulltext/M22-01/1360.pdf)：direct/directional、semi-directional、loop属于路线类别；比较用地、连续性、层次、出入口顺序和交织风险。先比较同一匝道的路线类别，再讨论整座立交自动生成。
+- [作者多拓扑候选＋优化研究](https://arxiv.org/abs/2401.06021)及[CMU homotopy约束规划作者论文](https://www.cs.cmu.edu/afs/cs/Web/People/maxim/files/planwithhomotopyconstraints_aaai10.pdf)：启发不同绕侧/通道候选的显式保留；不是现算法的最优性依据。上跨/下穿关系不得直接称为不同三维同伦类。
+- [TxDOT竖曲线](https://www.txdot.gov/content/txdotoms/us/en/manuals/des/rdw/chapter-4--basic-design-criteria/4-8-vertical-alignment/4-8-2-vertical-curves.html)与[竖向净空](https://www.txdot.gov/manuals/des/rdw/chapter-4--basic-design-criteria/4-8-vertical-alignment/4-8-6-vertical-clearance.html)：支持将坡度过渡、净空与连续跨越区域作为独立设计约束；不导入未经游戏实测的现实数值为CS2阈值。
+- [FHWA interchange设计核查表](https://highways.dot.gov/field-offices/missouri/interchange-design-promptlist)：几何之外另列出入口顺序、交织与运营问题。几何有效不等于有向交通有效，也不能推断容量。
+- [ASAM OpenDRIVE1.8.0高程章节](https://publications.pages.asam.net/standards/ASAM_OpenDRIVE/ASAM_OpenDRIVE_Specification/1.8.0/specification/10_roads/10_05_elevation.html)：沿s分层表示的参考方法，不是CS2格式。父线程确认官方另有1.9，但本设计未核实其对应章节，故不称此处为最新条文。
+
+### 落实次序修订
+
+P0：非线性z(s)先支持分段二次/三次，冻结端高、端坡、峰坡和全跨越区域连续高程上下界；多个跨越联合求解平台/竖曲线，不逐交点独立抬高。曲线内侧全幅坡度必须另验，中心坡度不可代替。先为该支持模型建立区间包含与误差预算，再接入候选选择。
+
+P1：明确单匝道direct/semi-directional/loop类别与非凸禁区不同绕侧/通道；固定节点只调整中间路线。保留有向出入口顺序、汇入和weaving风险诊断；没有游戏数据时不声称交通容量。
+
+P2：clothoid等新曲线只在固定benchmark证明收益后迁入，分别报告安全域、算时、段数与转换成本；不按算法名称堆功能。
+
+优先验收：同端口direct与loop对照；U形限制与不同通道；全幅窄通道临界；两个高区联合平台；近邻高低约束不足但绕远可行；弯内侧坡度；环形非局部自接近；精确拆分、旋转及镜像等价。失败、搜索耗尽、必要约束冲突和数值UNKNOWN分开，不能为通过而放松冻结真值。
+
+## 十一、数值/偏移/转换来源及最终设计收口
+
+父线程完成的原始资料调查归档如下，均为方法参考，不是已实现依赖或游戏保证：
+
+| 来源 | 本设计采用的义务 | 不能推导 |
+|---|---|---|
+| [MIT局部偏移退化与全局self](https://web.mit.edu/hyperbook/Patrikalakis-Maekawa-Cho/node220.html) | 局部曲率/偏移退化与远参数自接近分别检查 | 局部正则即全局无重叠 |
+| [CGAL Interval_nt官方文档](https://doc.cgal.org/latest/Number_types/classCGAL_1_1Interval__nt.html) | 每步包含与舍入语义是可靠区间的基础；必须核实平台行为 | 固定epsilon自动成为可靠区间，或本仓已用CGAL |
+| [TightInclusion作者页面](https://continuous-collision-detection.github.io/tight_inclusion/) | 从特定CCD算法学习可靠判定/退化/预算设计 | 可直接覆盖道路法向扫掠或游戏结构 |
+| [Bernstein CCD作者论文](https://pmc.ncbi.nlm.nih.gov/articles/PMC4283478/) | 区分浮点近似与精确方案的可靠范围 | 浮点版本可靠；特定恒速mesh方法已涵盖输入误差/道路曲面 |
+| [Levien论文第9章](https://levien.com/phd/thesis.pdf) | 转换误差按位置、角度、曲率、弧长分别约束，保留源/目标参数对应 | 外观相似或位置误差小即所有导数安全 |
+| [Bezier导数教学资料](https://pages.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/Bezier/bezier-der.html) | 控制多边形导数/分段曲线数学参考 | 浮点实现已有机器包含性认证 |
+| [ASAM OpenDRIVE1.8.1高程](https://simulation.pages.asam.net/opendrive-group/opendrive-antora-gen/ASAM_OpenDRIVE_Specification/v1.8.1/specification/10_roads/10_05_elevation.html) | 已核读的沿s高程表示补充；与前列1.8.0版本分别标注 | 最新所有条文、CS2格式或实际建路契约 |
+
+### 证明扩展的覆盖账本
+
+保留窄cone快速充分条件。宽cone/loop走局部patch及跨接缝局部证书，再覆盖全部非局部参数对。账本逐项保存参数块、局部定理、舍入界、分离外界或实交见证、未决原因与预算。未覆盖一块，全局即UNKNOWN；相邻块不自动豁免。外包络分离、可靠实体交叠见证、UNKNOWN三态不混合。合法loop拓扑与证书不足分别呈现。
+
+### 非线性纵断面的区间构造
+
+新增profile支持域拟为按水平弧长的分段三次/五次，兼容P0二次特例。把整个弧长区间传播到高程多项式，遇profile接缝必须拆分；检查z、z'、z''区间及内部极值，不能只看端点。多个跨越的连续上下界共同约束整段profile，端高/端坡与竖曲线也属于硬输入。上下道路及梁体厚度的全重叠区证据必须来自同一几何版本。
+
+无横坡、恒宽法向条带模型F(s,u)=(r(s)+uN(s),z(s))中，平面纵向度量为|1-uκ|；若半宽记为w且wK<1，可用全幅坡度上界 |z'|/(1-wK)。这里w是半宽，不与代码Width混淆；这是模型推导，不是游戏阈值。变宽、横坡、水平偏置厚度或结构截面改变必须重新推导，不能直接复用。当前非零坡圆弧接直尾的全幅切平面反例仍有效。
+
+### 转换与真实创建的最后门禁
+
+转换应输出源段/源参数区间→目标段/目标参数区间映射及逐项误差界；真实直尾不参与近似拟合。针对转换后的实际三次输出重新执行端口、连续性、尾长、半径/坡度、外部空间、self及结构检查。之后才讨论引擎最短段/节点/资产约束与实际创建。创建成功必须实际回读，不以预览、对象存在或桥墩存在代替完整道路。
+
+实施先后最终确定为：①必要数值包含性与真实转换契约并行；②非线性高程joint-crossing切片；③宽cone全域覆盖账本；④真实引擎回读/所有权恢复独立门槛。每步保留有限支持域和停止条件，不无限扩Demo、不预先发布。上述来源和方案仅归档设计，本轮没有新增任何实现、阈值变更或运行验证。
+
+2026-10-28 [structured numerical assurance](NUMERICAL_ASSURANCE.md): all experimental result types explicitly remain EngineeringChecksOnly/IsMachineCertified=false/CanApplyToGame=false. User now authorizes stacked Draft PR publication; no merge/release.

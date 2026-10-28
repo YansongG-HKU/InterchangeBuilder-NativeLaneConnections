@@ -33,3 +33,13 @@
 [深度案例计划](DEEP_CASE_PLAN.md) 以D0材料/假设冻结→D1完整案例→D2反例/变体→D3独立复现→D4游戏映射替代按功能数量扩展的推进方式。全部NOT_RUN，本轮仅整合，获批算法阶段待材料冻结。原P1–P5游戏门槛继续有效；最小游戏节点实验可作为D4的前置，不跳过它。 / Depth-first gates remain unexecuted; existing game gates remain necessary.
 
 P0恢复设计同时纳入D0：用户道路消失/残留桥墩观察及 [M11-A–E](research/road_mod_lessons.md) 先形成独立故障注入预期；实际游戏复现仍须D4合法环境，当前NOT_RUN。 / Freeze recovery fault expectations before implementation; runtime reproduction remains a separate unexecuted gate.
+
+## 当前首个切片 / Current first slice
+
+[直尾实验](EXPLICIT_TAIL_EXPERIMENT.md) 已有有限可运行实现；6→4+2无前置依赖。下一阶段仍需完整曲线走廊/分段高差生成/结构检查及独立游戏验证，未完成项不改标。 / Bounded progress does not complete deeper gates.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.

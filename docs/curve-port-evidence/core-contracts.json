@@ -1,0 +1,356 @@
+{
+  "runtime": "8.0.33",
+  "count": 68,
+  "records": [
+    {
+      "name": "default disabled and no game capability",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent straight oracle controls x0,32,64,96,128,160",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "numeric overflow invalid",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zero direction invalid",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "zero transition degenerate",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "strict G2 and nonzero target curvature conflict",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "same snapshot matches",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "changed node identity invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "changed revision invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mode switch invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "same ids and revision but edited geometry invalidates",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "mode does not alter geometry or grant game permission",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side -1/-1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/-1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/-1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/-1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side -1/0 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/0/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/0/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/0/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side -1/1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet -1/1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side 1/-1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/-1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/-1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/-1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side 1/0 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/0/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/0/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/0/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "left/right and side 1/1 fixed positions",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/1/0.8",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/1/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "independent endpoint jet 1/1/1.2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count middle-tail",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count middle-tail-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls middle-tail-mirror/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count same-direction-shift",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count same-direction-shift-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls same-direction-shift-mirror/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count straight-main-left",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count straight-main-left-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls straight-main-left-mirror/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count curved-main-left",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left/2",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# candidate count curved-main-left-mirror",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left-mirror/0",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left-mirror/1",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "JS/C# actual controls curved-main-left-mirror/2",
+      "expected": true,
+      "actual": true
+    }
+  ],
+  "scope": "Actual .NET8 compilation/execution of Core source; netstandard2.0/xUnit/game builds NOT_RUN",
+  "compiler": "sdk/8.0.427/Roslyn/bincore/csc.dll",
+  "sourceHashes": {
+    "src/InterchangeBuilder.LaneConnections.Core/AlignmentMath.cs": "636862a684d788a9fbbc3cfe0236d6355f2e0ec75b081de9bff4ba13d1abae78",
+    "src/InterchangeBuilder.LaneConnections.Core/ExperimentalCurveKernel.cs": "5e4e2843f6c6e9d6bcf454e00f924f4bd99e4cff36a55e63730a339c5fe477e3",
+    "src/InterchangeBuilder.LaneConnections.Core/JunctionArmMath.cs": "beb88cb6b4152a3d7d15b409af7cba0b44a67928acf754c6c9bd0e1c4f704258",
+    "tools/CurveKernelContractRunner/Program.cs": "c619f0e4e453650959083c4d23ff4cbe8373eae319476cba508b7c6fff178c23",
+    "tests/curve-contract-vectors.json": "81aa4ba92ca94028201b1919514938f1737da3a58cdd629084360ee78a85056a",
+    "scripts/test-curve-contract-no-nuget.py": "0b7ff6e3fd67c5572bf0eedb5685ab761119b98024937603ffbbacd63fdc7501"
+  }
+}

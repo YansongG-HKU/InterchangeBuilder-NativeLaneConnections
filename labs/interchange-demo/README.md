@@ -79,3 +79,13 @@ npm run build
 ## 下一阶段：一个完整深度案例 / Next: one complete deep case
 
 [新版研究与执行门槛](docs/DEEP_CASE_PLAN.md)：以逐车道拓扑、三维几何、独立检查与游戏映射贯通一个案例；本次仅研究/文档，算法、独立真值和游戏验证均未执行。现有Demo历史测试不等于新目标完成。 / Research/design only; no new algorithm, independent oracle or game validation has been executed.
+
+## 显式直尾实验 / Explicit-tail experiment
+
+打开 `/curve-lab.html`，独立于原基线；支持有限真实直尾、同向横移/局部左转、参考检查与本地碰撞许可切换。见 [实验契约](docs/EXPLICIT_TAIL_EXPERIMENT.md) 与 [实测结果](evidence-tail/RESULTS.md)。`npm run test:tail`、`npm run test:tail-browser`、`npm run evidence:tail`；中部高跨生成及游戏适配未实现。 / New bounded experiment, not a replacement for baseline or the stable Mod.
+
+## 2026-10-27 V2 local extension / 本地第二切片
+
+Current additional capability: [automatic orthogonal crossings and actual curved context corridors](docs/EXPLICIT_TAIL_PHASE2.md). V1 statements about unsupported intermediate generation remain true for its missing-thickness/unsupported-shape inputs; V2 adds a constrained automatic family, not arbitrary3D routing. Full same-version regression and independent-review evidence are separate in evidence-tail-v2. Game/Anarchy/C#/remote CI remain NOT_RUN; no push/PR change. / 新增有界自动上跨、真实主路走廊与导入竞态检查，不改稳定Mod。
+
+Current direction / 当前目标: [algorithm validation → Mod migration](../../docs/MOD_CURVE_MIGRATION.md). The Lab is only a curve calculation/comparison/test harness. Current algorithm verification extends rigid-direction invariance and bounded curved/oblique profiles; older +X/orthogonal-only statements document V2, not the current superset. Pure C# candidate construction remains disabled/unwired; independent local planar actual-output validation is now implemented (see the root migration contract). External-road/vertical C# checks and game build/apply remain unimplemented. No new Demo product features. Standard netstandard2.0 build and 13 xUnit tests passed with 192 detailed contracts in the prior verifier milestone; the root curve-functions contract records the newer extension and current counts; net48/Anarchy/game/remote CI remain NOT_RUN. Historical execution records are preserved.
