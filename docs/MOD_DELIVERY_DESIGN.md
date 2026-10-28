@@ -102,3 +102,23 @@ E. 游戏独立门槛：真实车道/方向/新旧路径、车辆通行、存档
 下一步优先对必要谓词与界建立误差预算：输入浮点数作为精确dyadic基准；控制细分/导数/长度sqrt/累计站距/profile极值/三角函数逐步外包；拓扑分支使用filtered exact predicates或明确的不可判定区间。可选本地有向舍入/interval实现，但须先验证运行时/JIT平台语义和代价；不能仅增加epsilon后宣称已解决。给每个返回Separated的输出保存最小余量和误差上界，余量不大于误差即UNKNOWN。完成前游戏自动许可仍false，不调整测试预期掩盖问题。
 
 WSDOT Chapter1360（父线程核实公开2024版）将directional/semi-directional/loop作为路线类别，涉及用地/交织/连续性/层次：[官方资料](https://wsdot.wa.gov/publications/manuals/fulltext/M22-01/1360.pdf)。据此合法loop属于拓扑选项；现窄锥证书不覆盖它只能得到证书UNKNOWN，绝不是“loop非法”。本资料不是CS2规则或尺寸阈值。CGAL/作者CCD资料待父线程完整核实后补入，不能把尚未阅读来源当已有实现依据。
+
+## 十、官方与作者调查补充（父线程已核读）
+
+以下为设计依据，不代表代码已实现或CS2硬限：
+
+- [WSDOT Chapter1360，2024-09](https://wsdot.wa.gov/publications/manuals/fulltext/M22-01/1360.pdf)：direct/directional、semi-directional、loop属于路线类别；比较用地、连续性、层次、出入口顺序和交织风险。先比较同一匝道的路线类别，再讨论整座立交自动生成。
+- [作者多拓扑候选＋优化研究](https://arxiv.org/abs/2401.06021)及[CMU homotopy约束规划作者论文](https://www.cs.cmu.edu/afs/cs/Web/People/maxim/files/planwithhomotopyconstraints_aaai10.pdf)：启发不同绕侧/通道候选的显式保留；不是现算法的最优性依据。上跨/下穿关系不得直接称为不同三维同伦类。
+- [TxDOT竖曲线](https://www.txdot.gov/content/txdotoms/us/en/manuals/des/rdw/chapter-4--basic-design-criteria/4-8-vertical-alignment/4-8-2-vertical-curves.html)与[竖向净空](https://www.txdot.gov/manuals/des/rdw/chapter-4--basic-design-criteria/4-8-vertical-alignment/4-8-6-vertical-clearance.html)：支持将坡度过渡、净空与连续跨越区域作为独立设计约束；不导入未经游戏实测的现实数值为CS2阈值。
+- [FHWA interchange设计核查表](https://highways.dot.gov/field-offices/missouri/interchange-design-promptlist)：几何之外另列出入口顺序、交织与运营问题。几何有效不等于有向交通有效，也不能推断容量。
+- [ASAM OpenDRIVE1.8.0高程章节](https://publications.pages.asam.net/standards/ASAM_OpenDRIVE/ASAM_OpenDRIVE_Specification/1.8.0/specification/10_roads/10_05_elevation.html)：沿s分层表示的参考方法，不是CS2格式。父线程确认官方另有1.9，但本设计未核实其对应章节，故不称此处为最新条文。
+
+### 落实次序修订
+
+P0：非线性z(s)先支持分段二次/三次，冻结端高、端坡、峰坡和全跨越区域连续高程上下界；多个跨越联合求解平台/竖曲线，不逐交点独立抬高。曲线内侧全幅坡度必须另验，中心坡度不可代替。先为该支持模型建立区间包含与误差预算，再接入候选选择。
+
+P1：明确单匝道direct/semi-directional/loop类别与非凸禁区不同绕侧/通道；固定节点只调整中间路线。保留有向出入口顺序、汇入和weaving风险诊断；没有游戏数据时不声称交通容量。
+
+P2：clothoid等新曲线只在固定benchmark证明收益后迁入，分别报告安全域、算时、段数与转换成本；不按算法名称堆功能。
+
+优先验收：同端口direct与loop对照；U形限制与不同通道；全幅窄通道临界；两个高区联合平台；近邻高低约束不足但绕远可行；弯内侧坡度；环形非局部自接近；精确拆分、旋转及镜像等价。失败、搜索耗尽、必要约束冲突和数值UNKNOWN分开，不能为通过而放松冻结真值。

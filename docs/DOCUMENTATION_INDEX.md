@@ -77,3 +77,5 @@ Impact review: current root self/external proof links updated. Existing local/cu
 本次文档影响：新增交付设计，更新当前根入口/计划/迁移索引。已核对其余受控文档：历史证据/研究/发布/import保留当时状态；几何/3D/self契约描述实现而非本轮提案，故不改算法能力；Lab文档无产品变更；AGENTS/CONTRIBUTING与许可仍适用。运行时、Core、测试、构建/CI/发布文件均未修改。本轮只核对代码/远端与文档链接，不复跑旧测试。官方/作者补充来源待父线程提供，不能冒充已核实。
 
 数值审计影响补充：更新当前NORMAL_STRIP_SELF_PROOF、BEZIER_EXTERNAL_3D、QUARTER_ARC_PROOF、CORE_GEOMETRY_VALIDATION、CURVE_FUNCTIONS、RESTRICTED_ROUTING，统一声明double工程guard不等于严格机器包含性证明。历史evidence保持原样；本次未改代码、阈值或测试预期。
+
+官方/作者调查补充：MOD_DELIVERY_DESIGN新增父线程核读的WSDOT、作者规划论文、TxDOT、FHWA、ASAM1.8.0来源及P0/P1/P2次序。未引用未核实的ASAM1.9章节；本次仍仅文档设计，不改变现有能力、代码、历史证据或测试状态。其余文档沿用前述无需修改理由。
