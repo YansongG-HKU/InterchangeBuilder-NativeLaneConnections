@@ -59,3 +59,7 @@ Added [current contract](RESTRICTED_ROUTING.md), Core router/verifier and regres
 [Partial spatial proof checkpoint](SPATIAL_PROOF_CHECKPOINT.md): exact straight-prism references only; curved 3D/global self-proof and selection integration remain incomplete. Current runtime/game boundaries unchanged.
 
 Impact review: current root links updated; prior bounded curve/restricted contracts remain accurate and unchanged. All historical research/evidence/import/release documents, licenses, AGENTS/CONTRIBUTING and lab design/UI documents retain their existing scope; this checkpoint adds no Lab production feature. No prior proof status is upgraded.
+
+[Nonstraight exact quarter-arc proof slice](QUARTER_ARC_PROOF.md) adds bounded flat annular-strip+tail full-domain certification and actual 3D candidate selection. General curved/nonconstant-profile proof remains incomplete.
+
+Impact: current root links updated. Historical checkpoints/evidence preserve then-status; broader design/lab/research documents retain unmet general requirements. AGENTS/CONTRIBUTING, rights, dependency notices, release/import records unchanged; no production JS/UI/runtime/build/CI changes. No browser rerun or game status upgrade.

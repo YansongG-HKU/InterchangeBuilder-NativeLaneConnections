@@ -39,3 +39,5 @@ Official temporary SDK tool reference: https://learn.microsoft.com/en-us/dotnet/
 Current extension: [hard-region routing and independent smoothing validation](RESTRICTED_ROUTING.md); bounded planar support, runtime disabled.
 
 [Partial spatial proof checkpoint](SPATIAL_PROOF_CHECKPOINT.md): exact straight-prism references only; curved 3D/global self-proof and selection integration remain incomplete. Current runtime/game boundaries unchanged.
+
+[Nonstraight exact quarter-arc proof slice](QUARTER_ARC_PROOF.md) adds bounded flat annular-strip+tail full-domain certification and actual 3D candidate selection. General curved/nonconstant-profile proof remains incomplete.
