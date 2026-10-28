@@ -11,6 +11,10 @@ public sealed class NormalStripCertificate
     public SpatialProofStatus Status{get;} public string Reason{get;} public double ConeAngle{get;} public double CurvatureUpper{get;} public double InjectionMargin{get;} public int Pieces{get;}
     public CurveGeometryDocument? SourceGeometry {get;internal set;}
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public static class NormalStripSelfProof
 {

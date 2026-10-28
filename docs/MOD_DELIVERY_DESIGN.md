@@ -152,3 +152,5 @@ P2：clothoid等新曲线只在固定benchmark证明收益后迁入，分别报�
 转换应输出源段/源参数区间→目标段/目标参数区间映射及逐项误差界；真实直尾不参与近似拟合。针对转换后的实际三次输出重新执行端口、连续性、尾长、半径/坡度、外部空间、self及结构检查。之后才讨论引擎最短段/节点/资产约束与实际创建。创建成功必须实际回读，不以预览、对象存在或桥墩存在代替完整道路。
 
 实施先后最终确定为：①必要数值包含性与真实转换契约并行；②非线性高程joint-crossing切片；③宽cone全域覆盖账本；④真实引擎回读/所有权恢复独立门槛。每步保留有限支持域和停止条件，不无限扩Demo、不预先发布。上述来源和方案仅归档设计，本轮没有新增任何实现、阈值变更或运行验证。
+
+2026-10-28 [structured numerical assurance](NUMERICAL_ASSURANCE.md): all experimental result types explicitly remain EngineeringChecksOnly/IsMachineCertified=false/CanApplyToGame=false. User now authorizes stacked Draft PR publication; no merge/release.

@@ -13,6 +13,10 @@ public sealed class InspectedCurveCandidate
     public CurveGeometryDocument Geometry { get; }
     public CurveGeometryReport Report { get; }
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public sealed class CurveSearchResult
 {
@@ -22,6 +26,10 @@ public sealed class CurveSearchResult
     public ReadOnlyCollection<InspectedCurveCandidate> Candidates { get; }
     public int OutOfDomainCandidates { get; }
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public static class CurveCandidateSearch
 {

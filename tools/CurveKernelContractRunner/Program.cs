@@ -57,7 +57,7 @@ public static class Program
 {
     public static int Main(string[] args)
     {
-        try {var records=CurveKernelContractChecks.Run(args[0]);Console.WriteLine(JsonSerializer.Serialize(new { runtime=Environment.Version.ToString(),count=records.Count,records,comparisons=FunctionChecks.Comparisons,restricted=RestrictedChecks.Evidence,spatial=SpatialChecks.Evidence },new JsonSerializerOptions{WriteIndented=true}));return 0;}
+        try {var records=CurveKernelContractChecks.Run(args[0]);Console.WriteLine(JsonSerializer.Serialize(new { runtime=Environment.Version.ToString(),numericalEvidence="EngineeringChecksOnly",isMachineCertified=false,canApplyToGame=false,numericalLimitation=NumericalAssurance.Note,count=records.Count,records,comparisons=FunctionChecks.Comparisons,restricted=RestrictedChecks.Evidence,spatial=SpatialChecks.Evidence },new JsonSerializerOptions{WriteIndented=true}));return 0;}
         catch(Exception e){Console.Error.WriteLine(e);return 1;}
     }
 }

@@ -9,11 +9,19 @@ public sealed class QuarterArcCandidate
     {Radius=radius;Width=width;Tail=tail;StartHeight=startHeight;JoinHeight=joinHeight;EndHeight=endHeight;Thickness=thickness;Revision=revision;}
     public double Radius{get;} public double Width{get;} public double Tail{get;} public double StartHeight{get;} public double JoinHeight{get;} public double EndHeight{get;} public double Thickness{get;} public long Revision{get;}
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public sealed class QuarterArcCertificate
 {
     internal QuarterArcCertificate(SpatialProofStatus status,string reason,double grade,SpatialEnvelope? envelope){Status=status;Reason=reason;MaximumGrade=grade;Envelope=envelope;}
     public SpatialProofStatus Status{get;} public string Reason{get;} public double MaximumGrade{get;} public SpatialEnvelope? Envelope{get;} public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public static class QuarterArcSpatialProof
 {

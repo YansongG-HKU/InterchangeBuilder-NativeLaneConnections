@@ -18,6 +18,10 @@ public sealed class SpatialProof
 {
     internal SpatialProof(SpatialProofStatus status,double separation,string reason){Status=status;SeparationLowerBound=separation;Reason=reason;}
     public SpatialProofStatus Status{get;} public double SeparationLowerBound{get;} public string Reason{get;} public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public static class SpatialEnvelopeProof
 {

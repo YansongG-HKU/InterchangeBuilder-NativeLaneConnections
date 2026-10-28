@@ -118,6 +118,10 @@ public readonly struct GradeEnvelope
     public bool Resolved { get; }
     public bool WithinLimit { get; }
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public static class CurveVerticalFunctions
 {

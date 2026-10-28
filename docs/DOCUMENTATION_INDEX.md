@@ -81,3 +81,7 @@ Impact review: current root self/external proof links updated. Existing local/cu
 官方/作者调查补充：MOD_DELIVERY_DESIGN新增父线程核读的WSDOT、作者规划论文、TxDOT、FHWA、ASAM1.8.0来源及P0/P1/P2次序。未引用未核实的ASAM1.9章节；本次仍仅文档设计，不改变现有能力、代码、历史证据或测试状态。其余文档沿用前述无需修改理由。
 
 最终来源归档：MOD_DELIVERY_DESIGN补齐MIT/CGAL/TightInclusion/BernsteinCCD/Levien/Bezier导数/ASAM1.8.1，记录各来源迁移边界、覆盖账本、非线性profile区间及半宽坡度公式。前述不改文档组理由继续有效；没有新增代码/依赖/测试或游戏事实。用户报告附件从当前设计文档生成，仓库文本为维护源。
+
+2026-10-28 [structured numerical assurance](NUMERICAL_ASSURANCE.md): all experimental result types explicitly remain EngineeringChecksOnly/IsMachineCertified=false/CanApplyToGame=false. User now authorizes stacked Draft PR publication; no merge/release.
+
+Release-slice impact review: new assurance contract/records and root current links updated. Other proof/model pages remain scoped engineering methods with the common numerical audit qualifier; historical evidence/research/import/release records retain then-status, not current authorization. Lab UI/production JS/contracts and rights/AGENTS/CONTRIBUTING unchanged (no new product behavior/dependency). Runtime/build/package/CI unchanged. Fresh independent browser outputs use a temporary copy, preserving all tracked history.

@@ -42,6 +42,10 @@ public sealed class CurveGeometryReport
     public ReadOnlyCollection<string> Issues { get; }
     public ReadOnlyDictionary<string,double> Metrics { get; }
     public bool CanApplyToGame => false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
     public string Scope => "Fixed-width local planar endpoint/join/tail/regularity/self-corridor checks only; external obstacles, vertical/lane/engine validation NOT_RUN";
 }
 

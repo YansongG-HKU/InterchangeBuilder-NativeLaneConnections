@@ -68,4 +68,8 @@ Check("tiny tangent jump cannot use global theorem",NormalStripSelfProof.Verify(
 var tinyGap=new CurveGeometryDocument(request,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(0,0),new CurvePoint(100,0)}),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(100-5e-8,0),new CurvePoint(200,0)})});
 Check("tiny overlapping G0 seam cannot certify",NormalStripSelfProof.Verify(request,tinyGap).Status==SpatialProofStatus.Unknown);
 Check("candidate search binds self certificate to actual output",CurveCandidateSearch.Search(curveRequest,true).Candidates[1].SelfCertificate.Status==SpatialProofStatus.Separated);
+var resultTypes=typeof(CurveKernelRequest).Assembly.GetExportedTypes().Where(t=>t.GetProperty("CanApplyToGame")!=null).ToArray();
+Check("all public game-gated results expose numerical assurance",resultTypes.Length>=10&&resultTypes.All(t=>t.GetProperty("IsMachineCertified")?.PropertyType==typeof(bool)&&t.GetProperty("NumericalEvidence")?.PropertyType==typeof(NumericalEvidenceKind)));
+Check("successful self status is engineering evidence only",self.Status==SpatialProofStatus.Separated&&!self.IsMachineCertified&&self.NumericalEvidence==NumericalEvidenceKind.EngineeringChecksOnly&&!self.CanApplyToGame);
+Check("serialized success retains explicit machine downgrade",System.Text.Json.JsonSerializer.Serialize(self).Contains("\"IsMachineCertified\":false"));
 return rows;}}

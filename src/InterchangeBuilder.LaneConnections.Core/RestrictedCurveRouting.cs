@@ -27,6 +27,10 @@ public sealed class RestrictedReport
     public ReadOnlyCollection<string> Issues { get; }
     public int Leaves { get; }
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 
 // Independent actual-output inspector. No routing flags, obstacle proximity exemptions or mode bypass.
@@ -105,6 +109,10 @@ public sealed class RestrictedRouteResult
     public ReadOnlyCollection<RestrictedRouteCandidate> Candidates { get; }
     public int Attempts { get; }
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public static class RestrictedCurveRouter
 {

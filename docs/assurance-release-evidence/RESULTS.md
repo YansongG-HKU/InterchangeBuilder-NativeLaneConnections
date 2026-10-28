@@ -1,0 +1,13 @@
+# Fresh release-slice validation — 2026-10-28
+
+Pre-slice source8245641d9e68af5da9483113df27d11a795d133d, dependency PR9 basea13fa7919abcd4689bff035f65bd6d618978cc2b. Current work authorizes stacked Draft PR, no merge/release/install. Source hashes record final tested files; no historical evidence overwritten.
+
+Actual netstandard2.0 Core build PASS; xUnit13 passed/0failed/0skipped, shared detailed checks821 pass. Node75 PASS, production build PASS. Browser suites browser/browser3d/diagnostic-focus/tail/tail-phase2/curve-port all exit0. Fresh assertions and logs saved separately. First3 suites initially failed at Git metadata evidence-write in the isolated copy, not assertions; rerun with read-only GIT_DIR/GIT_WORK_TREE context passed. No product source or test thresholds changed for this issue.
+
+Core commands: python3 scripts/test-curve-contract-no-nuget.py /tmp/cs2-dotnet; dotnet test tests/InterchangeBuilder.LaneConnections.Core.Tests/InterchangeBuilder.LaneConnections.Core.Tests.csproj -c Release --nologo using prior documented process-local XDG_RUNTIME_DIR/DOTNET_CLI_HOME/NUGET_PACKAGES recovery. Lab npm test/build and six browser scripts executed in /tmp/cs2-assurance-lab; browser served unchanged actual source at127.0.0.1:4173. New Core result metadata cannot affect JS rendering; immutable old UI evidence is preserved.
+
+All12 public game-gated result types expose typed and textual EngineeringChecksOnly, IsMachineCertified=false and NumericalLimitation. Runtime/default behavior and geometric thresholds/selection unchanged. Independent reviewer read actual diff, reflection/serialization regressions and all12 types without blockers. Enum numeric serialization is accompanied by an explicit readable nested label and false certification flag.
+
+Boundary report verifies original runtime/build/package/CI identity against main, no new runtime calls and no binary payload. No compile/packaging glob pulls lab into runtime; existing root Markdown documentation copied by build remains documentation only. Stacked diff includes prior bounded algorithms/tests/design and retained experimental evidence; it does not import another runtime or base game files.
+
+Mathematical sufficient conditions and engineering floating-point evaluation do not establish reliable machine inclusion. No new interval implementation, no arbitrary-interchange safety claim. Actual base Mod/Game/Unity/Colossal versioned inputs/creation contract absent; game/Anarchy/net48 build/real path/save/recovery NOT_RUN. Remote CI is checked after push separately; local success is not CI success. Existing workflow only Core tests, no Lab/browser/game coverage.

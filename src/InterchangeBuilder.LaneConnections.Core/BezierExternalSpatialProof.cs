@@ -19,6 +19,10 @@ public sealed class ExternalSpatialCertificate
     public double Clearance { get; internal set; }
     public SpatialProofStatus GlobalSelfStatus=>SpatialProofStatus.Unknown;
     public bool CanApplyToGame=>false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
 }
 public static class BezierExternalSpatialProof
 {

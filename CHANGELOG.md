@@ -43,3 +43,5 @@ Current extension: [hard-region routing and independent smoothing validation](do
 [General rising/descending Bezier external certificate](docs/BEZIER_EXTERNAL_3D.md) now checks continuous station envelopes against all supplied obstacles. General self remains UNKNOWN; no complete placement permission.
 
 [Noncircular normal-strip global sufficient certificate](docs/NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.
+
+2026-10-28 [structured numerical assurance](docs/NUMERICAL_ASSURANCE.md): all experimental result types explicitly remain EngineeringChecksOnly/IsMachineCertified=false/CanApplyToGame=false. User now authorizes stacked Draft PR publication; no merge/release.

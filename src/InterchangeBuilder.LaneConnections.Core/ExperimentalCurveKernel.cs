@@ -76,6 +76,10 @@ public sealed class CurveKernelResult
     public CurvePlacementMode Mode { get; }
     public ReadOnlyCollection<CurveCandidate> Candidates { get; }
     public bool CanApplyToGame => false;
+    public NumericalEvidenceKind NumericalEvidence => NumericalEvidenceKind.EngineeringChecksOnly;
+    public string NumericalEvidenceLabel => "EngineeringChecksOnly";
+    public bool IsMachineCertified => false;
+    public string NumericalLimitation => NumericalAssurance.Note;
     public bool Matches(CurveKernelRequest request) => request != null && Revision == request.Revision &&
         StartKey == request.Start?.Key && EndKey == request.End?.Key && Mode == request.Mode && original != null &&
         request.TailLength == original.TailLength && request.Width == original.Width && request.RequireG2 == original.RequireG2 &&

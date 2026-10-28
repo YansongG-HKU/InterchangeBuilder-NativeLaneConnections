@@ -1,0 +1,39 @@
+{
+  "disallowedPayloads": [],
+  "credentialPatternPaths": [],
+  "totalBytes": 24320306,
+  "largestFiles": [
+    [
+      2344632,
+      "docs/assurance-release-evidence/contracts.json"
+    ],
+    [
+      2342639,
+      "docs/normal-strip-evidence/contracts.json"
+    ],
+    [
+      2330812,
+      "docs/external-spatial-evidence/contracts.json"
+    ],
+    [
+      2165827,
+      "docs/quarter-arc-evidence/contracts.json"
+    ],
+    [
+      2163948,
+      "docs/spatial-checkpoint-evidence/contracts.json"
+    ],
+    [
+      2162790,
+      "docs/restricted-routing-evidence/contracts.json"
+    ],
+    [
+      1099507,
+      "labs/interchange-demo/evidence-curve-port/computation.json"
+    ],
+    [
+      672709,
+      "labs/interchange-demo/evidence-tail-v2/computation.json"
+    ]
+  ]
+}
