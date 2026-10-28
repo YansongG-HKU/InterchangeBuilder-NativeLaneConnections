@@ -55,3 +55,7 @@ Reviewed all tracked Markdown: AGENTS/CONTRIBUTING/templates unchanged because l
 ## Restricted-region slice impact
 
 Added [current contract](RESTRICTED_ROUTING.md), Core router/verifier and regression evidence; root current roadmap/migration/README/changelog link it. All tracked document groups reviewed: existing scope pages remain valid historical/local contracts; licenses, research, import/release records and old evidence unchanged; AGENTS/CONTRIBUTING apply without changes. No Lab production/UI change. Runtime, build, packaging and CI unchanged. New rectangle scope does not claim soft collision or merge-exemption support.
+
+[Partial spatial proof checkpoint](SPATIAL_PROOF_CHECKPOINT.md): exact straight-prism references only; curved 3D/global self-proof and selection integration remain incomplete. Current runtime/game boundaries unchanged.
+
+Impact review: current root links updated; prior bounded curve/restricted contracts remain accurate and unchanged. All historical research/evidence/import/release documents, licenses, AGENTS/CONTRIBUTING and lab design/UI documents retain their existing scope; this checkpoint adds no Lab production feature. No prior proof status is upgraded.

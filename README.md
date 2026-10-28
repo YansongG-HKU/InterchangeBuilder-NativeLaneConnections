@@ -111,3 +111,5 @@ Current local milestone: [independent C# planar verifier](docs/CORE_GEOMETRY_VAL
 2026-10-28 local extension: [curve primitives, bounded station/profile functions and inspected split candidates](docs/CURVE_FUNCTIONS.md). The original inspector scope and game exclusions remain; experimental search is default-disabled. / 已扩充纯数学内核，未启用游戏路径。
 
 Current extension: [hard-region routing and independent smoothing validation](docs/RESTRICTED_ROUTING.md); bounded planar support, runtime disabled.
+
+[Partial spatial proof checkpoint](docs/SPATIAL_PROOF_CHECKPOINT.md): exact straight-prism references only; curved 3D/global self-proof and selection integration remain incomplete. Current runtime/game boundaries unchanged.

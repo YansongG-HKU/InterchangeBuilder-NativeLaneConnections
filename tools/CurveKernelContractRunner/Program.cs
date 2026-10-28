@@ -48,6 +48,7 @@ public static class CurveKernelContractChecks
         records.AddRange(VerifierChecks.Run(Path.Combine(Path.GetDirectoryName(vectors)!,"curve-verifier-vectors.json")));
         records.AddRange(FunctionChecks.Run(Path.Combine(Path.GetDirectoryName(vectors)!,"curve-function-oracles.json")));
         records.AddRange(RestrictedChecks.Run());
+        records.AddRange(SpatialChecks.Run());
         return records;
     }
 }
