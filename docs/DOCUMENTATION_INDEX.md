@@ -63,3 +63,7 @@ Impact review: current root links updated; prior bounded curve/restricted contra
 [Nonstraight exact quarter-arc proof slice](QUARTER_ARC_PROOF.md) adds bounded flat annular-strip+tail full-domain certification and actual 3D candidate selection. General curved/nonconstant-profile proof remains incomplete.
 
 Impact: current root links updated. Historical checkpoints/evidence preserve then-status; broader design/lab/research documents retain unmet general requirements. AGENTS/CONTRIBUTING, rights, dependency notices, release/import records unchanged; no production JS/UI/runtime/build/CI changes. No browser rerun or game status upgrade.
+
+[General rising/descending Bezier external certificate](BEZIER_EXTERNAL_3D.md) now checks continuous station envelopes against all supplied obstacles. General self remains UNKNOWN; no complete placement permission.
+
+Whole-document impact: current root roadmap/migration/proof links updated. Historical evidence/research/import/release records retain original scope; lab and bounded model contracts remain accurate without a new UI or game claim. AGENTS/CONTRIBUTING/licenses unchanged; no new dependency or copied code. Runtime/build/CI unchanged.

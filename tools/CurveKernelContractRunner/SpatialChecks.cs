@@ -1,6 +1,7 @@
 using System;using System.Collections.Generic;using InterchangeBuilder.LaneConnections;
 public static class SpatialChecks{
-public static List<object> Run(){var rows=new List<object>();void Check(string name,bool value){rows.Add(new{name,expected=true,actual=value});if(!value)throw new Exception(name);}
+public static readonly List<object> Evidence=new List<object>();
+public static List<object> Run(){Evidence.Clear();var rows=new List<object>();void Check(string name,bool value){rows.Add(new{name,expected=true,actual=value});if(!value)throw new Exception(name);}
 var lower=SpatialEnvelopeProof.Straight("lower",new CurvePoint(-100,0),new CurvePoint(100,0),8,0,2);
 var high=SpatialEnvelopeProof.Straight("upper",new CurvePoint(0,-100),new CurvePoint(0,100),8,12,2);
 Check("full width underside clearance10",SpatialEnvelopeProof.Compare(lower,high,9).Status==SpatialProofStatus.Separated);
@@ -34,4 +35,18 @@ Check("width changed cannot reuse candidate",QuarterArcSpatialProof.SelectForReq
 Check("folded Bezier whole domain remains unknown",SpatialEnvelopeProof.EntireSingleStraight(new CurveGeometryDocument(request,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Bezier,new[]{new CurvePoint(0,0),new CurvePoint(200,100),new CurvePoint(-100,100),new CurvePoint(200,0)})}),0,2).Status!=SpatialProofStatus.Separated);
 Check("invalid crossing clearance preserved",QuarterArcSpatialProof.Compare(low,1,lowArc,1,.1,double.NaN).Status==SpatialProofStatus.InvalidInput);
 Check("underflow grade cannot certify nonconstant surface",QuarterArcSpatialProof.Verify(new QuarterArcCandidate(50,8,40,0,double.Epsilon,double.Epsilon,2,1),1,.1).Status==SpatialProofStatus.Unknown);
+var curveRequest=new CurveKernelRequest(new CurvePort("s",new CurvePoint(0,0),new CurvePoint(1,0),0,0,8,CurveTravelSide.Middle),new CurvePort("e",new CurvePoint(300,60),new CurvePoint(1,0),0,0,8,CurveTravelSide.Middle),40,8,true,1);
+var output=ExperimentalCurveKernel.Generate(curveRequest,true).Candidates[1];var actual=new CurveGeometryDocument(curveRequest,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Bezier,output.Controls),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{output.TailStart,output.TailEnd})});
+var crossings=new[]{SpatialEnvelopeProof.Straight("road1",new CurvePoint(100,-100),new CurvePoint(100,150),8,0,2),SpatialEnvelopeProof.Straight("road2",new CurvePoint(200,-100),new CurvePoint(200,150),8,0,2)};
+var external=BezierExternalSpatialProof.Verify(curveRequest,actual,crossings,0,.1,2,6);
+Check("rising curved two-crossing continuous external certificate",external.Status==SpatialProofStatus.Separated&&external.Pairs==external.Leaves.Count*2&&external.SeparatedPairs==external.Pairs);
+Check("external certificate never implies self or apply",external.GlobalSelfStatus==SpatialProofStatus.Unknown&&!external.CanApplyToGame);
+Check("lower rising curve cannot pass",BezierExternalSpatialProof.Verify(curveRequest,actual,crossings,0,.002,2,9).Status==SpatialProofStatus.Unknown);
+Check("thicker structure cannot pass",BezierExternalSpatialProof.Verify(curveRequest,actual,crossings,12,.02,15,9).Status==SpatialProofStatus.Unknown);
+Check("coverage budget exhaustion fails closed",BezierExternalSpatialProof.Verify(curveRequest,actual,crossings,12,.02,2,9,8,2).Status==SpatialProofStatus.Unknown);
+var parallel=new[]{SpatialEnvelopeProof.Straight("parallel",new CurvePoint(0,10),new CurvePoint(300,10),20,0,2)};
+Check("long overlap low end never certified",BezierExternalSpatialProof.Verify(curveRequest,actual,parallel,0,.1,2,9).Status==SpatialProofStatus.Unknown);
+Check("descending curved enclosure conservatively separated",BezierExternalSpatialProof.Verify(curveRequest,actual,crossings,30,-.02,2,9).Status==SpatialProofStatus.Separated);
+Evidence.Add(new{request=curveRequest,actualGeometry=actual,obstacles=crossings,certificate=external,scope="external separation only; global self UNKNOWN; no placement"});
+Check("descending low endpoint overlap stays unknown",BezierExternalSpatialProof.Verify(curveRequest,actual,new[]{SpatialEnvelopeProof.Straight("end-parallel",new CurvePoint(0,60),new CurvePoint(300,60),20,0,2)},30,-.1,2,9).Status==SpatialProofStatus.Unknown);
 return rows;}}
