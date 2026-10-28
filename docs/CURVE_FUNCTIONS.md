@@ -31,3 +31,5 @@ Biarc is deferred because a tangent join generally still needs curvature-transit
 Runtime migration still needs exact base Mod/game assembly versions and actual curve/piece creation contracts. Do not install or activate these functions merely because pure Core tests pass. Game/Anarchy/net48/remote CI remain NOT_RUN.
 
 Current extension: [hard-region routing and independent smoothing validation](RESTRICTED_ROUTING.md); bounded planar support, runtime disabled.
+
+2026-10-28 numerical audit: mathematical sufficiency and real-arithmetic enclosure logic are distinct from machine inclusion guarantees. Current double fixed guards are not a per-operation directed-rounding/roundoff proof; `Separated`/certificate means the scoped implementation result, not formally certified machine safety. See [design audit](MOD_DELIVERY_DESIGN.md). Historical results are not rewritten; automatic game permission remains false.

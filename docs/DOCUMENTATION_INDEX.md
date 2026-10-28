@@ -71,3 +71,9 @@ Whole-document impact: current root roadmap/migration/proof links updated. Histo
 [Noncircular normal-strip global sufficient certificate](NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.
 
 Impact review: current root self/external proof links updated. Existing local/curve contracts remain valid prerequisites; research, import/release records and historical evidence remain dated. Lab docs/UI, licenses, AGENTS/CONTRIBUTING unchanged: no production feature/dependency/game status change. Complete parameter-square coverage is justified by the new theorem, not by expanding old local exemptions.
+
+2026-10-28 [面向可用Mod的代码事实调查与分阶段设计](MOD_DELIVERY_DESIGN.md)：仅设计，本轮无新增算法/运行验证；先冻结真实接口并推进有限连接迁入。
+
+本次文档影响：新增交付设计，更新当前根入口/计划/迁移索引。已核对其余受控文档：历史证据/研究/发布/import保留当时状态；几何/3D/self契约描述实现而非本轮提案，故不改算法能力；Lab文档无产品变更；AGENTS/CONTRIBUTING与许可仍适用。运行时、Core、测试、构建/CI/发布文件均未修改。本轮只核对代码/远端与文档链接，不复跑旧测试。官方/作者补充来源待父线程提供，不能冒充已核实。
+
+数值审计影响补充：更新当前NORMAL_STRIP_SELF_PROOF、BEZIER_EXTERNAL_3D、QUARTER_ARC_PROOF、CORE_GEOMETRY_VALIDATION、CURVE_FUNCTIONS、RESTRICTED_ROUTING，统一声明double工程guard不等于严格机器包含性证明。历史evidence保持原样；本次未改代码、阈值或测试预期。

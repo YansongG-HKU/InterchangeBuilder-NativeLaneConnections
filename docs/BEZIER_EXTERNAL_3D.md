@@ -31,3 +31,5 @@ This slice does not generate multilevel profiles automatically, route around arb
 Independent reviewer checked station bounds (including negative grade), continuous XY/Z enclosure, full leaf×obstacle coverage and fail-closed budgets without finding a mathematical false-pass. Standard build/test evidence is recorded separately. No production JS/UI/dependency/runtime/build/release/CI changes, push, PR, merge or installation.
 
 [Noncircular normal-strip global sufficient certificate](NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.
+
+2026-10-28 numerical audit: mathematical sufficiency and real-arithmetic enclosure logic are distinct from machine inclusion guarantees. Current double fixed guards are not a per-operation directed-rounding/roundoff proof; `Separated`/certificate means the scoped implementation result, not formally certified machine safety. See [design audit](MOD_DELIVERY_DESIGN.md). Historical results are not rewritten; automatic game permission remains false.
