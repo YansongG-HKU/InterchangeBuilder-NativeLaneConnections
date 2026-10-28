@@ -47,6 +47,7 @@ public static class CurveKernelContractChecks
         }
         records.AddRange(VerifierChecks.Run(Path.Combine(Path.GetDirectoryName(vectors)!,"curve-verifier-vectors.json")));
         records.AddRange(FunctionChecks.Run(Path.Combine(Path.GetDirectoryName(vectors)!,"curve-function-oracles.json")));
+        records.AddRange(RestrictedChecks.Run());
         return records;
     }
 }
@@ -55,7 +56,7 @@ public static class Program
 {
     public static int Main(string[] args)
     {
-        try {var records=CurveKernelContractChecks.Run(args[0]);Console.WriteLine(JsonSerializer.Serialize(new { runtime=Environment.Version.ToString(),count=records.Count,records,comparisons=FunctionChecks.Comparisons },new JsonSerializerOptions{WriteIndented=true}));return 0;}
+        try {var records=CurveKernelContractChecks.Run(args[0]);Console.WriteLine(JsonSerializer.Serialize(new { runtime=Environment.Version.ToString(),count=records.Count,records,comparisons=FunctionChecks.Comparisons,restricted=RestrictedChecks.Evidence },new JsonSerializerOptions{WriteIndented=true}));return 0;}
         catch(Exception e){Console.Error.WriteLine(e);return 1;}
     }
 }

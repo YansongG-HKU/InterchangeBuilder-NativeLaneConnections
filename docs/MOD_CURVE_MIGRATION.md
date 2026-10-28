@@ -35,3 +35,5 @@ Fresh protection uses `scripts/check-curve-port-boundary.py`: existing runtime/i
 Official temporary SDK tool reference: https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script .
 
 2026-10-28 local extension: [curve primitives, bounded station/profile functions and inspected split candidates](CURVE_FUNCTIONS.md). The original inspector scope and game exclusions remain; experimental search is default-disabled. / 已扩充纯数学内核，未启用游戏路径。
+
+Current extension: [hard-region routing and independent smoothing validation](RESTRICTED_ROUTING.md); bounded planar support, runtime disabled.

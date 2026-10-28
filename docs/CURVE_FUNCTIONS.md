@@ -29,3 +29,5 @@ No demonstrated case in this fixed matrix changes baseline-all-fail into new-pas
 Biarc is deferred because a tangent join generally still needs curvature-transition handling before satisfying this G2 piece contract and a finite straight tail. Clothoid investigation requires bounded integration/inversion and conversion error as well as a fair fixed-budget comparison; no implementation or timing result is asserted. Current two-piece quintics can be validated without adding a new numerical integration dependency. These are next algorithm evaluation candidates, not a claim that quintics dominate them.
 
 Runtime migration still needs exact base Mod/game assembly versions and actual curve/piece creation contracts. Do not install or activate these functions merely because pure Core tests pass. Game/Anarchy/net48/remote CI remain NOT_RUN.
+
+Current extension: [hard-region routing and independent smoothing validation](RESTRICTED_ROUTING.md); bounded planar support, runtime disabled.
