@@ -29,3 +29,5 @@ Negative grade30−.02s also separates. Lower profile, thicker structure, long p
 This slice does not generate multilevel profiles automatically, route around arbitrary 3D obstacles or certify non-linear Hermite station profiles. Linear station profiles are an explicit supported subset. Full-width seam/slope and general diagonal-parameter self proofs remain unresolved. Real game dependencies and runtime activation remain independent gates; no guessed engine interface.
 
 Independent reviewer checked station bounds (including negative grade), continuous XY/Z enclosure, full leaf×obstacle coverage and fail-closed budgets without finding a mathematical false-pass. Standard build/test evidence is recorded separately. No production JS/UI/dependency/runtime/build/release/CI changes, push, PR, merge or installation.
+
+[Noncircular normal-strip global sufficient certificate](NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.

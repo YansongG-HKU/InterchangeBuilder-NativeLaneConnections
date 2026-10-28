@@ -1,4 +1,4 @@
-using System;using System.Collections.Generic;using InterchangeBuilder.LaneConnections;
+using System;using System.Collections.Generic;using System.Linq;using InterchangeBuilder.LaneConnections;
 public static class SpatialChecks{
 public static readonly List<object> Evidence=new List<object>();
 public static List<object> Run(){Evidence.Clear();var rows=new List<object>();void Check(string name,bool value){rows.Add(new{name,expected=true,actual=value});if(!value)throw new Exception(name);}
@@ -49,4 +49,23 @@ Check("long overlap low end never certified",BezierExternalSpatialProof.Verify(c
 Check("descending curved enclosure conservatively separated",BezierExternalSpatialProof.Verify(curveRequest,actual,crossings,30,-.02,2,9).Status==SpatialProofStatus.Separated);
 Evidence.Add(new{request=curveRequest,actualGeometry=actual,obstacles=crossings,certificate=external,scope="external separation only; global self UNKNOWN; no placement"});
 Check("descending low endpoint overlap stays unknown",BezierExternalSpatialProof.Verify(curveRequest,actual,new[]{SpatialEnvelopeProof.Straight("end-parallel",new CurvePoint(0,60),new CurvePoint(300,60),20,0,2)},30,-.1,2,9).Status==SpatialProofStatus.Unknown);
+var self=NormalStripSelfProof.Verify(curveRequest,actual);
+Check("noncircular Bezier normal strip global injection",self.Status==SpatialProofStatus.Separated);
+var c0=output.Controls;var work=c0.ToArray();var leftControls=new CurvePoint[work.Length];var rightControls=new CurvePoint[work.Length];leftControls[0]=work[0];rightControls[work.Length-1]=work[work.Length-1];for(int k=work.Length-1;k>0;k--){for(int j=0;j<k;j++)work[j]=(work[j]+work[j+1])*.5;leftControls[work.Length-k]=work[0];rightControls[k-1]=work[k-1];}
+var split=new CurveGeometryDocument(curveRequest,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Bezier,leftControls),new CurveGeometrySegment(CurveSegmentKind.Bezier,rightControls),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{output.TailStart,output.TailEnd})});
+Check("exact split preserves noncircle self certificate",NormalStripSelfProof.Verify(curveRequest,split).Status==SpatialProofStatus.Separated);
+Check("folded route never globally certified",NormalStripSelfProof.Verify(request,new CurveGeometryDocument(request,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Bezier,new[]{new CurvePoint(0,0),new CurvePoint(200,100),new CurvePoint(-100,100),new CurvePoint(200,0)})})).Status!=SpatialProofStatus.Separated);
+Evidence.Add(new{selfRequest=curveRequest,actualNormalStrip=actual,globalSelfCertificate=self,splitCertificate=NormalStripSelfProof.Verify(curveRequest,split)});
+var reverseParts=new CurveGeometryDocument(request,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(0,0),new CurvePoint(100,0)}),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(100,0),new CurvePoint(0,0)}),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(0,0),new CurvePoint(200,0)})});
+Check("adjacent reverse cannot globally certify",NormalStripSelfProof.Verify(request,reverseParts).Status==SpatialProofStatus.Unknown);
+var wideRequest=new CurveKernelRequest(new CurvePort("w0",new CurvePoint(0,0),new CurvePoint(1,0),0,0,50,CurveTravelSide.Middle),new CurvePort("w1",new CurvePoint(60,30),new CurvePoint(1,0),0,0,50,CurveTravelSide.Middle),10,50,true,1);
+var wide=ExperimentalCurveKernel.Generate(wideRequest,true).Candidates[1];var wideGeometry=new CurveGeometryDocument(wideRequest,50,new[]{new CurveGeometrySegment(CurveSegmentKind.Bezier,wide.Controls),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{wide.TailStart,wide.TailEnd})});
+Check("too wide tight shift stays unknown",NormalStripSelfProof.Verify(wideRequest,wideGeometry).Status==SpatialProofStatus.Unknown);
+double delta=1e-8;var tinyDirection=new CurvePoint(Math.Cos(delta),Math.Sin(delta));var cornerEnd=tinyDirection*100;
+var tinyRequest=new CurveKernelRequest(new CurvePort("j0",new CurvePoint(-100,0),new CurvePoint(1,0),0,0,8,CurveTravelSide.Middle),new CurvePort("j1",cornerEnd,tinyDirection,0,0,8,CurveTravelSide.Middle),40,8,true,1);
+var tinyCorner=new CurveGeometryDocument(tinyRequest,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(-100,0),new CurvePoint(0,0)}),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(0,0),cornerEnd})});
+Check("tiny tangent jump cannot use global theorem",NormalStripSelfProof.Verify(tinyRequest,tinyCorner).Status==SpatialProofStatus.Unknown);
+var tinyGap=new CurveGeometryDocument(request,8,new[]{new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(0,0),new CurvePoint(100,0)}),new CurveGeometrySegment(CurveSegmentKind.Line,new[]{new CurvePoint(100-5e-8,0),new CurvePoint(200,0)})});
+Check("tiny overlapping G0 seam cannot certify",NormalStripSelfProof.Verify(request,tinyGap).Status==SpatialProofStatus.Unknown);
+Check("candidate search binds self certificate to actual output",CurveCandidateSearch.Search(curveRequest,true).Candidates[1].SelfCertificate.Status==SpatialProofStatus.Separated);
 return rows;}}

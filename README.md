@@ -117,3 +117,5 @@ Current extension: [hard-region routing and independent smoothing validation](do
 [Nonstraight exact quarter-arc proof slice](docs/QUARTER_ARC_PROOF.md) adds bounded flat annular-strip+tail full-domain certification and actual 3D candidate selection. General curved/nonconstant-profile proof remains incomplete.
 
 [General rising/descending Bezier external certificate](docs/BEZIER_EXTERNAL_3D.md) now checks continuous station envelopes against all supplied obstacles. General self remains UNKNOWN; no complete placement permission.
+
+[Noncircular normal-strip global sufficient certificate](docs/NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.

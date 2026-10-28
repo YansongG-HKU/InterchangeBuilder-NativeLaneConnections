@@ -1,0 +1,130 @@
+{
+  "baseline": "9f083061cdcf2bb08ed03c0527ebbd6f591c1179",
+  "unchangedOriginalFiles": [
+    {
+      "path": ".gitattributes",
+      "blob": "d0933793f08e5623aabf6571cc08c7d523e93322"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "blob": "ba0d8cbe245496d5dc49ac1e3aaab7a5d75131d2"
+    },
+    {
+      "path": ".gitignore",
+      "blob": "435e304acb57c426d7921b3a1716123e6e8d072d"
+    },
+    {
+      "path": "Directory.Build.props",
+      "blob": "0cfa5853dd49f42e770684720521d8f571f994d9"
+    },
+    {
+      "path": "LICENSE",
+      "blob": "e3875bed149e5bbba4e8cb90164f47489768027c"
+    },
+    {
+      "path": "README-upgrade.md",
+      "blob": "4eb0c4e5c4477a5495f91d263debf7349dc699e4"
+    },
+    {
+      "path": "docs/releases/v2.2.0.md",
+      "blob": "ea383dc4a6137b460f7935cd4e3864ae55089cc7"
+    },
+    {
+      "path": "scripts/build-upgrade.ps1",
+      "blob": "9d93e78ffbe2bb649ac698711042fa4600ce9841"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections.Core/AlignmentMath.cs",
+      "blob": "d0aa9305fd0a5a7cd0608d7ad61004b09fb27ec7"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections.Core/InterchangeBuilder.LaneConnections.Core.csproj",
+      "blob": "1974dbfa3faf2c5b869128d6387b2cd9a067ce66"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections.Core/JunctionArmMath.cs",
+      "blob": "b23bbc55778dd82810f0e9b3de4911ac594a9f70"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/Bootstrap.cs",
+      "blob": "bccd634a294076989fec2dc99016139738ee0784"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/ConnectionSelection.cs",
+      "blob": "2a84472e0ec5fddf0a13c7f5f1c17311c221a704"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/ConnectionSelectionStore.cs",
+      "blob": "6eb60819750ff168a00c936d48b88f9d99a36f0d"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/EndpointAlignmentService.cs",
+      "blob": "0635f95007c863e136c5578fa6c43e2a535b35d4"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/InterchangeBuilder.LaneConnections.csproj",
+      "blob": "9972ae5495a0f5bf366706192f4c315fe0dd32dc"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/Mod.cs",
+      "blob": "51f3469b74058892c7983709ee28a6a408750526"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/Patches.cs",
+      "blob": "3eb3c6b2b3a162afdcc397f6a0979c5e6e05bb92"
+    },
+    {
+      "path": "src/InterchangeBuilder.LaneConnections/UpgradeLog.cs",
+      "blob": "9a241c68d9d31d4ed623141d6a162e3ee1663752"
+    },
+    {
+      "path": "tests/InterchangeBuilder.LaneConnections.Core.Tests/AlignmentMathTests.cs",
+      "blob": "2f65ecbc438c21595cbe4679d74fef391868b333"
+    },
+    {
+      "path": "tools/InterchangeBuilder.Patcher/InterchangeBuilder.Patcher.csproj",
+      "blob": "e2c80a62ae4d1b3586731c87686ef85233d3f6ff"
+    },
+    {
+      "path": "tools/InterchangeBuilder.Patcher/Program.cs",
+      "blob": "a98dc103a4bc3a53f0d493fdd8958437e4c670ed"
+    },
+    {
+      "path": "tools/InterchangeBuilder.RuntimeSmoke/InterchangeBuilder.RuntimeSmoke.csproj",
+      "blob": "271e74251373974d2e3b11efe7791efe6ceb29fb"
+    },
+    {
+      "path": "tools/InterchangeBuilder.RuntimeSmoke/Program.cs",
+      "blob": "a23a3cdab5f9bc11e126a1f929350632a3e80568"
+    },
+    {
+      "path": "ui/InterchangeBuilder.localization.css",
+      "blob": "86b047fabef457a5ca88cc13e70bb16829e03446"
+    },
+    {
+      "path": "ui/InterchangeBuilder.zh-CN.json",
+      "blob": "ef3e7d4b38634fbb2ba81997c179014912ab54b9"
+    }
+  ],
+  "approvedChangedOriginalFiles": [
+    "CHANGELOG.md",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md",
+    "tests/InterchangeBuilder.LaneConnections.Core.Tests/InterchangeBuilder.LaneConnections.Core.Tests.csproj"
+  ],
+  "newCoreSources": [
+    "src/InterchangeBuilder.LaneConnections.Core/BezierExternalSpatialProof.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/CurveCandidateSearch.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/CurveFunctions.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/CurveGeometryVerifier.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/ExperimentalCurveKernel.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/NormalStripSelfProof.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/QuarterArcSpatialProof.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/RestrictedCurveRouting.cs",
+    "src/InterchangeBuilder.LaneConnections.Core/SpatialEnvelopeProof.cs"
+  ],
+  "runtimeCallSites": [],
+  "default": "Disabled; CanApplyToGame=false",
+  "game": "NOT_RUN",
+  "release": "No merge/push/deployment; existing runtime/build/package/CI files unchanged"
+}

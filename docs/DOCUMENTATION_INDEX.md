@@ -67,3 +67,7 @@ Impact: current root links updated. Historical checkpoints/evidence preserve the
 [General rising/descending Bezier external certificate](BEZIER_EXTERNAL_3D.md) now checks continuous station envelopes against all supplied obstacles. General self remains UNKNOWN; no complete placement permission.
 
 Whole-document impact: current root roadmap/migration/proof links updated. Historical evidence/research/import/release records retain original scope; lab and bounded model contracts remain accurate without a new UI or game claim. AGENTS/CONTRIBUTING/licenses unchanged; no new dependency or copied code. Runtime/build/CI unchanged.
+
+[Noncircular normal-strip global sufficient certificate](NORMAL_STRIP_SELF_PROOF.md) now covers forward narrow-cone Bezier subsets; arbitrary self domains and game permission remain unsupported. Historical general-self UNKNOWN records are not rewritten.
+
+Impact review: current root self/external proof links updated. Existing local/curve contracts remain valid prerequisites; research, import/release records and historical evidence remain dated. Lab docs/UI, licenses, AGENTS/CONTRIBUTING unchanged: no production feature/dependency/game status change. Complete parameter-square coverage is justified by the new theorem, not by expanding old local exemptions.

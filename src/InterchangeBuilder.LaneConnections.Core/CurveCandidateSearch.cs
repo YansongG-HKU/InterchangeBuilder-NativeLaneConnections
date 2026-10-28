@@ -7,7 +7,8 @@ namespace InterchangeBuilder.LaneConnections;
 public sealed class InspectedCurveCandidate
 {
     internal InspectedCurveCandidate(string family,CurveGeometryDocument geometry)
-    {Family=family;Geometry=geometry;Report=CurveGeometryVerifier.Verify(geometry.CapturedRequest,geometry);}
+    {Family=family;Geometry=geometry;Report=CurveGeometryVerifier.Verify(geometry.CapturedRequest,geometry);SelfCertificate=NormalStripSelfProof.Verify(geometry.CapturedRequest!,geometry);}
+    public NormalStripCertificate SelfCertificate { get; }
     public string Family { get; }
     public CurveGeometryDocument Geometry { get; }
     public CurveGeometryReport Report { get; }
